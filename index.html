@@ -101,6 +101,68 @@
             letter-spacing: 2px;
             animation: glow 1.5s infinite alternate;
         }
+        .pricing-container p.category {
+            margin: 15px 0 5px;
+        }
+        .pricing-container p.black-ledger {
+            font-size: 32px;
+            font-weight: bold;
+            color: gold;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 1);
+        }
+        .pricing-container p.basic {
+            font-size: 28px;
+            font-weight: bold;
+            color: gold;
+            text-shadow: 0 0 5px rgba(212, 175, 55, 0.8);
+            margin-top: 20px;
+        }
+        .pricing-container p.price {
+            font-size: 22px;
+            font-weight: bold;
+            color: gold;
+            margin: 5px 0;
+        }
+        .pricing-container p.description {
+            font-size: 16px;
+            color: #f5e8c8;
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+
+        /* Mobile Responsive Adjustments for Pricing */
+        @media screen and (max-width: 768px) {
+            .pricing-container p.black-ledger {
+                font-size: 26px;
+            }
+            .pricing-container p.basic {
+                font-size: 22px;
+                margin-top: 15px;
+            }
+            .pricing-container p.price {
+                font-size: 16px;
+            }
+            .pricing-container p.description {
+                font-size: 14px;
+            }
+        }
+
+        /* Very Small Screens (e.g., phones < 480px) */
+        @media screen and (max-width: 480px) {
+            .pricing-container p.black-ledger {
+                font-size: 20px;
+            }
+            .pricing-container p.basic {
+                font-size: 18px;
+                margin-top: 10px;
+            }
+            .pricing-container p.price {
+                font-size: 14px;
+            }
+            .pricing-container p.description {
+                font-size: 12px;
+            }
+        }
 
         /* Mobile Responsive Adjustments */
         @media screen and (max-width: 768px) {
@@ -206,9 +268,14 @@
         
         <div class="pricing-container">
             <h2>Membership Pricing</h2>
-            <p><strong>SLC Basic - 0.25 SOL/week</strong> - 5-minute delay on Steez calls, Telegram bot alerts, no cap on members.</p>
-            <p><strong>SLC Black Ledger (Weekly - 0.5 SOL)</strong> - First look at Steez calls, deep insights, private chat, access to 1-on-1 chart training by a 7-figure trader. **Limited to 50 members.**</p>
-            <p><strong>SLC Black Ledger (Monthly - 1.5 SOL)</strong> - Save 0.5 SOL when committing for a full month. Includes all perks of weekly membership.</p>
+            <p class="black-ledger">SLC Black Ledger</p>
+            <p class="price">0.25 SOL/week (equivalent)</p>
+            <p class="price">0.75 SOL/month</p>
+            <p class="description">First look at Steez calls, deep insights, private chat, premium Telegram bot alerts, access to 1-on-1 chart training by a 7-figure trader. **Limited to 50 members.**</p>
+            <p class="basic">SLC Basic</p>
+            <p class="price">0.125 SOL/week</p>
+            <p class="description">delayed Steez calls, Telegram bot alerts, no cap on members.</p>
+            <p style="text-align: center; font-size: 10px; color: #bbb; margin-top: 5px;">*prices subject to change</p>
         </div>
         <div class="form-container">
             <h2>Apply for Membership</h2>
