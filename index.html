@@ -62,11 +62,25 @@
             border-radius: 5px;
             font-size: 16px;
             display: block;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        input::placeholder, textarea::placeholder {
+            color: gold;
+            opacity: 0.8;
         }
         input, textarea, select {
             background: black;
             color: gold;
             border: 1px solid gold;
+        }
+        label {
+            display: block;
+            margin: 10px auto;
+            text-align: center;
+            font-size: 16px;
+            color: #f5e8c8;
+            word-wrap: break-word;
         }
         button {
             background: linear-gradient(135deg, #d4af37, #ffcc00);
@@ -110,9 +124,18 @@
                 width: 100%;
                 max-width: 90%;
                 padding: 10px;
-                font-size: 14px;
+                font-size: 12px;
                 margin: 8px auto;
                 display: block;
+                word-wrap: break-word;
+                white-space: normal;
+            }
+            input::placeholder, textarea::placeholder {
+                font-size: 10px;
+            }
+            label {
+                font-size: 12px;
+                margin: 8px auto;
             }
             h1 {
                 font-size: 24px;
@@ -135,6 +158,30 @@
             p[style*="text-align: center; font-size: 18px"] {
                 font-size: 16px;
                 margin-top: 10px;
+            }
+        }
+
+        /* Very Small Screens (e.g., phones < 480px) */
+        @media screen and (max-width: 480px) {
+            input, textarea, button, select {
+                width: 100%;
+                max-width: 90%;
+                padding: 8px;
+                font-size: 10px;
+                margin: 6px auto;
+                display: block;
+                word-wrap: break-word;
+                white-space: normal;
+            }
+            input::placeholder, textarea::placeholder {
+                font-size: 8px;
+            }
+            label {
+                font-size: 10px;
+                margin: 6px auto;
+            }
+            .form-container textarea {
+                height: 80px;
             }
         }
     </style>
