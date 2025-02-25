@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLC Black Ledger</title>
+    <style>
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(212, 175, 55, 1); }
+            100% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            background: url('https://images.slcblackledger.org/SLCMAINLOGO.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #f5e8c8;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+            animation: fadeIn 1s ease-out;
+        }
+        .ledger-img {
+            width: 100%;
+            max-width: 450px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 1);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .form-container, .pricing-container, .membership-container {
+            background: linear-gradient(135deg, #1a1a1a, #222222);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+            animation: fadeIn 1.2s ease-out;
+        }
+        input, textarea, button, select {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input, textarea, select {
+            background: black;
+            color: gold;
+            border: 1px solid gold;
+        }
+        button {
+            background: linear-gradient(135deg, #d4af37, #ffcc00);
+            color: #0f0f0f;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 1);
+        }
+        button:hover {
+            background: linear-gradient(135deg, #ffcc00, #d4af37);
+            box-shadow: 0 0 35px rgba(255, 204, 0, 1);
+        }
+        h1 {
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            animation: glow 1.5s infinite alternate;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>STEEZ LIQUIDITY CARTEL</h1>
+        <h2><u>BLACK LEDGER TELEGRAM</u></h2>
+        <p>Honesty and Integrity, above all.</p>
+        <p><strong style="animation: glow 1.5s infinite alternate;">Limit 50 Members</strong></p>
+        <img src="https://images.slcblackledger.org/SLCBLACKLEDGER.png" alt="Black Ledger" class="ledger-img">
+        
+        <div class="membership-container">
+            <h2>Membership Information</h2>
+            <p>While we would prefer to keep access to the SLC free,</p>
+            <p>maintaining the integrity and security of the group requires a controlled entry process.</p>
+            <p>In the past, opening the group to the public led to exploitation by bad actors.</p>
+            <p>To ensure that only serious and committed individuals gain access, a membership fee is necessary.</p>
+            <p>The first 50 members will be placed on an <strong>exclusive founders list</strong>, granting them priority access to upcoming SLC investments, potential coin drops, and ETF opportunities.</p>
+            <p>For the 50 Black Ledger members - If you do not renew, you will lose your position, and the next candidate on the waitlist will take your position.</p>
+        </div>
+        
+        <div class="pricing-container">
+            <h2>Membership Pricing</h2>
+            <p><strong>SLC Basic - 0.25 SOL/week</strong> - 5-minute delay on Steez calls, Telegram bot alerts, no cap on members.</p>
+            <p><strong>SLC Black Ledger (Weekly - 0.5 SOL)</strong> - First look at Steez calls, deep insights, private chat, access to 1-on-1 chart training by a 7-figure trader. **Limited to 50 members.**</p>
+            <p><strong>SLC Black Ledger (Monthly - 1.5 SOL)</strong> - Save 0.5 SOL when committing for a full month. Includes all perks of weekly membership.</p>
+        </div>
+        <div class="form-container">
+            <h2>Apply for Membership</h2>
+            <form id="applicationForm">
+                <input type="text" name="x_username" placeholder="X Username" required>
+                <input type="text" name="telegram_handle" placeholder="Telegram @Username" required>
+                <input type="text" name="experience" placeholder="How long have you been trading memecoins?" required>
+                <input type="text" name="portfolio_size" placeholder="Portfolio size? (Optional)" required>
+                <textarea name="trading_strategy" placeholder="Describe your trading strategy." required></textarea>
+                <textarea name="risk_management" placeholder="How do you approach risk management?" required></textarea>
+                <input type="text" name="alpha_groups" placeholder="Have you been part of any other alpha groups? If so, which ones?" required>
+                <textarea name="long_term_goals" placeholder="What are your long-term goals in the crypto space?" required></textarea>
+                <textarea name="research_methods" placeholder="How do you find new memecoins before they pump?" required></textarea>
+                <input type="text" name="wallet_address" placeholder="Submit your Solana wallet address for verification." required>
+                <input type="text" name="membership_duration" placeholder="How long do you see yourself inside the SLC?" required>
+                <input type="text" name="desired_membership" placeholder="What membership are you looking to acquire?" required>
+                <textarea name="why_allowed" placeholder="Why should you be allowed into the SLC?" required style="height: 150px;"></textarea>
+                <textarea name="skills_contribution" placeholder="What skills or value can you bring to the SLC community?" required style="height: 150px;"></textarea>
+                
+                <input type="checkbox" id="custom_pfp" name="custom_pfp">
+                <label for="custom_pfp">In the event you are accepted, would you like to receive a custom SLC "Original 50" Black Ledger profile photo for your X account, handmade by Steez, tailored to you? Your respected member # will be incorporated.</label>
+                <br><br>
+                
+                <br><br>
+                <input type="checkbox" id="agree" required>
+                <label for="agree">
+                    By submitting this form, you agree to the rules and bylaws of the SLC.<br>
+                    You understand that Steez or any moderator can remove you from the SLC at any time for any reason.
+                </label>
+                <br><br>
+                <button type="submit">Submit Application</button>
+            </form>
+        </div>
+        
+        <div style="text-align: center; font-size: 12px; color: #bbb; margin-top: 30px; padding: 15px; border-top: 1px solid #444; background: rgba(0, 0, 0, 0.8);">
+            <p><strong>Disclaimer:</strong> The information, insights, and trade signals provided within the Steez Liquidity Cartel (SLC) Black Ledger are for informational and educational purposes only and should not be considered financial advice. Cryptocurrency, particularly memecoins, is highly volatile and speculative. Trading in these assets carries significant risk, and you should conduct your own research before making any financial decisions.</p>
+            <p>SLC, its moderators, and Steez are not responsible for any financial losses incurred while following shared insights or strategies. By engaging with this platform, you acknowledge that you assume full responsibility for your trading activities and that Steez and SLC moderators reserve the right to remove any member at their sole discretion.</p>
+        </div>
+        <p style="text-align: center; font-size: 18px; font-weight: bold; color: gold; margin-top: 15px; text-transform: lowercase;">gamble accordingly.</p>
+    </div>
+    <script>
+        document.getElementById("applicationForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(event.target);
+            var object = {};
+            formData.forEach((value, key) => object[key] = value);
+
+            fetch("https://formsubmit.co/ajax/431steez@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(object)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Thank you for your submission. The SLC will be in contact with you via X with the decision on your admittance.");
+                event.target.reset();
+            })
+            .catch(error => {
+                alert("Error submitting application. Please try again.");
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
