@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="https://images.slcblackledger.org/SLCMAINLOGO.jpeg">
     <title>SLC Black Ledger</title>
     <style>
         @keyframes glow {
@@ -80,6 +81,53 @@
             font-weight: bold;
             letter-spacing: 2px;
             animation: glow 1.5s infinite alternate;
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                max-width: 90%;
+                padding: 15px;
+                margin: 10px auto;
+            }
+            .ledger-img {
+                max-width: 100%;
+                margin-top: 10px;
+            }
+            .form-container, .pricing-container, .membership-container {
+                padding: 15px;
+                margin-top: 15px;
+            }
+            input, textarea, button, select {
+                padding: 10px;
+                font-size: 14px;
+                margin: 8px 0;
+            }
+            h1 {
+                font-size: 24px;
+                letter-spacing: 1px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            p {
+                font-size: 14px;
+            }
+            .form-container textarea {
+                height: 100px;
+            }
+            div[style*="text-align: center; font-size: 12px"] {
+                font-size: 10px;
+                padding: 10px;
+                margin-top: 15px;
+            }
+            p[style*="text-align: center; font-size: 18px"] {
+                font-size: 16px;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
