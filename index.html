@@ -1,344 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpeg" href="https://images.slcblackledger.org/SLCMAINLOGO.jpeg">
-    <title>SLC Black Ledger</title>
-    <style>
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-            50% { text-shadow: 0 0 20px rgba(212, 175, 55, 1); }
-            100% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        body {
-            background: url('https://images.slcblackledger.org/SLCMAINLOGO.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            color: #f5e8c8;
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: rgba(0, 0, 0, 0.95);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
-            animation: fadeIn 1s ease-out;
-        }
-        .ledger-img {
-            width: 100%;
-            max-width: 450px;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(212, 175, 55, 1);
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .form-container, .pricing-container, .membership-container {
-            background: linear-gradient(135deg, #1a1a1a, #222222);
-            padding: 30px;
-            border-radius: 15px;
-            margin-top: 30px;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
-            animation: fadeIn 1.2s ease-out;
-        }
-        .form-container {
-            text-align: center;
-        }
-        input, textarea, button, select {
-            width: 100%;
-            max-width: 90%;
-            padding: 15px;
-            margin: 12px auto;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            display: block;
-            word-wrap: break-word;
-            white-space: normal;
-        }
-        input::placeholder, textarea::placeholder {
-            color: gold;
-            opacity: 0.8;
-        }
-        input, textarea, select {
-            background: black;
-            color: gold;
-            border: 1px solid gold;
-        }
-        label {
-            display: block;
-            margin: 10px auto;
-            text-align: center;
-            font-size: 16px;
-            color: #f5e8c8;
-            word-wrap: break-word;
-        }
-        button {
-            background: linear-gradient(135deg, #d4af37, #ffcc00);
-            color: #0f0f0f;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.3s;
-            box-shadow: 0 0 20px rgba(255, 204, 0, 1);
-        }
-        button:hover {
-            background: linear-gradient(135deg, #ffcc00, #d4af37);
-            box-shadow: 0 0 35px rgba(255, 204, 0, 1);
-        }
-        h1 {
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 2px;
-            animation: glow 1.5s infinite alternate;
-        }
-        .pricing-container p.category {
-            margin: 15px 0 5px;
-        }
-        .pricing-container p.black-ledger {
-            font-size: 32px;
-            font-weight: bold;
-            color: gold;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 1);
-        }
-        .pricing-container p.basic {
-            font-size: 28px;
-            font-weight: bold;
-            color: gold;
-            text-shadow: 0 0 5px rgba(212, 175, 55, 0.8);
-            margin-top: 20px;
-        }
-        .pricing-container p.price {
-            font-size: 22px;
-            font-weight: bold;
-            color: gold;
-            margin: 5px 0;
-        }
-        .pricing-container p.description {
-            font-size: 16px;
-            color: #f5e8c8;
-            margin: 5px 0;
-            line-height: 1.5;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SLC Black Ledger — Quality over Quantity</title>
+  <meta name="description" content="SLC Black Ledger: vetted community, private Discord, call reviews, and weekly debriefs. Apply to join." />
+  <link rel="icon" href="https://images.slcblackledger.org/SLCMAINLOGO.jpeg" />
 
-        /* Mobile Responsive Adjustments for Pricing */
-        @media screen and (max-width: 768px) {
-            .pricing-container p.black-ledger {
-                font-size: 26px;
-            }
-            .pricing-container p.basic {
-                font-size: 22px;
-                margin-top: 15px;
-            }
-            .pricing-container p.price {
-                font-size: 16px;
-            }
-            .pricing-container p.description {
-                font-size: 14px;
-            }
-        }
+  <!-- Open Graph / X share -->
+  <meta property="og:title" content="SLC Black Ledger — Quality over Quantity" />
+  <meta property="og:description" content="Honesty and integrity, above all. Apply to the SLC Black Ledger." />
+  <meta property="og:image" content="https://images.slcblackledger.org/SLCMAINLOGO.jpeg" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-        /* Very Small Screens (e.g., phones < 480px) */
-        @media screen and (max-width: 480px) {
-            .pricing-container p.black-ledger {
-                font-size: 20px;
-            }
-            .pricing-container p.basic {
-                font-size: 18px;
-                margin-top: 10px;
-            }
-            .pricing-container p.price {
-                font-size: 14px;
-            }
-            .pricing-container p.description {
-                font-size: 12px;
-            }
-        }
+  <!-- Tailwind CDN (no build needed) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        /* Mobile Responsive Adjustments */
-        @media screen and (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                max-width: 90%;
-                padding: 15px;
-                margin: 10px auto;
-            }
-            .ledger-img {
-                max-width: 100%;
-                margin-top: 10px;
-            }
-            .form-container, .pricing-container, .membership-container {
-                padding: 15px;
-                margin-top: 15px;
-            }
-            input, textarea, button, select {
-                width: 100%;
-                max-width: 90%;
-                padding: 10px;
-                font-size: 12px;
-                margin: 8px auto;
-                display: block;
-                word-wrap: break-word;
-                white-space: normal;
-            }
-            input::placeholder, textarea::placeholder {
-                font-size: 10px;
-            }
-            label {
-                font-size: 12px;
-                margin: 8px auto;
-            }
-            h1 {
-                font-size: 24px;
-                letter-spacing: 1px;
-            }
-            h2 {
-                font-size: 18px;
-            }
-            p {
-                font-size: 14px;
-            }
-            .form-container textarea {
-                height: 100px;
-            }
-            div[style*="text-align: center; font-size: 12px"] {
-                font-size: 10px;
-                padding: 10px;
-                margin-top: 15px;
-            }
-            p[style*="text-align: center; font-size: 18px"] {
-                font-size: 16px;
-                margin-top: 10px;
-            }
-        }
+  <!-- React 18 + ReactDOM UMD + Babel (transpile JSX in-browser) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-        /* Very Small Screens (e.g., phones < 480px) */
-        @media screen and (max-width: 480px) {
-            input, textarea, button, select {
-                width: 100%;
-                max-width: 90%;
-                padding: 8px;
-                font-size: 10px;
-                margin: 6px auto;
-                display: block;
-                word-wrap: break-word;
-                white-space: normal;
-            }
-            input::placeholder, textarea::placeholder {
-                font-size: 8px;
-            }
-            label {
-                font-size: 10px;
-                margin: 6px auto;
-            }
-            .form-container textarea {
-                height: 80px;
-            }
-        }
-    </style>
+  <style>
+    /* tiny extras */
+    .shadow-gold { box-shadow: 0 0 40px rgba(212,175,55,0.25); }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <h1>STEEZ LIQUIDITY CARTEL</h1>
-        <h2><u>BLACK LEDGER TELEGRAM</u></h2>
-        <p>Honesty and Integrity, above all.</p>
-        <p><strong style="animation: glow 1.5s infinite alternate;">Limit 50 Members</strong></p>
-        <img src="https://images.slcblackledger.org/SLCBLACKLEDGER.png" alt="Black Ledger" class="ledger-img">
-        
-        <div class="membership-container">
-            <h2>Membership Information</h2>
-            <p>While we would prefer to keep access to the SLC free,</p>
-            <p>maintaining the integrity and security of the group requires a controlled entry process.</p>
-            <p>In the past, opening the group to the public led to exploitation by bad actors.</p>
-            <p>To ensure that only serious and committed individuals gain access, a membership fee is necessary.</p>
-            <p>The first 50 members will be placed on an <strong>exclusive founders list</strong>, granting them priority access to upcoming SLC investments, potential coin drops, and ETF opportunities.</p>
-            <p>For the 50 Black Ledger members - If you do not renew, you will lose your position, and the next candidate on the waitlist will take your position.</p>
-        </div>
-        
-        <div class="pricing-container">
-            <h2>Membership Pricing</h2>
-            <p class="black-ledger">SLC Black Ledger</p>
-            <p class="price">0.25 SOL/week (equivalent)</p>
-            <p class="price">0.75 SOL/month</p>
-            <p class="description">First look at Steez calls, deep insights, private chat, premium Telegram bot alerts, access to 1-on-1 chart training by a 7-figure trader. **Limited to 50 members.**</p>
-            <p class="basic">SLC Basic</p>
-            <p class="price">0.125 SOL/week</p>
-            <p class="description">delayed Steez calls, Telegram bot alerts, no cap on members.</p>
-            <p style="text-align: center; font-size: 10px; color: #bbb; margin-top: 5px;">*prices subject to change</p>
-        </div>
-        <div class="form-container">
-            <h2>Apply for Membership</h2>
-            <form id="applicationForm">
-                <input type="text" name="x_username" placeholder="X Username" required>
-                <input type="text" name="telegram_handle" placeholder="Telegram @Username" required>
-                <input type="text" name="experience" placeholder="How long have you been trading memecoins?" required>
-                <input type="text" name="portfolio_size" placeholder="Portfolio size? (Optional)" required>
-                <textarea name="trading_strategy" placeholder="Describe your trading strategy." required></textarea>
-                <textarea name="risk_management" placeholder="How do you approach risk management?" required></textarea>
-                <input type="text" name="alpha_groups" placeholder="Have you been part of any other alpha groups? If so, which ones?" required>
-                <textarea name="long_term_goals" placeholder="What are your long-term goals in the crypto space?" required></textarea>
-                <textarea name="research_methods" placeholder="How do you find new memecoins before they pump?" required></textarea>
-                <input type="text" name="wallet_address" placeholder="Submit your Solana wallet address for verification." required>
-                <input type="text" name="membership_duration" placeholder="How long do you see yourself inside the SLC?" required>
-                <input type="text" name="desired_membership" placeholder="What membership are you looking to acquire?" required>
-                <textarea name="why_allowed" placeholder="Why should you be allowed into the SLC?" required style="height: 150px;"></textarea>
-                <textarea name="skills_contribution" placeholder="What skills or value can you bring to the SLC community?" required style="height: 150px;"></textarea>
-                
-                <input type="checkbox" id="custom_pfp" name="custom_pfp">
-                <label for="custom_pfp">In the event you are accepted, would you like to receive a custom SLC "Original 50" Black Ledger profile photo for your X account, handmade by Steez, tailored to you? Your respected member # will be incorporated.</label>
-                <br><br>
-                
-                <br><br>
-                <input type="checkbox" id="agree" required>
-                <label for="agree">
-                    By submitting this form, you agree to the rules and bylaws of the SLC.<br>
-                    You understand that Steez or any moderator can remove you from the SLC at any time for any reason.
-                </label>
-                <br><br>
-                <button type="submit">Submit Application</button>
-            </form>
-        </div>
-        
-        <div style="text-align: center; font-size: 12px; color: #bbb; margin-top: 30px; padding: 15px; border-top: 1px solid #444; background: rgba(0, 0, 0, 0.8);">
-            <p><strong>Disclaimer:</strong> The information, insights, and trade signals provided within the Steez Liquidity Cartel (SLC) Black Ledger are for informational and educational purposes only and should not be considered financial advice. Cryptocurrency, particularly memecoins, is highly volatile and speculative. Trading in these assets carries significant risk, and you should conduct your own research before making any financial decisions.</p>
-            <p>SLC, its moderators, and Steez are not responsible for any financial losses incurred while following shared insights or strategies. By engaging with this platform, you acknowledge that you assume full responsibility for your trading activities and that Steez and SLC moderators reserve the right to remove any member at their sole discretion.</p>
-        </div>
-        <p style="text-align: center; font-size: 18px; font-weight: bold; color: gold; margin-top: 15px; text-transform: lowercase;">gamble accordingly.</p>
-    </div>
-    <script>
-        document.getElementById("applicationForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+<body class="min-h-screen bg-[#0a0b0a] text-zinc-100">
+  <div id="root"></div>
 
-            var formData = new FormData(event.target);
-            var object = {};
-            formData.forEach((value, key) => object[key] = value);
+  <script type="text/babel">
+    const HERO_IMG = "https://images.slcblackledger.org/SLCMAINLOGO.jpeg";
 
-            fetch("https://formsubmit.co/ajax/431steez@gmail.com", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(object)
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert("Thank you for your submission. The SLC will be in contact with you via X with the decision on your admittance.");
-                event.target.reset();
-            })
-            .catch(error => {
-                alert("Error submitting application. Please try again.");
-                console.error("Error:", error);
-            });
-        });
-    </script>
+    const DEFAULT_COPY = {
+      hero: {
+        line1: "Quality over Quantity",
+        line2: "SLC is 1 of 1",
+        sub: "Honesty and integrity, above all.",
+        earlyPrefix: "Follow",
+        earlyHandle: "@431Steez",
+        earlyUrl: "https://x.com/431Steez",
+        approvalNote: "Applications reviewed promptly.",
+        ctaApply: "Apply to Black Ledger",
+        ctaPricing: "View Pricing",
+      },
+      membership: {
+        title: "Membership Information",
+        p1: "Access to SLC is controlled to maintain integrity and security. To keep quality high and protect the community from bad actors, entry is vetted and paid.",
+        p2b: "No member cap. Membership includes access to the private Discord, call reviews, and weekly debriefs.",
+      },
+      pricing: {
+        title: "Pricing",
+        tagline: "Simple, clean, descriptive. Apply and get started.",
+        blTitle: "Black Ledger Membership",
+        blPrice: "$30 / mo",
+        blAdmissionLine: "+ One-time admission fee 1.5 SOL",
+        blBullets: [
+          "Private Discord access",
+          "Call reviews",
+          "Weekly debriefs",
+          "Performance leaderboards",
+        ],
+      },
+      apply: {
+        title: "Apply to Black Ledger",
+        intro: "No member cap. We review experience, mindset, and risk discipline. Transparency required.",
+        approvalNote: "Applications reviewed promptly.",
+        bullets: [
+          "Tell us about your strategy & timeframe",
+          "Share a couple of past plays (win/loss)",
+          "Link your X + Telegram",
+          "Confirm you understand risk & drawdown",
+        ],
+      },
+      fit: {
+        title: "Is this for you?",
+        forTitle: "Who it’s for",
+        forBullets: [
+          "Disciplined traders",
+          "Risk-aware; uses a plan",
+          "Wants structured reviews",
+          "Values integrity + signal quality",
+        ],
+        notTitle: "Not for",
+        notBullets: [
+          "Copy-trade only",
+          "Hype/alpha chasing",
+          "No risk plan",
+          "Seeking guaranteed returns",
+        ],
+      },
+      about: {
+        title: "Why I created the SLC",
+        body: "Share the story here — what problem did SLC solve, the standards you enforce, and why integrity matters. Replace this text with your words.",
+      },
+      disclaimer: {
+        title: "Disclaimer",
+        text: "The information, insights, and trade signals provided within the Steez Liquidity Cartel (SLC) Black Ledger are for informational and educational purposes only and should not be considered financial advice. Cryptocurrency, particularly memecoins, is highly volatile and speculative. Trading in these assets carries significant risk. Conduct your own research before making any financial decisions. SLC, its moderators, and Steez are not responsible for any financial losses incurred while following shared insights or strategies. By engaging with this platform, you acknowledge full responsibility for your trading activities and that Steez and SLC moderators reserve the right to remove any member at their sole discretion.",
+        footnote: "gamble accordingly.",
+      },
+      formFields: [
+        { type: "input", name: "x_username", placeholder: "X Username", required: true },
+        { type: "input", name: "telegram_handle", placeholder: "Telegram @Username", required: true },
+        { type: "input", name: "experience", placeholder: "How long have you been trading memecoins?", required: true },
+        { type: "input", name: "portfolio_size", placeholder: "Portfolio size? (Optional)", required: false },
+        { type: "textarea", name: "trading_strategy", placeholder: "Describe your trading strategy.", rows: 3, required: true },
+        { type: "textarea", name: "risk_management", placeholder: "How do you approach risk management?", rows: 3, required: true },
+        { type: "input", name: "alpha_groups", placeholder: "Have you been part of any other alpha groups? If so, which ones?", required: true },
+        { type: "textarea", name: "long_term_goals", placeholder: "What are your long-term goals in the crypto space?", rows: 3, required: true },
+        { type: "textarea", name: "research_methods", placeholder: "How do you find new memecoins before they pump?", rows: 3, required: true },
+        { type: "input", name: "membership_duration", placeholder: "How long do you see yourself inside the SLC?", required: true },
+        { type: "input", name: "desired_membership", placeholder: "Which membership are you seeking?", required: true },
+        { type: "textarea", name: "why_allowed", placeholder: "Why should you be allowed into the SLC?", rows: 5, required: true },
+        { type: "textarea", name: "skills_contribution", placeholder: "What skills or value can you bring to the SLC community?", rows: 5, required: true },
+      ],
+    };
+
+    // UI primitives
+    const Container = ({ children }) => (
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+    );
+    const Section = ({ id, className = "", children }) => (
+      <section id={id} className={"py-16 sm:py-24 " + className}>{children}</section>
+    );
+    const Button = ({ href, children, variant = "default", type, onClick }) => {
+      const base = "inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2";
+      const styles = {
+        default: "bg-gradient-to-br from-yellow-400 to-yellow-600 hover:to-yellow-500 text-black focus:ring-yellow-400",
+        ghost: "bg-transparent hover:bg-white/5 text-white ring-1 ring-white/10",
+        secondary: "bg-zinc-900 hover:bg-zinc-800 text-yellow-200 ring-1 ring-yellow-700/30 focus:ring-yellow-500",
+      };
+      const cls = base + " " + styles[variant];
+      return href
+        ? <a href={href} className={cls} onClick={onClick}>{children}</a>
+        : <button type={type} className={cls} onClick={onClick}>{children}</button>;
+    };
+    const Card = ({ className = "", children }) => (
+      <div className={"rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur " + className}>{children}</div>
+    );
+
+    // Background canvas (gold grid + flowing line)
+    function useAnimatedBg() {
+      React.useEffect(() => {
+        const c = document.getElementById("slcbg");
+        if (!c) return;
+        const ctx = c.getContext("2d");
+        if (!ctx) return;
+        let frame = 0, raf;
+        const dpr = window.devicePixelRatio || 1;
+        const resize = () => {
+          c.width = Math.max(1, c.clientWidth * dpr);
+          c.height = Math.max(1, c.clientHeight * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+        resize();
+        window.addEventListener("resize", resize);
+        const draw = () => {
+          const w = c.clientWidth || c.width;
+          const h = c.clientHeight || c.height;
+          ctx.clearRect(0, 0, w, h);
+          // gold grid
+          ctx.globalAlpha = 0.12;
+          ctx.strokeStyle = "#d4af37";
+          const step = 32;
+          for (let x = 0; x < w; x += step) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+          for (let y = 0; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+          // flowing line
+          ctx.globalAlpha = 0.9;
+          ctx.lineWidth = 2;
+          const baseY = h * 0.6;
+          ctx.strokeStyle = "rgba(212,175,55,0.9)";
+          ctx.beginPath();
+          for (let x = 0; x < w; x++) {
+            const y = baseY + Math.sin((x + frame) * 0.01) * 18 + Math.cos((x + frame) * 0.005) * 10;
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          frame += 1.2;
+          raf = requestAnimationFrame(draw);
+        };
+        raf = requestAnimationFrame(draw);
+        return () => { window.removeEventListener("resize", resize); if (raf) cancelAnimationFrame(raf); };
+      }, []);
+    }
+
+    function App() {
+      useAnimatedBg();
+      const [copy, setCopy] = React.useState(DEFAULT_COPY);
+      const [showThanks, setShowThanks] = React.useState(false);
+
+      return (
+        <div className="min-h-screen text-zinc-100 relative overflow-hidden">
+          {/* Background layers */}
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url(${HERO_IMG})` }} />
+            <canvas id="slcbg" className="absolute inset-0 h-full w-full"></canvas>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black"></div>
+          </div>
+
+          {/* Header */}
+          <header className="relative border-b border-white/10">
+            <Container>
+              <div className="flex items-center justify-between py-4">
+                <div className="flex items-center gap-3">
+                  <a href="https://x.com/431Steez" target="_blank" rel="noreferrer">
+                    <img src={HERO_IMG} alt="SLC crest" className="h-9 w-9 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
+                  </a>
+                  <span className="font-semibold tracking-wide">SLC – Steez Liquidity Cartel</span>
+                </div>
+                <nav className="hidden md:flex items-center gap-6 text-sm">
+                  <a href="#membership" className="hover:text-yellow-300">Membership</a>
+                  <a href="#fit" className="hover:text-yellow-300">Is it for you?</a>
+                  <a href="#pricing" className="hover:text-yellow-300">Pricing</a>
+                  <Button href="#apply" variant="ghost">Apply</Button>
+                </nav>
+              </div>
+            </Container>
+          </header>
+
+          <main>
+            {/* Hero */}
+            <Section id="hero" className="pt-20 sm:pt-28">
+              <Container>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                  <div>
+                    <h1 className="mt-2 text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
+                      <span>{copy.hero.line1}</span><br/>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">{copy.hero.line2}</span>
+                    </h1>
+                    <p className="mt-4 text-zinc-300 max-w-xl">{copy.hero.sub}</p>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <Button href="#apply">🛡 {copy.hero.ctaApply}</Button>
+                      <Button href="#pricing" variant="ghost">→ {copy.hero.ctaPricing}</Button>
+                    </div>
+                    <div className="mt-2 text-xs text-zinc-400">{copy.hero.approvalNote}</div>
+                    <div className="mt-3 text-xs text-zinc-400">
+                      {copy.hero.earlyPrefix} <a href={copy.hero.earlyUrl} target="_blank" rel="noreferrer" className="underline hover:text-yellow-300">{copy.hero.earlyHandle}</a> on X.
+                    </div>
+                  </div>
+                  <div>
+                    <Card className="relative">
+                      <img src={HERO_IMG} alt="SLC crest" className="w-full rounded-xl"/>
+                    </Card>
+                  </div>
+                </div>
+              </Container>
+            </Section>
+
+            {/* Why SLC */}
+            <Section id="why">
+              <Container>
+                <h2 className="text-3xl font-bold">{copy.about.title}</h2>
+                <p className="mt-3 text-zinc-300 max-w-3xl whitespace-pre-wrap">{copy.about.body}</p>
+              </Container>
+            </Section>
+
+            {/* Membership */}
+            <Section id="membership" className="bg-black/40">
+              <Container>
+                <h2 className="text-3xl font-bold">{copy.membership.title}</h2>
+                <div className="mt-4 space-y-3 text-sm text-zinc-300">
+                  <p>{copy.membership.p1}</p>
+                  <p>{copy.membership.p2b}</p>
+                </div>
+              </Container>
+            </Section>
+
+            {/* Fit / Not for */}
+            <Section id="fit">
+              <Container>
+                <h2 className="text-3xl font-bold">{copy.fit.title}</h2>
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card>
+                    <h3 className="text-lg font-semibold">{copy.fit.forTitle}</h3>
+                    <ul className="mt-3 space-y-2 text-sm text-zinc-300">
+                      {copy.fit.forBullets.map((b,i)=>(
+                        <li key={i} className="flex items-start gap-2"><span className="text-yellow-300">✓</span><span>{b}</span></li>
+                      ))}
+                    </ul>
+                  </Card>
+                  <Card>
+                    <h3 className="text-lg font-semibold">{copy.fit.notTitle}</h3>
+                    <ul className="mt-3 space-y-2 text-sm text-zinc-300">
+                      {copy.fit.notBullets.map((b,i)=>(
+                        <li key={i} className="flex items-start gap-2"><span className="text-yellow-300">✓</span><span>{b}</span></li>
+                      ))}
+                    </ul>
+                  </Card>
+                </div>
+              </Container>
+            </Section>
+
+            {/* Pricing */}
+            <Section id="pricing">
+              <Container>
+                <h2 className="text-3xl font-bold">{copy.pricing.title}</h2>
+                <p className="mt-2 text-zinc-300 max-w-2xl">{copy.pricing.tagline}</p>
+                <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <Card>
+                    <div className="flex items-baseline justify-between">
+                      <h3 className="text-lg font-semibold">{copy.pricing.blTitle}</h3>
+                      <div className="text-2xl font-extrabold text-yellow-300">{copy.pricing.blPrice}</div>
+                    </div>
+                    <div className="mt-2 text-sm text-zinc-400">{copy.pricing.blAdmissionLine}</div>
+                    <ul className="mt-3 space-y-2 text-sm text-zinc-300">
+                      {copy.pricing.blBullets.map((f,i)=>(
+                        <li key={i} className="flex items-start gap-2"><span className="text-yellow-300">✓</span><span>{f}</span></li>
+                      ))}
+                    </ul>
+                    <div className="mt-5"><Button href="#apply">→ Apply Now</Button></div>
+                  </Card>
+                  <Card>
+                    <h3 className="text-lg font-semibold">Notes</h3>
+                    <p className="mt-2 text-sm text-zinc-300">You can run Trench Scanner alongside Black Ledger, but it’s a separate membership. For Scanner early access, DM <a className="underline hover:text-yellow-300" href="https://x.com/scanner_SLC" target="_blank" rel="noreferrer">@scanner_SLC</a>.</p>
+                  </Card>
+                </div>
+              </Container>
+            </Section>
+
+            {/* Apply */}
+            <Section id="apply" className="bg-black/40">
+              <Container>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                  <div>
+                    <h2 className="text-3xl font-bold">{copy.apply.title}</h2>
+                    <p className="mt-2 text-zinc-300">{copy.apply.intro}</p>
+                    <ul className="mt-4 space-y-2 text-sm text-zinc-300">
+                      {copy.apply.bullets.map((x,i)=>(
+                        <li key={i} className="flex items-start gap-2"><span className="text-yellow-300">🛡</span><span>{x}</span></li>
+                      ))}
+                    </ul>
+                  </div>
+                  <Card>
+                    <form className="space-y-3" onSubmit={(e)=>{
+                      e.preventDefault();
+                      const form = e.currentTarget;
+                      const fd = new FormData(form);
+                      const obj = {};
+                      fd.forEach((v,k)=>{ obj[k] = v; });
+                      fetch("https://formsubmit.co/ajax/431steez@gmail.com", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(obj) })
+                        .then(r=>r.json())
+                        .then(()=>{ setShowThanks(true); form.reset(); })
+                        .catch(()=> alert("Error submitting. Please try again."));
+                    }}>
+                      {copy.formFields.map((f, i) => (
+                        f.type === "textarea" ? (
+                          <textarea key={i} name={f.name} placeholder={f.placeholder} required={!!f.required} rows={f.rows || 3}
+                            className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-yellow-400" />
+                        ) : (
+                          <input key={i} name={f.name} placeholder={f.placeholder} required={!!f.required}
+                            className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-yellow-400" />
+                        )
+                      ))}
+                      <div className="flex items-start gap-3 text-[11px] text-zinc-400">
+                        <input type="checkbox" id="agree" required className="mt-1 h-4 w-4" />
+                        <label htmlFor="agree">By submitting this form, you agree to SLC rules and bylaws. You understand that Steez or any moderator can remove you from SLC at any time for any reason.</label>
+                      </div>
+                      <Button type="submit">→ Submit Application</Button>
+                    </form>
+                    <div className="mt-2 text-xs text-zinc-400">{copy.apply.approvalNote}</div>
+                    <div className="mt-2 text-[11px] text-zinc-500">* Submits via formsubmit.co to 431steez@gmail.com.</div>
+                  </Card>
+                </div>
+              </Container>
+            </Section>
+
+            {/* Disclaimer */}
+            <Section id="disclaimer" className="bg-black/60">
+              <Container>
+                <div className="rounded-2xl border border-white/10 p-6 text-sm text-zinc-300">
+                  <div className="font-semibold text-yellow-300 mb-2">{copy.disclaimer.title}</div>
+                  <p>{copy.disclaimer.text}</p>
+                  <p className="mt-3 text-center font-semibold lowercase text-yellow-300">{copy.disclaimer.footnote}</p>
+                </div>
+              </Container>
+            </Section>
+          </main>
+
+          {/* Thanks modal */}
+          {showThanks && (
+            <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={()=>setShowThanks(false)}>
+              <div className="relative w-full max-w-md rounded-2xl border border-yellow-500/40 bg-gradient-to-b from-black to-black/80 p-6 shadow-gold" onClick={(e)=>e.stopPropagation()}>
+                <img src={HERO_IMG} alt="SLC crest" className="mx-auto mb-3 h-12 w-12 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
+                <h3 className="text-xl font-bold text-yellow-300 text-center">Thank you</h3>
+                <p className="mt-2 text-sm text-zinc-300 text-center">Thank you for your submission, if your application is approved, you will be contacted by Steez via X.</p>
+                <div className="mt-5 flex justify-center">
+                  <Button type="button" onClick={()=>setShowThanks(false)}>Close</Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Footer */}
+          <footer className="relative border-t border-white/10">
+            <Container>
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-8 text-sm text-zinc-400">
+                <div className="flex items-center gap-3">
+                  <a href="https://x.com/431Steez" target="_blank" rel="noreferrer">
+                    <img src={HERO_IMG} alt="SLC crest" className="h-8 w-8 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
+                  </a>
+                  <div>
+                    <div className="font-semibold text-zinc-200">Steez Liquidity Cartel</div>
+                    <div className="text-[12px]">&copy; {new Date().getFullYear()} SLC. All rights reserved.</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <a href="https://x.com/431Steez" target="_blank" rel="noreferrer" className="hover:text-yellow-300 inline-flex items-center gap-2">
+                    <!-- Inline X icon -->
+                    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4"><path fill="currentColor" d="M18.244 2H21l-6.74 7.71L22.5 22h-6.5l-5.09-6.62L4.756 22H2l7.2-8.24L1.5 2h6.6l4.55 5.94L18.244 2Zm-2.27 18.26h2.406L7.927 3.66H5.37l10.603 16.6Z"/></svg>
+                    @431Steez
+                  </a>
+                  <a href="https://t.me/+ELigdpxNJVhkODg5" target="_blank" rel="noreferrer" className="hover:text-yellow-300 inline-flex items-center gap-2">💬 Telegram</a>
+                </div>
+              </div>
+            </Container>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
 </body>
 </html>
