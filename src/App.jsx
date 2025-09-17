@@ -443,14 +443,6 @@ export default function App() {
       )}
 
       {/* Inline Edit Panel */}
-      {edit && (
-        <div className="fixed bottom-4 right-4 z-50 w-[380px] max-h-[80vh] overflow-y-auto">
-          <Card className="bg-black/80 backdrop-blur">
-            <div className="flex items-center justify-between">
-              <div className="font-semibold">Edit Mode</div>
-              <button onClick={() => setEdit(false)} className="text-xs hover:text-yellow-300">Close</button>
-            </div>
-            <div className="mt-1 text-[11px] text-zinc-400">Tip: while Edit Mode is on, click any headline/paragraph on the page to edit it inline.</div>
 
             {/* Quick toggles */}
             <div className="mt-3">
@@ -504,8 +496,7 @@ export default function App() {
       )}
 
       {/* Edit Toggle */}
-      <div className="fixed bottom-4 right-4 z-40">{!edit && (<Button type="button" variant="secondary" onClick={()=>setEdit(true)}>Edit Text</Button>)}</div>
-
+      
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/10">
         <Container>
