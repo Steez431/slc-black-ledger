@@ -20,7 +20,7 @@ const DEFAULT_COPY = {
   membership: {
     title: "Membership Information",
     p1: "Access to SLC is controlled to maintain integrity and security. To keep quality high and protect the community from bad actors, entry is vetted and paid.",
-    p2b: "No member cap. Membership includes access to the private Discord, call reviews, and weekly debriefs.",
+    p2b: "No member cap. Membership includes access to the private Discord, early calls, strong community",
   },
   pricing: {
     title: "Pricing",
@@ -30,7 +30,7 @@ const DEFAULT_COPY = {
     trialPrice: "$25 (SOL equivalent)",
     trialNote:
       "On the fence about joining? Try a week in the SLC (upon application approval; limited number of trials given per period).",
-    trialBullets: ["Temporary access to Black Ledger", "Private Discord during trial", "Sample weekly debrief"],
+    trialBullets: ["Temporary access to Black Ledger", "Private Discord during trial", "1 on 1 with Steez and Operators"],
     blTitle: "Black Ledger Membership",
     blPrice: "0.5 SOL / mo",
     blAdmissionLine: "+ One-time admission fee 1.25 SOL",
