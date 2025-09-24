@@ -74,7 +74,7 @@ const DEFAULT_COPY = {
     { type: "textarea", name: "long_term_goals", placeholder: "What are your long-term goals in the crypto space?", rows: 3, required: true },
     { type: "textarea", name: "research_methods", placeholder: "How do you find new memecoins before they pump?", rows: 3, required: true },
     { type: "input", name: "membership_duration", placeholder: "How long do you see yourself inside the SLC?", required: true },
-    { type: "input", name: "desired_membership", placeholder: "Which membership are you seeking?", required: true },
+    { type: "input", name: "desired_membership", placeholder: "How long have you been following Steez on X?", required: true },
     { type: "textarea", name: "why_allowed", placeholder: "Why should you be allowed into the SLC?", rows: 5, required: true },
     { type: "textarea", name: "skills_contribution", placeholder: "What skills or value can you bring to the SLC community?", rows: 5, required: true },
   ],
