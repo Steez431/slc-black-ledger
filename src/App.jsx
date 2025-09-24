@@ -25,10 +25,11 @@ const DEFAULT_COPY = {
   pricing: {
     title: "Pricing",
     tagline: "Simple, clean, descriptive. Apply and get started.",
-    showTrial: false,
+    showTrial: true, // <-- enabled
     trialTitle: "1-Week Trial",
-    trialPrice: "$25 / 7 days",
-    trialNote: "≈ SOL equivalent at checkout",
+    trialPrice: "$25 (SOL equivalent)",
+    trialNote:
+      "On the fence about joining? Try a week in the SLC (upon application approval; limited number of trials given per period).",
     trialBullets: ["Temporary access to Black Ledger", "Private Discord during trial", "Sample weekly debrief"],
     blTitle: "Black Ledger Membership",
     blPrice: "0.5 SOL / mo",
@@ -60,7 +61,8 @@ const DEFAULT_COPY = {
   },
   about: {
     title: "Why I created the SLC",
-    body: "Share the story here — what problem did SLC solve, the standards you enforce, and why integrity matters. Replace this text with your words.",
+    body:
+      "Hey all, Steez here. So I have been trading for a good while now. Joined back into the X /twitter spaces around a year ago. I kind of silently watched the terror that is CT. Got sick of seeing the constant scams, lies, misinformation and appearances of genuine intent with no actual action from many notable \"KOLs\" in the space. Really infuriating to me. Soo I became a lil more vocal, in Jan / Feb of this last year I curated the idea of the SLC.\n\nA \"fishbowl\" style of group that removes the noise of ct, doesnt allow / permit / condone / endorse scams, and actually has good traders. (Good traders don’t have to scam to profit)\n\nI started the early access in May of 2025, its been going fantastic. Over 100k in profit for members in the month of June alone. Daily large PnL’s. Great community. Genuine guys. The type of group I can see sitting at a table with in the future.\n\nA level of trust in a community I didn’t even think imaginable. I’ll see them loaning eachother funds, giving a helping hand, supporting eachother with life advice etc etc. Its really become something magnificent and we are just getting started.\n\nThe SLC is becoming a machine. A system is being established, members are becoming more dialed every day. It has been a pleasure to watch on my end. The SLC will continue to grow. Due to the lack of bots available for Discord trading servers - I code my own. This machine that is the SLC Discord will become a one stop shop for not just meme trading, but everything trading. In due time.\n\nRome was not built in a day.\n\nI can't guarauntee profits by joining the SLC. But I can guarauntee profits if you join the SLC and APPLY yourself. You will be profitable.",
   },
   disclaimer: {
     title: "Disclaimer",
@@ -350,6 +352,18 @@ export default function App() {
                     )
                   ))}
 
+                  {/* Interest checkboxes */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm">
+                      <input type="checkbox" name="interest_trial" className="h-4 w-4" />
+                      I am interested in the 1 week SLC trial
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                      <input type="checkbox" name="interest_membership" className="h-4 w-4" />
+                      I am interested in the SLC Black Ledger Membership
+                    </label>
+                  </div>
+
                   <div className="flex items-start gap-3 text-[11px] text-zinc-400">
                     <input type="checkbox" id="agree" required className="mt-1 h-4 w-4"/>
                     <label htmlFor="agree">By submitting this form, you agree to SLC rules and bylaws. You understand that Steez or any moderator can remove you from SLC at any time for any reason.</label>
@@ -360,7 +374,7 @@ export default function App() {
                 {copy.apply.approvalNote ? (
                   <EditableText value={copy.apply.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400" />
                 ) : null}
-                {/* Removed email disclosure line */}
+                {/* Email disclosure intentionally removed */}
               </Card>
             </div>
           </Container>
