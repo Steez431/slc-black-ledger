@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle, Shield, MessageSquare, Megaphone } from "lucid
 // Brand asset
 const HERO_IMG = "https://images.slcblackledger.org/SLCMAINLOGO.jpeg";
 
-// ---- EDITABLE COPY (safe defaults) ----
+// ---- COPY (locked, no public editing) ----
 const DEFAULT_COPY = {
   hero: {
     line1: "Quality over Quantity",
@@ -31,9 +31,14 @@ const DEFAULT_COPY = {
     trialNote: "≈ SOL equivalent at checkout",
     trialBullets: ["Temporary access to Black Ledger", "Private Discord during trial", "Sample weekly debrief"],
     blTitle: "Black Ledger Membership",
-    blPrice: "$30 / mo",
-    blAdmissionLine: "+ One-time admission fee 1.5 SOL",
-    blBullets: ["Private Discord access", "Call reviews", "Weekly debriefs", "Performance leaderboards"],
+    blPrice: "0.5 SOL / mo",
+    blAdmissionLine: "+ One-time admission fee 1.25 SOL",
+    blBullets: [
+      "Private Discord access",
+      "Collective insight with genuine intention",
+      "Structured calls",
+      "Strong community",
+    ],
   },
   apply: {
     title: "Apply to Black Ledger",
@@ -98,6 +103,11 @@ const Button = ({ href, children, variant = "default", type, ...props }) => {
 };
 const Card = ({ className = "", children }) => <div className={`rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur ${className}`}>{children}</div>;
 
+// Simple non-editable text wrapper (keeps your structure)
+const EditableText = ({ value, Tag = "span", className }) => (
+  <Tag className={className}>{value}</Tag>
+);
+
 const AnimatedBg = () => {
   useEffect(() => {
     const c = document.getElementById("slcbg");
@@ -120,12 +130,8 @@ const AnimatedBg = () => {
       ctx.globalAlpha = 0.12;
       ctx.strokeStyle = "#d4af37";
       const step = 32;
-      for (let x = 0; x < width; x += step) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
-      }
-      for (let y = 0; y < height; y += step) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
-      }
+      for (let x = 0; x < width; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
+      for (let y = 0; y < height; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
       ctx.globalAlpha = 0.9;
       ctx.lineWidth = 2;
       const baseY = height * 0.6;
@@ -146,59 +152,9 @@ const AnimatedBg = () => {
 };
 
 export default function App() {
-  const [copy, setCopy] = useState(() => {
-    try {
-      const s = localStorage.getItem("slc_copy");
-      const saved = s ? JSON.parse(s) : {};
-      return {
-        ...DEFAULT_COPY,
-        ...saved,
-        hero: { ...DEFAULT_COPY.hero, ...(saved.hero || {}) },
-        membership: { ...DEFAULT_COPY.membership, ...(saved.membership || {}) },
-        pricing: { ...DEFAULT_COPY.pricing, ...(saved.pricing || {}) },
-        apply: { ...DEFAULT_COPY.apply, ...(saved.apply || {}) },
-        fit: { ...DEFAULT_COPY.fit, ...(saved.fit || {}) },
-        about: { ...DEFAULT_COPY.about, ...(saved.about || {}) },
-        disclaimer: { ...DEFAULT_COPY.disclaimer, ...(saved.disclaimer || {}) },
-        formFields: Array.isArray(saved.formFields) ? saved.formFields : DEFAULT_COPY.formFields,
-      };
-    } catch {
-      return DEFAULT_COPY;
-    }
-  });
-  const [edit, setEdit] = useState(false);
+  // lock to DEFAULT_COPY; no localStorage merge; no edit toggle
+  const copy = DEFAULT_COPY;
   const [showThanks, setShowThanks] = useState(false);
-
-  const EditableText = ({ value, onChange, Tag = "span", className }) => (
-    <Tag
-      className={className}
-      contentEditable={edit}
-      suppressContentEditableWarning
-      onBlur={(e) => onChange(e.currentTarget.innerText)}
-    >
-      {value}
-    </Tag>
-  );
-
-  const updateField = (i, key, val) => {
-    const next = [...copy.formFields];
-    next[i] = { ...next[i], [key]: val };
-    setCopy({ ...copy, formFields: next });
-  };
-  const moveField = (i, dir) => {
-    const j = i + dir;
-    if (j < 0 || j >= copy.formFields.length) return;
-    const next = [...copy.formFields];
-    [next[i], next[j]] = [next[j], next[i]];
-    setCopy({ ...copy, formFields: next });
-  };
-  const removeField = (i) => setCopy({ ...copy, formFields: copy.formFields.filter((_, idx) => idx !== i) });
-  const addField = (type) => {
-    const base = type === "textarea"
-      ? { type: "textarea", name: "new_textarea", placeholder: "New textarea", rows: 3, required: false }
-      : { type: "input", name: "new_input", placeholder: "New input", required: false };
-    setCopy({ ...copy, formFields: [...copy.formFields, base] });
-  };
 
   return (
     <div className="min-h-screen bg-[#0a0b0a] text-zinc-100 relative overflow-hidden">
@@ -234,17 +190,17 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
               <div>
                 <h1 className="mt-2 text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
-                  <EditableText value={copy.hero.line1} onChange={(v)=> setCopy({...copy, hero:{...copy.hero, line1:v}})} Tag="span" />
+                  <EditableText value={copy.hero.line1} Tag="span" />
                   <br />
-                  <EditableText value={copy.hero.line2} onChange={(v)=> setCopy({...copy, hero:{...copy.hero, line2:v}})} Tag="span" className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600" />
+                  <EditableText value={copy.hero.line2} Tag="span" className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600" />
                 </h1>
-                <EditableText value={copy.hero.sub} onChange={(v)=> setCopy({...copy, hero:{...copy.hero, sub:v}})} Tag="p" className="mt-4 text-zinc-300 max-w-xl" />
+                <EditableText value={copy.hero.sub} Tag="p" className="mt-4 text-zinc-300 max-w-xl" />
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Button href="#apply"><Shield className="h-4 w-4"/> {copy.hero.ctaApply}</Button>
                   <Button href="#pricing" variant="ghost"><ArrowRight className="h-4 w-4"/> {copy.hero.ctaPricing}</Button>
                 </div>
                 {copy.hero.approvalNote ? (
-                  <EditableText value={copy.hero.approvalNote} onChange={(v)=> setCopy({...copy, hero:{...copy.hero, approvalNote:v}})} Tag="div" className="mt-2 text-xs text-zinc-400" />
+                  <EditableText value={copy.hero.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400" />
                 ) : null}
                 {copy.hero.earlyPrefix && copy.hero.earlyHandle ? (
                   <div className="mt-3 text-xs text-zinc-400">
@@ -264,18 +220,18 @@ export default function App() {
         {/* Why SLC */}
         <Section id="why">
           <Container>
-            <EditableText value={copy.about.title} onChange={(v)=> setCopy({...copy, about:{...copy.about, title:v}})} Tag="h2" className="text-3xl font-bold" />
-            <EditableText value={copy.about.body} onChange={(v)=> setCopy({...copy, about:{...copy.about, body:v}})} Tag="p" className="mt-3 text-zinc-300 max-w-3xl whitespace-pre-wrap" />
+            <EditableText value={copy.about.title} Tag="h2" className="text-3xl font-bold" />
+            <EditableText value={copy.about.body} Tag="p" className="mt-3 text-zinc-300 max-w-3xl whitespace-pre-wrap" />
           </Container>
         </Section>
 
         {/* Membership */}
         <Section id="membership" className="bg-black/40">
           <Container>
-            <EditableText value={copy.membership.title} onChange={(v)=> setCopy({...copy, membership:{...copy.membership, title:v}})} Tag="h2" className="text-3xl font-bold" />
+            <EditableText value={copy.membership.title} Tag="h2" className="text-3xl font-bold" />
             <div className="mt-4 space-y-3 text-sm text-zinc-300">
-              <EditableText value={copy.membership.p1} onChange={(v)=> setCopy({...copy, membership:{...copy.membership, p1:v}})} Tag="p" />
-              <EditableText value={copy.membership.p2b} onChange={(v)=> setCopy({...copy, membership:{...copy.membership, p2b:v}})} Tag="p" />
+              <EditableText value={copy.membership.p1} Tag="p" />
+              <EditableText value={copy.membership.p2b} Tag="p" />
             </div>
           </Container>
         </Section>
@@ -283,26 +239,26 @@ export default function App() {
         {/* Fit / Not for */}
         <Section id="fit">
           <Container>
-            <EditableText value={copy.fit.title} onChange={(v)=> setCopy({...copy, fit:{...copy.fit, title:v}})} Tag="h2" className="text-3xl font-bold" />
+            <EditableText value={copy.fit.title} Tag="h2" className="text-3xl font-bold" />
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
-                <EditableText value={copy.fit.forTitle} onChange={(v)=> setCopy({...copy, fit:{...copy.fit, forTitle:v}})} Tag="h3" className="text-lg font-semibold" />
+                <EditableText value={copy.fit.forTitle} Tag="h3" className="text-lg font-semibold" />
                 <ul className="mt-3 space-y-2 text-sm text-zinc-300">
                   {copy.fit.forBullets.map((b,i)=> (
                     <li key={`for-${i}`} className="flex items-start gap-2">
                       <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <EditableText value={b} onChange={(v)=>{ const arr=[...copy.fit.forBullets]; arr[i]=v; setCopy({...copy, fit:{...copy.fit, forBullets:arr}});}} Tag="span" />
+                      <span>{b}</span>
                     </li>
                   ))}
                 </ul>
               </Card>
               <Card>
-                <EditableText value={copy.fit.notTitle} onChange={(v)=> setCopy({...copy, fit:{...copy.fit, notTitle:v}})} Tag="h3" className="text-lg font-semibold" />
+                <EditableText value={copy.fit.notTitle} Tag="h3" className="text-lg font-semibold" />
                 <ul className="mt-3 space-y-2 text-sm text-zinc-300">
                   {copy.fit.notBullets.map((b,i)=> (
                     <li key={`not-${i}`} className="flex items-start gap-2">
                       <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <EditableText value={b} onChange={(v)=>{ const arr=[...copy.fit.notBullets]; arr[i]=v; setCopy({...copy, fit:{...copy.fit, notBullets:arr}});}} Tag="span" />
+                      <span>{b}</span>
                     </li>
                   ))}
                 </ul>
@@ -314,24 +270,22 @@ export default function App() {
         {/* Pricing */}
         <Section id="pricing">
           <Container>
-            <EditableText value={copy.pricing.title} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, title:v}})} Tag="h2" className="text-3xl font-bold" />
-            <EditableText value={copy.pricing.tagline} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, tagline:v}})} Tag="p" className="mt-2 text-zinc-300 max-w-2xl" />
+            <EditableText value={copy.pricing.title} Tag="h2" className="text-3xl font-bold" />
+            <EditableText value={copy.pricing.tagline} Tag="p" className="mt-2 text-zinc-300 max-w-2xl" />
             <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Optional trial card */}
               {copy.pricing.showTrial && (
                 <Card>
                   <div className="flex items-baseline justify-between">
-                    <EditableText value={copy.pricing.trialTitle} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, trialTitle:v}})} Tag="h3" className="text-lg font-semibold" />
-                    <EditableText value={copy.pricing.trialPrice} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, trialPrice:v}})} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
+                    <EditableText value={copy.pricing.trialTitle} Tag="h3" className="text-lg font-semibold" />
+                    <EditableText value={copy.pricing.trialPrice} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
                   </div>
-                  <EditableText value={copy.pricing.trialNote} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, trialNote:v}})} Tag="div" className="mt-2 text-sm text-zinc-400" />
+                  <EditableText value={copy.pricing.trialNote} Tag="div" className="mt-2 text-sm text-zinc-400" />
                   <ul className="mt-3 space-y-2 text-sm text-zinc-300">
                     {copy.pricing.trialBullets.map((f, i) => (
                       <li key={`trial-${i}`} className="flex items-start gap-2">
                         <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                        <EditableText value={f} onChange={(v)=> {
-                          const arr = [...copy.pricing.trialBullets]; arr[i] = v; setCopy({...copy, pricing:{...copy.pricing, trialBullets: arr}});
-                        }} Tag="span" />
+                        <span>{f}</span>
                       </li>
                     ))}
                   </ul>
@@ -342,17 +296,15 @@ export default function App() {
               {/* Membership card */}
               <Card>
                 <div className="flex items-baseline justify-between">
-                  <EditableText value={copy.pricing.blTitle} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, blTitle:v}})} Tag="h3" className="text-lg font-semibold" />
-                  <EditableText value={copy.pricing.blPrice} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, blPrice:v}})} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
+                  <EditableText value={copy.pricing.blTitle} Tag="h3" className="text-lg font-semibold" />
+                  <EditableText value={copy.pricing.blPrice} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
                 </div>
-                <EditableText value={copy.pricing.blAdmissionLine} onChange={(v)=> setCopy({...copy, pricing:{...copy.pricing, blAdmissionLine:v}})} Tag="div" className="mt-2 text-sm text-zinc-400" />
+                <EditableText value={copy.pricing.blAdmissionLine} Tag="div" className="mt-2 text-sm text-zinc-400" />
                 <ul className="mt-3 space-y-2 text-sm text-zinc-300">
                   {copy.pricing.blBullets.map((f, i) => (
                     <li key={`bl-${i}`} className="flex items-start gap-2">
                       <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <EditableText value={f} onChange={(v)=> {
-                        const arr = [...copy.pricing.blBullets]; arr[i] = v; setCopy({...copy, pricing:{...copy.pricing, blBullets: arr}});
-                      }} Tag="span" />
+                      <span>{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -367,15 +319,13 @@ export default function App() {
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
-                <EditableText value={copy.apply.title} onChange={(v)=> setCopy({...copy, apply:{...copy.apply, title:v}})} Tag="h2" className="text-3xl font-bold" />
-                <EditableText value={copy.apply.intro} onChange={(v)=> setCopy({...copy, apply:{...copy.apply, intro:v}})} Tag="p" className="mt-2 text-zinc-300" />
+                <EditableText value={copy.apply.title} Tag="h2" className="text-3xl font-bold" />
+                <EditableText value={copy.apply.intro} Tag="p" className="mt-2 text-zinc-300" />
                 <ul className="mt-4 space-y-2 text-sm text-zinc-300">
                   {copy.apply.bullets.map((x, i) => (
                     <li key={`apb-${i}`} className="flex items-start gap-2">
                       <Shield className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <EditableText value={x} onChange={(v)=> {
-                        const arr = [...copy.apply.bullets]; arr[i] = v; setCopy({...copy, apply:{...copy.apply, bullets: arr}});
-                      }} Tag="span" />
+                      <span>{x}</span>
                     </li>
                   ))}
                 </ul>
@@ -392,7 +342,7 @@ export default function App() {
                     .then(()=>{ setShowThanks(true); form.reset(); })
                     .catch(()=> alert("Error submitting. Please try again."));
                 }}>
-                  {copy.formFields.filter(f => f.name !== "wallet_address").map((f, i) => (
+                  {copy.formFields.map((f, i) => (
                     f.type === "textarea" ? (
                       <textarea key={i} name={f.name} placeholder={f.placeholder} required={!!f.required} rows={f.rows || 3} className="w-full rounded-xl bg-black/40 border border-white/10 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-yellow-400" />
                     ) : (
@@ -408,9 +358,9 @@ export default function App() {
                   <Button type="submit"><ArrowRight className="h-4 w-4"/> Submit Application</Button>
                 </form>
                 {copy.apply.approvalNote ? (
-                  <EditableText value={copy.apply.approvalNote} onChange={(v)=> setCopy({...copy, apply:{...copy.apply, approvalNote:v}})} Tag="div" className="mt-2 text-xs text-zinc-400" />
+                  <EditableText value={copy.apply.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400" />
                 ) : null}
-                <div className="mt-2 text-[11px] text-zinc-500">* Submits via formsubmit.co to 431steez@gmail.com.</div>
+                {/* Removed email disclosure line */}
               </Card>
             </div>
           </Container>
@@ -420,9 +370,9 @@ export default function App() {
         <Section id="disclaimer" className="bg-black/60">
           <Container>
             <div className="rounded-2xl border border-white/10 p-6 text-sm text-zinc-300">
-              <EditableText value={copy.disclaimer.title} onChange={(v)=> setCopy({...copy, disclaimer:{...copy.disclaimer, title:v}})} Tag="div" className="font-semibold text-yellow-300 mb-2" />
-              <EditableText value={copy.disclaimer.text} onChange={(v)=> setCopy({...copy, disclaimer:{...copy.disclaimer, text:v}})} Tag="p" />
-              <EditableText value={copy.disclaimer.footnote} onChange={(v)=> setCopy({...copy, disclaimer:{...copy.disclaimer, footnote:v}})} Tag="p" className="mt-3 text-center font-semibold lowercase text-yellow-300" />
+              <EditableText value={copy.disclaimer.title} Tag="div" className="font-semibold text-yellow-300 mb-2" />
+              <EditableText value={copy.disclaimer.text} Tag="p" />
+              <EditableText value={copy.disclaimer.footnote} Tag="p" className="mt-3 text-center font-semibold lowercase text-yellow-300" />
             </div>
           </Container>
         </Section>
@@ -442,61 +392,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Inline Edit Panel */}
-
-            {/* Quick toggles */}
-            <div className="mt-3">
-              <div className="text-xs uppercase text-zinc-400 mb-1">Toggles</div>
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={!!copy.pricing.showTrial} onChange={(e)=> setCopy({...copy, pricing:{...copy.pricing, showTrial: e.target.checked}})} />
-                Show 1-Week Trial card
-              </label>
-            </div>
-
-            {/* Form Builder */}
-            <div className="mt-4">
-              <div className="text-xs uppercase text-zinc-400 mb-2">Form Builder</div>
-              {copy.formFields.filter(f => f.name !== "wallet_address").map((f, i) => (
-                <div key={i} className="mb-3 rounded-lg border border-white/10 p-2">
-                  <div className="flex items-center gap-2 text-xs">
-                    <select value={f.type} onChange={(e)=> updateField(i, "type", e.target.value)} className="bg-black/40 border border-white/10 rounded px-2 py-1">
-                      <option value="input">Input</option>
-                      <option value="textarea">Textarea</option>
-                    </select>
-                    <input value={f.name} onChange={(e)=> updateField(i, "name", e.target.value)} placeholder="name" className="flex-1 bg-black/40 border border-white/10 rounded px-2 py-1" />
-                    <label className="inline-flex items-center gap-1">
-                      <input type="checkbox" checked={!!f.required} onChange={(e)=> updateField(i, "required", e.target.checked)} /> req
-                    </label>
-                  </div>
-                  <input value={f.placeholder} onChange={(e)=> updateField(i, "placeholder", e.target.value)} placeholder="placeholder" className="mt-2 w-full bg-black/40 border border-white/10 rounded px-2 py-1 text-xs" />
-                  {f.type === "textarea" && (
-                    <input type="number" value={f.rows || 3} onChange={(e)=> updateField(i, "rows", parseInt(e.target.value || "3", 10))} className="mt-2 w-24 bg-black/40 border border-white/10 rounded px-2 py-1 text-xs" />
-                  )}
-                  <div className="mt-2 flex gap-2">
-                    <Button type="button" variant="secondary" onClick={()=> moveField(i, -1)}>Up</Button>
-                    <Button type="button" variant="secondary" onClick={()=> moveField(i, 1)}>Down</Button>
-                    <Button type="button" onClick={()=> removeField(i)}>Delete</Button>
-                  </div>
-                </div>
-              ))}
-              <div className="flex gap-2">
-                <Button type="button" variant="secondary" onClick={()=> addField("input")}>+ Add Input</Button>
-                <Button type="button" variant="secondary" onClick={()=> addField("textarea")}>+ Add Textarea</Button>
-              </div>
-            </div>
-
-            {/* Save / Export */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Button type="button" onClick={()=>{ localStorage.setItem('slc_copy', JSON.stringify(copy)); alert('Saved locally'); }}>Save</Button>
-              <Button type="button" variant="secondary" onClick={()=>{ localStorage.removeItem('slc_copy'); setCopy(DEFAULT_COPY); }}>Reset</Button>
-              <Button type="button" variant="ghost" onClick={()=>{ navigator.clipboard.writeText(JSON.stringify(copy, null, 2)); alert('Copied JSON'); }}>Copy JSON</Button>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Edit Toggle */}
-      
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/10">
         <Container>
