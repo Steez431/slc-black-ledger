@@ -121,7 +121,7 @@ const DEFAULT_COPY = {
   },
   pricing: {
     title: "Pricing",
-    tagline: "Simple, clean, descriptive. Apply and get started.",
+    tagline: "Apply and get started.",
     showTrial: true, // <-- enabled
     trialTitle: "1-Week Trial",
     trialPrice: "$25 (SOL equivalent)",
