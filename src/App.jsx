@@ -4,6 +4,103 @@ import { ArrowRight, CheckCircle, Shield, MessageSquare, Megaphone } from "lucid
 // Brand asset
 const HERO_IMG = "https://images.slcblackledger.org/SLCMAINLOGO.jpeg";
 
+/* =========================
+   QUOTES (rotating strip)
+   ========================= */
+const QUOTES = [
+  // Short quotes you shared
+  { text: "already made more off that call then I'm gonna make at work today lol, genuinely thank you fellas.", who: "SLC Member" },
+  { text: "I slaved away washing a car last night, used 30 bucks of that and made more than washing the car.", who: "SLC Member" },
+  { text: "Trusted the call, got in a little late to $Cope... up over 1000%! LFG!", who: "SLC Member" },
+  { text: "Steez calls the metas", who: "SLC Member" },
+  { text: "Im so thankful for you guys", who: "SLC Member" },
+  { text: "Steez such a boss", who: "SLC Member" },
+  { text: "Postcard from Barcelona. Trip paid for courtesy of SLC", who: "SLC Member" },
+  { text: "Such a hidden gem. Thank you again.", who: "SLC Member" },
+  { text: "I am actively learning, applying info from the ebook... the filter actually works.", who: "SLC Member" },
+
+  // Condensed pulls from long testimonies you pasted (kept punchy for readability)
+  { text: "Absolutely insanely positive. A community closer to family.", who: "SLC Member" },
+  { text: "Real plays with metrics & pre-checks, not blind shills.", who: "SLC Member" },
+  { text: "Everyone here wants us all to win. Unique, rare, beautiful.", who: "SLC Member" },
+  { text: "That night changed my life—I knew I could count on these guys.", who: "SLC Member" },
+  { text: "Best investment I made in 2025.", who: "SLC Member" },
+  { text: "All killer, no filler. Ice-cold execution.", who: "SLC Member" },
+  { text: "Patient entries, risk management, secure profits—no FOMO.", who: "SLC Member" },
+  { text: "Front-ran $AVP from 5k MC 90 minutes early—vision & patience.", who: "SLC Member" },
+  { text: "I could’ve turned 1 SOL into 50 SOL on one call.", who: "SLC Member" },
+  { text: "Made my entry fee back in under 24 hours.", who: "SLC Member" },
+  { text: "Close-knit group slowly becoming family.", who: "SLC Member" },
+  { text: "Never fade Steez.", who: "SLC Member" },
+  { text: "Lose trades? Sure. But I’m learning risk & taking profit.", who: "SLC Member" },
+  { text: "SLC chat finds one or two 10x opportunities every day.", who: "SLC Member" },
+  { text: "People spot each other funds, no questions asked.", who: "SLC Member" },
+  { text: "From relying on posts to anticipating pumps myself.", who: "SLC Member" },
+  { text: "Don’t hesitate another moment.", who: "SLC Member" },
+  { text: "Steez actually cares. Genuine. Do the right thing.", who: "SLC Member" },
+  { text: "It’s not a scam—Steez builds, teaches, shows up.", who: "SLC Member" },
+  { text: "Be greedy but be smart—take profit.", who: "SLC Member" },
+  { text: "Financial freedom is within your grasp.", who: "SLC Member" },
+  { text: "This group rekindled the fire in me.", who: "SLC Member" },
+  { text: "I would’ve lost everything if I hadn’t found your X.", who: "SLC Member" },
+  { text: "One of my biggest days—almost a week’s pay.", who: "SLC Member" },
+  { text: "Genuine, smart, relentless. You motivate me.", who: "SLC Member" },
+  { text: "Super insightful to trench & learn with you guys.", who: "SLC Member" },
+  { text: "Wish I found you in March—fewer costly mistakes.", who: "SLC Member" },
+
+  // Additional direct lines you supplied
+  { text: "Steez’s posts were early—and he actually responded to me.", who: "SLC Member" },
+  { text: "Mentorship with receipts. Immediate improvements.", who: "SLC Member" },
+  { text: "These guys are dialed in—no rush, just execution.", who: "SLC Member" },
+  { text: "Calmer, hidden plays that require skill—that’s the edge.", who: "SLC Member" },
+  { text: "Respectful, lighthearted, but always locked in.", who: "SLC Member" },
+  { text: "Joined for transparency and integrity.", who: "SLC Member" },
+  { text: "It’s more than trading—constant laughter & banter.", who: "SLC Member" },
+  { text: "Never fade the operators. Trust the system.", who: "SLC Member" },
+  { text: "Still learning, but the confidence is real.", who: "SLC Member" },
+  { text: "Life-changing opportunities for every member.", who: "SLC Member" },
+  { text: "Daily scanning taught me to anticipate big charts.", who: "SLC Member" },
+  { text: "Give SLC a chance and stop fading Steez.", who: "SLC Member" },
+  { text: "Owner builds bots, books, and shows up daily—an alien.", who: "SLC Member" },
+  { text: "There will always be another coin—take profit.", who: "SLC Member" },
+  { text: "Try a week, a month—nothing changes if nothing changes.", who: "SLC Member" },
+  { text: "Knowledge is priceless. Worth every dollar.", who: "SLC Member" },
+  { text: "Beyond blessed to be part of this.", who: "SLC Member" },
+  { text: "You motivate me without realizing it—thank you.", who: "SLC Member" },
+  { text: "Here to stay—learning alongside the team.", who: "SLC Member" },
+];
+
+/* Simple rotating quote component */
+function RotatingQuotes({ items }) {
+  const [i, setI] = React.useState(0);
+  React.useEffect(() => {
+    if (!items || items.length === 0) return;
+    const id = setInterval(() => setI(v => (v + 1) % items.length), 3000); // 3s per quote
+    return () => clearInterval(id);
+  }, [items?.length]);
+  if (!items || items.length === 0) return null;
+
+  return (
+    <div className="relative h-24 sm:h-20 flex items-center justify-center px-6">
+      {items.map((q, idx) => (
+        <div
+          key={idx}
+          className={`absolute w-full text-center transition-all duration-700 ${i === idx ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-3"}`}
+        >
+          <p className="text-base sm:text-lg text-zinc-100">
+            “{q.text}” <span className="text-zinc-400 text-xs">— {q.who}</span>
+          </p>
+        </div>
+      ))}
+      {/* gold progress bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/10">
+        <div className="h-full bg-yellow-400 animate-[slcprogress_3s_linear_infinite]" />
+      </div>
+      <style>{`@keyframes slcprogress { from { width: 0% } to { width: 100% } }`}</style>
+    </div>
+  );
+}
+
 // ---- COPY (locked, no public editing) ----
 const DEFAULT_COPY = {
   hero: {
@@ -215,6 +312,21 @@ export default function App() {
                   <img src={HERO_IMG} alt="SLC crest" className="w-full rounded-xl"/>
                 </Card>
               </div>
+            </div>
+          </Container>
+        </Section>
+
+        {/* SLC Quotes and Testimonies (rotating strip) */}
+        <Section className="bg-black/40">
+          <Container>
+            <h2 className="text-center text-sm tracking-wide uppercase text-yellow-300/80">
+              SLC Quotes and Testimonies
+            </h2>
+            <p className="text-[11px] text-center text-zinc-500 mt-1 italic">
+              * every quote can be backed up by screenshot — they are all real.
+            </p>
+            <div className="mt-3 relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-yellow-400/5 via-transparent to-yellow-400/5">
+              <RotatingQuotes items={QUOTES} />
             </div>
           </Container>
         </Section>
