@@ -134,7 +134,7 @@ function RotatingQuotes({ items }) {
   const [i, setI] = React.useState(0);
   React.useEffect(() => {
     if (!items || items.length === 0) return;
-    const id = setInterval(() => setI(v => (v + 1) % items.length), 4000); // 4s per quote
+    const id = setInterval(() => setI(v => (v + 1) % items.length), 5000); // 5s per quote
     return () => clearInterval(id);
   }, [items?.length]);
   if (!items || items.length === 0) return null;
