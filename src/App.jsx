@@ -153,7 +153,7 @@ function RotatingQuotes({ items }) {
       ))}
       {/* gold progress bar */}
       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/10">
-        <div className="h-full bg-yellow-400 animate-[slcprogress_3s_linear_infinite]" />
+        <div className="h-full bg-yellow-400 animate-[slcprogress_5s_linear_infinite]" />
       </div>
       <style>{`@keyframes slcprogress { from { width: 0% } to { width: 100% } }`}</style>
     </div>
