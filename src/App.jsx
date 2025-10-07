@@ -15,7 +15,7 @@ const DEFAULT_COPY = {
   membership: {
     title: "Membership Information",
     p1: "Access to SLC is controlled to maintain integrity and security. To keep quality high and protect the community from bad actors, entry is vetted and paid.",
-    p2b: "No member cap. Membership includes access to the private Discord, early calls, strong community",
+    p2b: "Membership includes access to the private Discord, early calls, strong community",
   },
   pricing: {
     title: "Pricing",
@@ -37,7 +37,7 @@ const DEFAULT_COPY = {
   },
   apply: {
     title: "Apply to Black Ledger",
-    intro: "No member cap. We review experience, mindset, and risk discipline. Transparency required.",
+    intro: "We review experience, mindset, and risk discipline. Transparency required.",
     approvalNote: "Applications reviewed promptly.",
     bullets: [
       "Tell us about your strategy & timeframe",
@@ -56,7 +56,7 @@ const DEFAULT_COPY = {
   about: {
     title: "Why I created the SLC",
     body:
-      "Hey all, Steez here. So I have been trading for a good while now. Joined back into the X /twitter spaces around a year ago. I kind of silently watched the terror that is CT. Got sick of seeing the constant scams, lies, misinformation and appearances of genuine intent with no actual action from many notable \"KOLs\" in the space. Really infuriating to me. Soo I became a little more vocal, in Jan / Feb of this last year I curated the idea of the SLC.\n\nA \"fishbowl\" style of group that removes the noise of CT, does not allow / permit / condone / endorse scams, and actually has good traders.\n\nGood traders: The SLC has members from all over the world, from professional traders, to individuals who downloaded a phantom wallet yesterday, both profitable. The SLC community does not have to scam to make profit. We encourage discipline , risk management, and good practice.\n\nI started the early access in May of 2025, it has been going fantastic. Over 100k in profit for members in the month of June alone. Daily large PnL’s. Great community. Genuine guys. The type of group I can see sitting at a table with in the future.\n\nA level of trust in a community I didn’t even think imaginable. I’ll see them loaning eachother funds, giving a helping hand, supporting eachother with life advice etc etc. Its really become something magnificent and we are just getting started.\n\nThe SLC is becoming a machine. A system is being established, members are becoming more dialed every day. It has been a pleasure to watch on my end. The SLC will continue to grow. Due to the lack of bots available for Discord trading servers - I code my own. This machine that is the SLC Discord will become a one stop shop for not just meme trading, but everything trading. In due time.\n\nRome was not built in a day.\n\nI can't guarauntee profits by joining the SLC.\n\nBut if you join the SLC and APPLY yourself.\n\nYou will be profitable.",
+      "Hey all, Steez here. I have been trading for a good while now. Joined back into the X /twitter spaces around a year ago. I kind of silently watched the terror that is CT. Got sick of seeing the constant scams, lies, misinformation and appearances of genuine intent with no actual action from many notable \"KOLs\" in the space. Really infuriating to me. Soo I became a little more vocal, in Jan / Feb of this last year I curated the idea of the SLC.\n\nA \"fishbowl\" style of group that removes the noise of CT, does not allow / permit / condone / endorse scams, and actually has good traders.\n\nGood traders: The SLC has members from all over the world, from professional traders, to individuals who downloaded a phantom wallet yesterday, both profitable. The SLC community does not have to scam to make profit. We encourage discipline , risk management, and good practice.\n\nI started the early access in May of 2025, it has been going fantastic. Over 100k in profit for members in the month of June alone. Daily large PnL’s. Great community. Genuine guys. The type of group I can see sitting at a table with in the future.\n\nA level of trust in a community I didn’t even think imaginable. I’ll see them loaning eachother funds, giving a helping hand, supporting eachother with life advice etc etc. Its really become something magnificent and we are just getting started.\n\nThe SLC is becoming a machine. A system is being established, members are becoming more dialed every day. It has been a pleasure to watch on my end. The SLC will continue to grow. Due to the lack of bots available for Discord trading servers - I code my own. This machine that is the SLC Discord will become a one stop shop for not just meme trading, but everything trading. In due time.\n\nRome was not built in a day.\n\nI can't guarauntee profits by joining the SLC.\n\nBut if you join the SLC and APPLY yourself. You will be profitable.",
   },
   disclaimer: {
     title: "Disclaimer",
@@ -149,7 +149,7 @@ const QUOTES = [
   "Genuine leadership; integrity is unmatched.",
 ];
 
-// UI primitives
+// UI
 const Container = ({ children }) => <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>;
 const Section = ({ id, className = "", children }) => <section id={id} className={`py-16 sm:py-24 ${className}`}>{children}</section>;
 const Button = ({ href, children, variant = "default", ...props }) => {
@@ -169,7 +169,6 @@ const Button = ({ href, children, variant = "default", ...props }) => {
   );
 };
 
-// Gold “glass” card with comfy padding (fixes text-too-close issue)
 const FancyCard = ({ className = "", children }) => (
   <div className={`relative rounded-2xl ${className}`}>
     <div className="absolute -inset-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(212,175,55,.35),rgba(212,175,55,.05))] blur-[2px]" />
@@ -225,8 +224,8 @@ const AnimatedBg = () => {
   return <canvas id="slcbg" className="absolute inset-0 h-full w-full" />;
 };
 
-// Rotating quotes (5s)
-function RotatingQuotes({ items, interval = 5000 }) {
+// Rotating Quotes — now clickable to open full-text modal
+function RotatingQuotes({ items, interval = 5000, onOpen }) {
   const [i, setI] = useState(0);
   const timerRef = useRef(null);
   useEffect(() => {
@@ -235,7 +234,11 @@ function RotatingQuotes({ items, interval = 5000 }) {
   }, [items.length, interval]);
   const q = items[i] || "";
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/30">
+    <div
+      className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/30 cursor-pointer"
+      onClick={() => onOpen && onOpen(i)}
+      title="Tap to view full quote"
+    >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(212,175,55,.06),transparent)]" />
       <div className="px-4 sm:px-6 py-5">
         <div className="h-6 sm:h-7 relative">
@@ -254,6 +257,13 @@ function RotatingQuotes({ items, interval = 5000 }) {
 export default function App() {
   const copy = DEFAULT_COPY;
   const [showThanks, setShowThanks] = useState(false);
+
+  // Full-quote modal state
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  const openQuoteAt = (idx) => { setQuoteIndex(idx); setQuoteOpen(true); };
+  const nextQuote = () => setQuoteIndex((i) => (i + 1) % QUOTES.length);
+  const prevQuote = () => setQuoteIndex((i) => (i - 1 + QUOTES.length) % QUOTES.length);
 
   return (
     <div className="min-h-screen bg-[#0a0b0a] text-zinc-100 relative overflow-hidden">
@@ -297,13 +307,13 @@ export default function App() {
         <Section id="hero" className="pt-20 sm:pt-28">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              {/* Mobile crest to ensure logo is seen immediately */}
+              {/* Mobile crest */}
               <div className="sm:hidden -mt-2 mb-2 flex items-center gap-3">
                 <img src={HERO_IMG} alt="SLC crest" className="h-10 w-10 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
                 <span className="text-sm text-zinc-300">Steez Liquidity Cartel</span>
               </div>
 
-              {/* Text first on mobile (headline → subline/CTAs immediately) */}
+              {/* Text first on mobile */}
               <div className="order-1">
                 <h1 className="mt-2 text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
                   <span>{copy.hero.line1}</span><br/>
@@ -322,7 +332,7 @@ export default function App() {
                 ) : null}
               </div>
 
-              {/* Big logo image (kept second on mobile) */}
+              {/* Big logo second on mobile */}
               <div className="order-2">
                 <FancyCard>
                   <img src={HERO_IMG} alt="SLC crest" className="w-full rounded-2xl"/>
@@ -357,20 +367,20 @@ export default function App() {
 
         <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
 
-        {/* Quotes directly ABOVE Pricing (moved here) */}
+        {/* Quotes above Pricing */}
         <Section id="quotes">
           <Container>
             <h2 className="text-3xl font-bold">SLC Quotes and Testimonies</h2>
             <p className="mt-2 text-xs text-zinc-400">* every quote can be backed up by screenshot, they are all real.</p>
             <div className="mt-5">
-              <RotatingQuotes items={QUOTES} interval={5000} />
+              <RotatingQuotes items={QUOTES} interval={5000} onOpen={openQuoteAt} />
             </div>
           </Container>
         </Section>
 
         <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
 
-        {/* Pricing (3 categories) */}
+        {/* Pricing */}
         <Section id="pricing">
           <Container>
             <EditableText value={copy.pricing.title} Tag="h2" className="text-3xl font-bold" />
@@ -493,21 +503,24 @@ export default function App() {
                     )
                   )}
 
-                  {/* Interest checkboxes */}
-                  <div className="space-y-2 pt-1">
-                    <label className="flex items-center gap-2 text-sm">
-                      <input type="checkbox" name="interest_trial" className="h-4 w-4" />
-                      I am interested in the 1 week SLC trial
-                    </label>
-                    <label className="flex items-center gap-2 text-sm">
-                      <input type="checkbox" name="interest_membership" className="h-4 w-4" />
-                      I am interested in the SLC Black Ledger Membership
-                    </label>
-                    <label className="flex items-center gap-2 text-sm">
-                      <input type="checkbox" name="interest_yearly" className="h-4 w-4" />
-                      I am interested in Yearly Access
-                    </label>
-                  </div>
+                  {/* Interest — radio group (select exactly one) */}
+                  <fieldset className="mt-2">
+                    <legend className="mb-2 text-sm text-zinc-300">Which option are you pursuing?</legend>
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" name="interest" value="trial" className="h-4 w-4" required />
+                        1-week SLC Trial
+                      </label>
+                      <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" name="interest" value="monthly" className="h-4 w-4" />
+                        SLC Black Ledger (Monthly)
+                      </label>
+                      <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" name="interest" value="yearly" className="h-4 w-4" />
+                        Yearly Access
+                      </label>
+                    </div>
+                  </fieldset>
 
                   <div className="flex items-start gap-3 text-[11px] text-zinc-400">
                     <input type="checkbox" id="agree" required className="mt-1 h-4 w-4"/>
@@ -538,7 +551,24 @@ export default function App() {
         </Section>
       </main>
 
-      {/* Modal */}
+      {/* Full-quote Modal (mobile-friendly) */}
+      {quoteOpen && (
+        <div className="fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={()=>setQuoteOpen(false)}>
+          <div className="relative w-full max-w-lg rounded-2xl border border-yellow-500/40 bg-gradient-to-b from-black to-black/80 p-6 shadow-[0_0_40px_rgba(212,175,55,0.25)]" onClick={(e)=>e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-yellow-300 text-center">Member Quote</h3>
+            <p className="mt-3 max-h-[50vh] overflow-auto text-sm leading-relaxed text-zinc-200 whitespace-pre-wrap">
+              “{QUOTES[quoteIndex]}”
+            </p>
+            <div className="mt-5 flex items-center justify-between">
+              <Button type="button" variant="secondary" onClick={prevQuote}>Prev</Button>
+              <Button type="button" onClick={()=>setQuoteOpen(false)}>Close</Button>
+              <Button type="button" variant="secondary" onClick={nextQuote}>Next</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Thank-you Modal */}
       {showThanks && (
         <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={()=>setShowThanks(false)}>
           <div className="relative w-full max-w-md rounded-2xl border border-yellow-500/40 bg-gradient-to-b from-black to-black/80 p-6 shadow-[0_0_40px_rgba(212,175,55,0.25)]" onClick={(e)=>e.stopPropagation()}>
@@ -590,3 +620,4 @@ export default function App() {
     </div>
   );
 }
+
