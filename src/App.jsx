@@ -1,18 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ArrowRight, CheckCircle, Shield, MessageSquare, Megaphone } from "lucide-react";
 
-// Brand asset
 const HERO_IMG = "https://images.slcblackledger.org/SLCMAINLOGO.jpeg";
 
-// ---- COPY (locked, no public editing) ----
 const DEFAULT_COPY = {
   hero: {
     line1: "Quality over Quantity",
     line2: "SLC is 1 of 1",
     sub: "Honesty and integrity, above all.",
-    earlyPrefix: "",
-    earlyHandle: "",
-    earlyUrl: "https://x.com/scanner_SLC",
     approvalNote: "Applications reviewed promptly.",
     ctaApply: "Apply to Black Ledger",
     ctaPricing: "View Pricing",
@@ -25,21 +20,20 @@ const DEFAULT_COPY = {
   pricing: {
     title: "Pricing",
     tagline: "Simple, clean, descriptive. Apply and get started.",
-    showTrial: true, // <-- Trial enabled
+    showTrial: true,
     trialTitle: "1-Week Trial",
-    trialPrice: "$25 (SOL equivalent)",
+    trialPrice: "$35 (SOL equivalent)",
     trialNote:
       "On the fence about joining? Try a week in the SLC (upon application approval; limited number of trials given per period).",
     trialBullets: ["Temporary access to Black Ledger", "Private Discord during trial", "1 on 1 with Steez and Operators"],
     blTitle: "Black Ledger Membership",
     blPrice: "0.5 SOL / mo",
     blAdmissionLine: "+ One-time admission fee 1.25 SOL",
-    blBullets: [
-      "Private Discord access",
-      "Collective insight with genuine intention",
-      "Structured calls",
-      "Strong community",
-    ],
+    blBullets: ["Private Discord access", "Collective insight with genuine intention", "Structured calls", "Strong community"],
+    yearlyTitle: "Yearly Access",
+    yearlyPrice: "5 SOL / year",
+    yearlyNote: "Save 2.25 SOL vs monthly + admission",
+    yearlyBullets: ["All Black Ledger benefits", "One payment for 12 months", "Priority roadmap access"],
   },
   apply: {
     title: "Apply to Black Ledger",
@@ -62,7 +56,7 @@ const DEFAULT_COPY = {
   about: {
     title: "Why I created the SLC",
     body:
-      "Hey all, Steez here. So I have been trading for a good while now. Joined back into the X /twitter spaces around a year ago. I kind of silently watched the terror that is CT. Got sick of seeing the constant scams, lies, misinformation and appearances of genuine intent with no actual action from many notable \"KOLs\" in the space. Really infuriating to me. Soo I became a little more vocal, in Jan / Feb of this last year I curated the idea of the SLC.\n\nA \"fishbowl\" style of group that removes the noise of CT, does not allow / permit / condone / endorse scams, and actually has good traders.\n\nGood traders: The SLC has members from all over the world, from professional traders, to individuals who downloaded a phantom wallet yesterday, both profitable. The SLC community does not have to scam to make profit. We encourage discipline , risk management, and good practice.\n\nI started the early access in May of 2025, it has been going fantastic. Over 100k in profit for members in the month of June alone. Daily large PnL’s. Great community. Genuine guys. The type of group I can see sitting at a table with in the future.\n\nA level of trust in a community I didn’t even think imaginable. I’ll see them loaning eachother funds, giving a helping hand, supporting eachother with life advice etc etc. Its really become something magnificent and we are just getting started.\n\nThe SLC is becoming a machine. A system is being established, members are becoming more dialed every day. It has been a pleasure to watch on my end. The SLC will continue to grow. Due to the lack of bots available for Discord trading servers - I code my own. This machine that is the SLC Discord will become a one stop shop for not just meme trading, but everything trading. In due time.\n\nRome was not built in a day.\n\nI can't guarauntee profits by joining the SLC.\n\nBut if you join the SLC and APPLY yourself. You will be profitable.",
+      "Hey all, Steez here. So I have been trading for a good while now. Joined back into the X /twitter spaces around a year ago. I kind of silently watched the terror that is CT. Got sick of seeing the constant scams, lies, misinformation and appearances of genuine intent with no actual action from many notable \"KOLs\" in the space. Really infuriating to me. Soo I became a lil more vocal, in Jan / Feb of this last year I curated the idea of the SLC.\n\nA \"fishbowl\" style of group that removes the noise of ct, doesnt allow / permit / condone / endorse scams, and actually has good traders. (Good traders don’t have to scam to profit)\n\nI started the early access in May of 2025, its been going fantastic. Over 100k in profit for members in the month of June alone. Daily large PnL’s. Great community. Genuine guys. The type of group I can see sitting at a table with in the future.\n\nA level of trust in a community I didn’t even think imaginable. I’ll see them loaning eachother funds, giving a helping hand, supporting eachother with life advice etc etc. Its really become something magnificent and we are just getting started.\n\nThe SLC is becoming a machine. A system is being established, members are becoming more dialed every day. It has been a pleasure to watch on my end. The SLC will continue to grow. Due to the lack of bots available for Discord trading servers - I code my own. This machine that is the SLC Discord will become a one stop shop for not just meme trading, but everything trading. In due time.\n\nRome was not built in a day.\n\nI can't guarauntee profits by joining the SLC. But I can guarauntee profits if you join the SLC and APPLY yourself. You will be profitable.",
   },
   disclaimer: {
     title: "Disclaimer",
@@ -87,95 +81,7 @@ const DEFAULT_COPY = {
   ],
 };
 
-// Primitives
-const Container = ({ children }) => <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>;
-const Section = ({ id, className = "", children }) => <section id={id} className={`py-16 sm:py-24 ${className}`}>{children}</section>;
-
-const Button = ({ href, children, variant = "default", ...props }) => {
-  const base =
-    "inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition will-change-transform focus:outline-none focus:ring-2 focus:ring-offset-2 active:translate-y-[1px]";
-  const styles = {
-    default:
-      "bg-gradient-to-br from-yellow-400 to-yellow-600 hover:shadow-[0_0_24px_rgba(212,175,55,.35)] text-black focus:ring-yellow-400",
-    ghost: "bg-transparent hover:bg-white/5 text-white ring-1 ring-white/10",
-    secondary: "bg-zinc-900 hover:bg-zinc-800 text-yellow-200 ring-1 ring-yellow-700/30 focus:ring-yellow-500",
-  };
-  const El = href ? "a" : "button";
-  return (
-    <El href={href} className={`${base} ${styles[variant]}`} {...props}>
-      {children}
-    </El>
-  );
-};
-
-const Card = ({ className = "", children }) => (
-  <div className={`rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur ${className}`}>{children}</div>
-);
-
-// Fancy gold glass card
-const FancyCard = ({ className = "", children }) => (
-  <div className={`relative rounded-2xl ${className}`}>
-    <div className="absolute -inset-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(212,175,55,.35),rgba(212,175,55,.05))] blur-[2px]" />
-    <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur">
-      {children}
-    </div>
-  </div>
-);
-
-// Simple non-editable text wrapper
-const EditableText = ({ value, Tag = "span", className }) => <Tag className={className}>{value}</Tag>;
-
-// Animated background grid + line
-const AnimatedBg = () => {
-  useEffect(() => {
-    const c = document.getElementById("slcbg");
-    if (!c) return;
-    const ctx = c.getContext("2d");
-    if (!ctx) return;
-    let frame = 0;
-    const dpr = window.devicePixelRatio || 1;
-    const resize = () => {
-      c.width = c.clientWidth * dpr;
-      c.height = c.clientHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    resize();
-    window.addEventListener("resize", resize);
-    const draw = () => {
-      const width = c.clientWidth;
-      const height = c.clientHeight;
-      ctx.clearRect(0, 0, width, height);
-      // grid
-      ctx.globalAlpha = 0.12;
-      ctx.strokeStyle = "#d4af37";
-      const isMobile = window.matchMedia("(max-width: 640px)").matches;
-      const step = isMobile ? 40 : 32;
-      for (let x = 0; x < width; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
-      for (let y = 0; y < height; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
-      // flowing line
-      ctx.globalAlpha = 0.9;
-      ctx.lineWidth = 2;
-      const baseY = height * 0.6;
-      ctx.strokeStyle = "rgba(212,175,55,0.9)";
-      ctx.beginPath();
-      for (let x = 0; x < width; x++) {
-        const y = baseY + Math.sin((x + frame) * 0.01) * 18 + Math.cos((x + frame) * 0.005) * 10;
-        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      const speed = isMobile ? 0.8 : 1.2;
-      frame += speed;
-      requestAnimationFrame(draw);
-    };
-    draw();
-    return () => window.removeEventListener("resize", resize);
-  }, []);
-  return <canvas id="slcbg" className="absolute inset-0 h-full w-full" />;
-};
-
-// Rotating quotes strip (5s interval)
 const QUOTES = [
-  // Short punchy quotes you supplied earlier
   "already made more off that call then I'm gonna make at work today lol, genuinely thank you fellas.",
   "I slaved away washing a car last night, used 30 bucks of that and made more than washing the car.",
   "Trusted the call, got in a little late to $Cope. Been busy with IRL… finally checked my position, up over 1000%! LFG!",
@@ -234,7 +140,6 @@ const QUOTES = [
   "Feeling so much gratitude I found you guys. SLC 4 ever.",
   "It’s not always about Xs and money — people here willing to help, talk, advise.",
   "SLC is the place to be bros.",
-  // Longer testimonial highlights condensed to strip-friendly lines
   "Actual plays that respect metrics/analytics — not blind shills.",
   "Entries are patient and calculated. Ice cold execution.",
   "Caught AVP at 5k MC ~90 minutes before the crowd — eye opening.",
@@ -244,30 +149,100 @@ const QUOTES = [
   "Genuine leadership; integrity is unmatched.",
 ];
 
+// UI primitives
+const Container = ({ children }) => <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>;
+const Section = ({ id, className = "", children }) => <section id={id} className={`py-16 sm:py-24 ${className}`}>{children}</section>;
+const Button = ({ href, children, variant = "default", ...props }) => {
+  const base =
+    "inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition will-change-transform focus:outline-none focus:ring-2 focus:ring-offset-2 active:translate-y-[1px]";
+  const styles = {
+    default:
+      "bg-gradient-to-br from-yellow-400 to-yellow-600 hover:shadow-[0_0_24px_rgba(212,175,55,.35)] text-black focus:ring-yellow-400",
+    ghost: "bg-transparent hover:bg-white/5 text-white ring-1 ring-white/10",
+    secondary: "bg-zinc-900 hover:bg-zinc-800 text-yellow-200 ring-1 ring-yellow-700/30 focus:ring-yellow-500",
+  };
+  const El = href ? "a" : "button";
+  return (
+    <El href={href} className={`${base} ${styles[variant]}`} {...props}>
+      {children}
+    </El>
+  );
+};
+
+// Gold “glass” card with comfy padding (fixes text-too-close issue)
+const FancyCard = ({ className = "", children }) => (
+  <div className={`relative rounded-2xl ${className}`}>
+    <div className="absolute -inset-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(212,175,55,.35),rgba(212,175,55,.05))] blur-[2px]" />
+    <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur px-6 sm:px-7 py-6 sm:py-7">
+      {children}
+    </div>
+  </div>
+);
+
+const EditableText = ({ value, Tag = "span", className }) => <Tag className={className}>{value}</Tag>;
+
+const AnimatedBg = () => {
+  useEffect(() => {
+    const c = document.getElementById("slcbg");
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    if (!ctx) return;
+    let frame = 0;
+    const dpr = window.devicePixelRatio || 1;
+    const resize = () => {
+      c.width = c.clientWidth * dpr;
+      c.height = c.clientHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    const draw = () => {
+      const width = c.clientWidth;
+      const height = c.clientHeight;
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalAlpha = 0.12;
+      ctx.strokeStyle = "#d4af37";
+      const isMobile = window.matchMedia("(max-width: 640px)").matches;
+      const step = isMobile ? 40 : 32;
+      for (let x = 0; x < width; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
+      for (let y = 0; y < height; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
+      ctx.globalAlpha = 0.9;
+      ctx.lineWidth = 2;
+      const baseY = height * 0.6;
+      ctx.strokeStyle = "rgba(212,175,55,0.9)";
+      ctx.beginPath();
+      for (let x = 0; x < width; x++) {
+        const y = baseY + Math.sin((x + frame) * 0.01) * 18 + Math.cos((x + frame) * 0.005) * 10;
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      frame += isMobile ? 0.8 : 1.2;
+      requestAnimationFrame(draw);
+    };
+    draw();
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+  return <canvas id="slcbg" className="absolute inset-0 h-full w-full" />;
+};
+
+// Rotating quotes (5s)
 function RotatingQuotes({ items, interval = 5000 }) {
   const [i, setI] = useState(0);
   const timerRef = useRef(null);
-
   useEffect(() => {
     timerRef.current = setInterval(() => setI((v) => (v + 1) % items.length), interval);
     return () => clearInterval(timerRef.current);
   }, [items.length, interval]);
-
   const q = items[i] || "";
-
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/30">
-      {/* subtle rail shimmer */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(212,175,55,.06),transparent)]" />
       <div className="px-4 sm:px-6 py-5">
         <div className="h-6 sm:h-7 relative">
           <div key={i} className="absolute inset-0 flex items-center transition-all duration-700 ease-out opacity-100">
-            <p className="w-full truncate text-base sm:text-lg text-zinc-100">
-              “{q}”
-            </p>
+            <p className="w-full truncate text-base sm:text-lg text-zinc-100">“{q}”</p>
           </div>
         </div>
-        {/* progress bar synced to 5s */}
         <div className="mt-3 h-0.5 w-full bg-white/10 rounded">
           <div className="h-full bg-yellow-400 animate-[slcprogress_5s_linear_infinite]" />
         </div>
@@ -282,10 +257,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0a0b0a] text-zinc-100 relative overflow-hidden">
-      {/* Background */}
+      {/* BG */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url(${HERO_IMG})` }} />
-        {/* Carbon-fiber whisper texture */}
         <div
           className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
           style={{
@@ -323,7 +297,14 @@ export default function App() {
         <Section id="hero" className="pt-20 sm:pt-28">
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
+              {/* Mobile crest to ensure logo is seen immediately */}
+              <div className="sm:hidden -mt-2 mb-2 flex items-center gap-3">
+                <img src={HERO_IMG} alt="SLC crest" className="h-10 w-10 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
+                <span className="text-sm text-zinc-300">Steez Liquidity Cartel</span>
+              </div>
+
+              {/* Text first on mobile (headline → subline/CTAs immediately) */}
+              <div className="order-1">
                 <h1 className="mt-2 text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
                   <span>{copy.hero.line1}</span><br/>
                   <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
@@ -340,7 +321,9 @@ export default function App() {
                   <EditableText value={copy.hero.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400" />
                 ) : null}
               </div>
-              <div>
+
+              {/* Big logo image (kept second on mobile) */}
+              <div className="order-2">
                 <FancyCard>
                   <img src={HERO_IMG} alt="SLC crest" className="w-full rounded-2xl"/>
                 </FancyCard>
@@ -374,7 +357,7 @@ export default function App() {
 
         <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
 
-        {/* SLC Quotes & Testimonies (rotating strip) */}
+        {/* Quotes directly ABOVE Pricing (moved here) */}
         <Section id="quotes">
           <Container>
             <h2 className="text-3xl font-bold">SLC Quotes and Testimonies</h2>
@@ -387,45 +370,12 @@ export default function App() {
 
         <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
 
-        {/* Fit / Not for */}
-        <Section id="fit">
-          <Container>
-            <EditableText value={copy.fit.title} Tag="h2" className="text-3xl font-bold" />
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FancyCard>
-                <EditableText value={copy.fit.forTitle} Tag="h3" className="text-lg font-semibold" />
-                <ul className="mt-3 space-y-2 text-sm text-zinc-300">
-                  {copy.fit.forBullets.map((b,i)=> (
-                    <li key={`for-${i}`} className="flex items-start gap-2">
-                      <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </FancyCard>
-              <FancyCard>
-                <EditableText value={copy.fit.notTitle} Tag="h3" className="text-lg font-semibold" />
-                <ul className="mt-3 space-y-2 text-sm text-zinc-300">
-                  {copy.fit.notBullets.map((b,i)=> (
-                    <li key={`not-${i}`} className="flex items-start gap-2">
-                      <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </FancyCard>
-            </div>
-          </Container>
-        </Section>
-
-        <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
-
-        {/* Pricing */}
+        {/* Pricing (3 categories) */}
         <Section id="pricing">
           <Container>
             <EditableText value={copy.pricing.title} Tag="h2" className="text-3xl font-bold" />
             <EditableText value={copy.pricing.tagline} Tag="p" className="mt-2 text-zinc-300 max-w-2xl" />
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Trial */}
               {copy.pricing.showTrial && (
                 <FancyCard>
@@ -446,7 +396,7 @@ export default function App() {
                 </FancyCard>
               )}
 
-              {/* Membership */}
+              {/* Monthly */}
               <FancyCard>
                 <div className="flex items-baseline justify-between">
                   <EditableText value={copy.pricing.blTitle} Tag="h3" className="text-lg font-semibold" />
@@ -462,6 +412,24 @@ export default function App() {
                   ))}
                 </ul>
                 <div className="mt-5"><Button href="#apply"><ArrowRight className="h-4 w-4"/>Apply Now</Button></div>
+              </FancyCard>
+
+              {/* Yearly */}
+              <FancyCard>
+                <div className="flex items-baseline justify-between">
+                  <EditableText value={copy.pricing.yearlyTitle} Tag="h3" className="text-lg font-semibold" />
+                  <EditableText value={copy.pricing.yearlyPrice} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
+                </div>
+                <EditableText value={copy.pricing.yearlyNote} Tag="div" className="mt-2 text-sm text-zinc-400" />
+                <ul className="mt-3 space-y-2 text-sm text-zinc-300">
+                  {copy.pricing.yearlyBullets.map((f, i) => (
+                    <li key={`yr-${i}`} className="flex items-start gap-2">
+                      <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-5"><Button href="#apply"><ArrowRight className="h-4 w-4"/>Request Yearly</Button></div>
               </FancyCard>
             </div>
           </Container>
@@ -487,7 +455,7 @@ export default function App() {
               </div>
               <FancyCard>
                 <form
-                  className="space-y-3 p-1"
+                  className="space-y-3"
                   onSubmit={(e)=>{
                     e.preventDefault();
                     const form = e.currentTarget;
@@ -535,6 +503,10 @@ export default function App() {
                       <input type="checkbox" name="interest_membership" className="h-4 w-4" />
                       I am interested in the SLC Black Ledger Membership
                     </label>
+                    <label className="flex items-center gap-2 text-sm">
+                      <input type="checkbox" name="interest_yearly" className="h-4 w-4" />
+                      I am interested in Yearly Access
+                    </label>
                   </div>
 
                   <div className="flex items-start gap-3 text-[11px] text-zinc-400">
@@ -545,7 +517,7 @@ export default function App() {
                   <Button type="submit"><ArrowRight className="h-4 w-4"/> Submit Application</Button>
                 </form>
                 {copy.apply.approvalNote ? (
-                  <EditableText value={copy.apply.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400 px-6 pb-4" />
+                  <EditableText value={copy.apply.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400" />
                 ) : null}
               </FancyCard>
             </div>
@@ -566,7 +538,7 @@ export default function App() {
         </Section>
       </main>
 
-      {/* Success modal */}
+      {/* Modal */}
       {showThanks && (
         <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={()=>setShowThanks(false)}>
           <div className="relative w-full max-w-md rounded-2xl border border-yellow-500/40 bg-gradient-to-b from-black to-black/80 p-6 shadow-[0_0_40px_rgba(212,175,55,0.25)]" onClick={(e)=>e.stopPropagation()}>
@@ -603,7 +575,6 @@ export default function App() {
         </Container>
       </footer>
 
-      {/* Local keyframes */}
       <style>{`
         @keyframes sheen {
           0% { transform: translateX(-120%); opacity: 0; }
