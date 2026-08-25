@@ -1,623 +1,373 @@
-import React, { useEffect, useState, useRef } from "react";
-import { ArrowRight, CheckCircle, Shield, MessageSquare, Megaphone } from "lucide-react";
+import React, { useEffect } from "react";
+import {
+  ArrowRight,
+  BarChart3,
+  Check,
+  Eye,
+  LockKeyhole,
+  Radar,
+  ShieldCheck,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 const HERO_IMG = "https://images.slcblackledger.org/SLCMAINLOGO.jpeg";
 
-const DEFAULT_COPY = {
-  hero: {
-    line1: "Quality over Quantity",
-    line2: "SLC is 1 of 1",
-    sub: "Honesty and integrity, above all.",
-    approvalNote: "Applications reviewed promptly.",
-    ctaApply: "Apply to Black Ledger",
-    ctaPricing: "View Pricing",
-  },
-  membership: {
-    title: "Membership Information",
-    p1: "Access to SLC is controlled to maintain integrity and security. To keep quality high and protect the community from bad actors, entry is vetted and paid.",
-    p2b: "Membership includes access to the private Discord, early calls, strong community",
-  },
-  pricing: {
-    title: "Pricing",
-    tagline: "Apply and get started.",
-    showTrial: true,
-    trialTitle: "1-Week Trial",
-    trialPrice: "$35 (SOL equivalent)",
-    trialNote:
-      "On the fence about joining? Try a week in the SLC (upon application approval; limited number of trials given per period).",
-    trialBullets: ["Temporary access to Black Ledger", "Private Discord during trial", "1 on 1 with Steez and Operators"],
-    blTitle: "Black Ledger Membership",
-    blPrice: "0.5 SOL / mo",
-    blAdmissionLine: "+ One-time admission fee 1.25 SOL",
-    blBullets: ["Private Discord access", "Collective insight with genuine intention", "Structured calls", "Strong community"],
-    yearlyTitle: "Yearly Access",
-    yearlyPrice: "5 SOL / year",
-    yearlyNote: "Save 2.25 SOL vs monthly + admission",
-    yearlyBullets: ["All Black Ledger benefits", "One payment for 12 months", "Priority roadmap access"],
-  },
-  apply: {
-    title: "Apply to Black Ledger",
-    intro: "We review experience, mindset, and risk discipline. Transparency required.",
-    approvalNote: "Applications reviewed promptly.",
-    bullets: [
-      "Tell us about your strategy & timeframe",
-      "Share a couple of past plays (win/loss)",
-      "Link your X + Telegram",
-      "Confirm you understand risk & drawdown",
-    ],
-  },
-  fit: {
-    title: "Is this for you?",
-    forTitle: "Who it’s for",
-    forBullets: ["Disciplined traders", "Risk-aware; uses a plan", "Wants structured reviews", "Values integrity + signal quality"],
-    notTitle: "Not for",
-    notBullets: ["Copy-trade only", "Hype/alpha chasing", "No risk plan", "Seeking guaranteed returns"],
-  },
-  about: {
-    title: "Why I created the SLC",
-    body:
-      "Hey all, Steez here. I have been trading for a good while now. Joined back into the X /twitter spaces around a year ago. I kind of silently watched the terror that is CT. Got sick of seeing the constant scams, lies, misinformation and appearances of genuine intent with no actual action from many notable \"KOLs\" in the space. Really infuriating to me. Soo I became a little more vocal, in Jan / Feb of this last year I curated the idea of the SLC.\n\nA \"fishbowl\" style of group that removes the noise of CT, does not allow / permit / condone / endorse scams, and actually has good traders.\n\nGood traders: The SLC has members from all over the world, from professional traders, to individuals who downloaded a phantom wallet yesterday, both profitable. The SLC community does not have to scam to make profit. We encourage discipline, risk management, and good practice.\n\nI started the early access in May of 2025, it has been going fantastic. Over 100k in profit for members in the month of June alone. Daily large PnL’s. Great community. Genuine guys. The type of group I can see sitting at a table with in the future.\n\nA level of trust in a community I didn’t even think imaginable. I’ll see them loaning eachother funds, giving a helping hand, supporting eachother with life advice etc etc. Its really become something magnificent and we are just getting started.\n\nThe SLC is becoming a machine. A system is being established, members are becoming more dialed every day. It has been a pleasure to watch on my end. The SLC will continue to grow. Due to the lack of bots available for Discord trading servers - I code my own. This machine that is the SLC Discord will become a one stop shop for not just meme trading, but everything trading. In due time.\n\nRome was not built in a day.\n\nI can't guarauntee profits by joining the SLC.\n\nBut if you join the SLC and APPLY yourself.\n\nYou will be profitable.",
-  },
-  disclaimer: {
-    title: "Disclaimer",
-    text:
-      "The information, insights, and trade signals provided within the Steez Liquidity Cartel (SLC) Black Ledger are for informational and educational purposes only and should not be considered financial advice. Cryptocurrency, particularly memecoins, is highly volatile and speculative. Trading in these assets carries significant risk. Conduct your own research before making any financial decisions. SLC, its moderators, and Steez are not responsible for any financial losses incurred while following shared insights or strategies. By engaging with this platform, you acknowledge full responsibility for your trading activities and that Steez and SLC moderators reserve the right to remove any member at their sole discretion.",
-    footnote: "gamble accordingly.",
-  },
-  formFields: [
-    { type: "input", name: "x_username", placeholder: "X Username", required: true },
-    { type: "input", name: "telegram_handle", placeholder: "Telegram @Username", required: true },
-    { type: "input", name: "experience", placeholder: "How long have you been trading memecoins?", required: true },
-    { type: "input", name: "portfolio_size", placeholder: "Portfolio size? (Optional)", required: false },
-    { type: "textarea", name: "trading_strategy", placeholder: "Describe your trading strategy.", rows: 3, required: true },
-    { type: "textarea", name: "risk_management", placeholder: "How do you approach risk management?", rows: 3, required: true },
-    { type: "input", name: "alpha_groups", placeholder: "Have you been part of any other alpha groups? If so, which ones?", required: true },
-    { type: "textarea", name: "long_term_goals", placeholder: "What are your long-term goals in the crypto space?", rows: 3, required: true },
-    { type: "textarea", name: "research_methods", placeholder: "How do you find new memecoins before they pump?", rows: 3, required: true },
-    { type: "input", name: "membership_duration", placeholder: "How long do you see yourself inside the SLC?", required: true },
-    { type: "input", name: "desired_membership", placeholder: "How long have you been following Steez on X?", required: true },
-    { type: "textarea", name: "why_allowed", placeholder: "Why should you be allowed into the SLC?", rows: 5, required: true },
-    { type: "textarea", name: "skills_contribution", placeholder: "What skills or value can you bring to the SLC community?", rows: 5, required: true },
+// Replace these two links before launch.
+const FLOOR_URL = "#access";
+const SCANNER_PRO_URL = "#access";
+
+const PERFORMANCE = {
+  period: "Last 7 Days",
+  finalized: 296,
+  opportunityRate: "51.69%",
+  twoX: "36.49%",
+  threeX: "19.26%",
+  fiveX: "9.46%",
+  topCalls: [
+    { symbol: "$BULLSHIT", multiple: "55.71x", entry: "$78,755", high: "$4,387,558" },
+    { symbol: "$PATE", multiple: "53.32x", entry: "$10,751", high: "$573,274" },
+    { symbol: "$KIRK", multiple: "40.00x", entry: "$127,928", high: "$5,117,681" },
   ],
 };
 
-const QUOTES = [
-  "already made more off that call then I'm gonna make at work today lol, genuinely thank you fellas.",
-  "I slaved away washing a car last night, used 30 bucks of that and made more than washing the car.",
-  "Trusted the call, got in a little late to $Cope. Been busy with IRL… finally checked my position, up over 1000%! LFG!",
-  "Steez calls the metas.",
-  "Im so thankful for you guys.",
-  "Steez such a boss.",
-  "Postcard from Barcelona. Trip paid for courtesy of SLC.",
-  "Such a hidden gem. Thank you again.",
-  "I am actively learning, applying info from the ebook. The filter you shared actually works.",
-  "Never fade Steez.",
-  "THANK YOU STEEZ.",
-  "This tek is insane, THAT early is crazy.",
-  "So thankful, God bless everyone in this group. Just good people.",
-  "Ngl I love this group. Steez is one of the few legit pages on X.",
-  "This group is 1 of 1.",
-  "Best purchase I’ve ever made.",
-  "This group saved me from spiraling, Steez is the mf goat.",
-  "Win or lose I love this group.",
-  "This group is really starting to mean a lot to me.",
-  "A bunch of solid mfs. Makes this game so much better.",
-  "Different people, places, takes, religions — all on the same page.",
-  "I’m honoured to be a part of the SLC. Came in to change my life and it’s happened.",
-  "I cannot even list all the runners inside this group.",
-  "Being in this group is great because if someone is cold, someone else sees the narrative.",
-  "I'm learning something new every day — this is the group.",
-  "This group is the real “this time we all win”.",
-  "SLC is just different — proves itself over and over.",
-  "SLC is how I get my news.",
-  "SLC 4 life.",
-  "We’re all gonna make it, feel it in my bones.",
-  "New wave of genuine people are finding the SLC.",
-  "SLC Warriors type run today.",
-  "SLC got soldiers in the streets.",
-  "All green everything. The SLC Way.",
-  "SLC has been cooking all day. Casino never closes and SLC never sleeps.",
-  "This gonna pay my SLC dues all year.",
-  "SLC as a whole never stops cooking.",
-  "Wow… so this is what the SLC experience is like.",
-  "I feel like I'm in much better hands now with SLC.",
-  "Another 100x for the SLC in the past 2 days.",
-  "You prove what the SLC is worth time and time again.",
-  "SLC went 60k to a Millie on it so far.",
-  "The SLC is dialed. LFG boys — this is what we’re here for.",
-  "SLC is like a well oiled machine at this point.",
-  "That SLC-sponsored vacation just really got me right.",
-  "What is up with first time calls in the SLC being some crazy X’s.",
-  "Morning guys! Launch!!!! saved my portfolio and paid for SLC for a few months!",
-  "Got yelled at at work for being superglued to my phone. SLC too fun.",
-  "SLC is a good radar for market strength.",
-  "SLC front running the KOLs once again.",
-  "Win or lose, trading is much better with the SLC — 100000x better than alone.",
-  "SLC really got everyone leveling up.",
-  "I’m only buying SLC calls from here on out.",
-  "No other group like this. A real family brewing.",
-  "SLC is TOO POWERFUL.",
-  "Feeling so much gratitude I found you guys. SLC 4 ever.",
-  "It’s not always about Xs and money — people here willing to help, talk, advise.",
-  "SLC is the place to be bros.",
-  "Actual plays that respect metrics/analytics — not blind shills.",
-  "Entries are patient and calculated. Ice cold execution.",
-  "Caught AVP at 5k MC ~90 minutes before the crowd — eye opening.",
-  "Best investment I’ve made in myself and my trading.",
-  "Community that feels like family — positive, supportive, accountable.",
-  "Knowledge is priceless here. Financial literacy lasts forever.",
-  "Genuine leadership; integrity is unmatched.",
-];
+const Container = ({ children, className = "" }) => (
+  <div className={`mx-auto w-full max-w-6xl px-5 sm:px-7 lg:px-8 ${className}`}>{children}</div>
+);
 
-// UI
-const Container = ({ children }) => <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>;
-const Section = ({ id, className = "", children }) => <section id={id} className={`py-16 sm:py-24 ${className}`}>{children}</section>;
-const Button = ({ href, children, variant = "default", ...props }) => {
-  const base =
-    "inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition will-change-transform focus:outline-none focus:ring-2 focus:ring-offset-2 active:translate-y-[1px]";
-  const styles = {
-    default:
-      "bg-gradient-to-br from-yellow-400 to-yellow-600 hover:shadow-[0_0_24px_rgba(212,175,55,.35)] text-black focus:ring-yellow-400",
-    ghost: "bg-transparent hover:bg-white/5 text-white ring-1 ring-white/10",
-    secondary: "bg-zinc-900 hover:bg-zinc-800 text-yellow-200 ring-1 ring-yellow-700/30 focus:ring-yellow-500",
+const Section = ({ id, children, className = "" }) => (
+  <section id={id} className={`relative py-20 sm:py-28 ${className}`}>{children}</section>
+);
+
+const Button = ({ href, children, variant = "gold", className = "" }) => {
+  const variants = {
+    gold: "border-yellow-400/50 bg-yellow-400 text-black hover:bg-yellow-300 hover:shadow-[0_0_35px_rgba(212,175,55,.22)]",
+    dark: "border-white/10 bg-white/[.04] text-white hover:border-yellow-400/35 hover:bg-white/[.07]",
   };
-  const El = href ? "a" : "button";
+
   return (
-    <El href={href} className={`${base} ${styles[variant]}`} {...props}>
+    <a
+      href={href}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-3 text-sm font-semibold transition duration-200 ${variants[variant]} ${className}`}
+    >
       {children}
-    </El>
+    </a>
   );
 };
 
-const FancyCard = ({ className = "", children }) => (
-  <div className={`relative rounded-2xl ${className}`}>
-    <div className="absolute -inset-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(212,175,55,.35),rgba(212,175,55,.05))] blur-[2px]" />
-    <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur px-6 sm:px-7 py-6 sm:py-7">
-      {children}
-    </div>
+const Eyebrow = ({ children }) => (
+  <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/[.06] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[.2em] text-yellow-300">
+    <span className="h-1.5 w-1.5 rounded-full bg-yellow-300 shadow-[0_0_12px_rgba(253,224,71,.8)]" />
+    {children}
   </div>
 );
 
-const EditableText = ({ value, Tag = "span", className }) => <Tag className={className}>{value}</Tag>;
+const Stat = ({ value, label }) => (
+  <div>
+    <div className="text-3xl font-black tracking-tight text-white sm:text-4xl">{value}</div>
+    <div className="mt-1 text-xs uppercase tracking-[.16em] text-zinc-500">{label}</div>
+  </div>
+);
 
-const AnimatedBg = () => {
+function AmbientGrid() {
   useEffect(() => {
-    const c = document.getElementById("slcbg");
-    if (!c) return;
-    const ctx = c.getContext("2d");
-    if (!ctx) return;
-    let frame = 0;
-    const dpr = window.devicePixelRatio || 1;
-    const resize = () => {
-      c.width = c.clientWidth * dpr;
-      c.height = c.clientHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const el = document.documentElement;
+    const update = (event) => {
+      el.style.setProperty("--mx", `${event.clientX}px`);
+      el.style.setProperty("--my", `${event.clientY}px`);
     };
-    resize();
-    window.addEventListener("resize", resize);
-    const draw = () => {
-      const width = c.clientWidth;
-      const height = c.clientHeight;
-      ctx.clearRect(0, 0, width, height);
-      ctx.globalAlpha = 0.12;
-      ctx.strokeStyle = "#d4af37";
-      const isMobile = window.matchMedia("(max-width: 640px)").matches;
-      const step = isMobile ? 40 : 32;
-      for (let x = 0; x < width; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke(); }
-      for (let y = 0; y < height; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke(); }
-      ctx.globalAlpha = 0.9;
-      ctx.lineWidth = 2;
-      const baseY = height * 0.6;
-      ctx.strokeStyle = "rgba(212,175,55,0.9)";
-      ctx.beginPath();
-      for (let x = 0; x < width; x++) {
-        const y = baseY + Math.sin((x + frame) * 0.01) * 18 + Math.cos((x + frame) * 0.005) * 10;
-        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      frame += isMobile ? 0.8 : 1.2;
-      requestAnimationFrame(draw);
-    };
-    draw();
-    return () => window.removeEventListener("resize", resize);
+    window.addEventListener("pointermove", update, { passive: true });
+    return () => window.removeEventListener("pointermove", update);
   }, []);
-  return <canvas id="slcbg" className="absolute inset-0 h-full w-full" />;
-};
 
-// Rotating Quotes — now clickable to open full-text modal
-function RotatingQuotes({ items, interval = 5000, onOpen }) {
-  const [i, setI] = useState(0);
-  const timerRef = useRef(null);
-  useEffect(() => {
-    timerRef.current = setInterval(() => setI((v) => (v + 1) % items.length), interval);
-    return () => clearInterval(timerRef.current);
-  }, [items.length, interval]);
-  const q = items[i] || "";
   return (
-    <div
-      className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/30 cursor-pointer"
-      onClick={() => onOpen && onOpen(i)}
-      title="Tap to view full quote"
-    >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(212,175,55,.06),transparent)]" />
-      <div className="px-4 sm:px-6 py-5">
-        <div className="h-6 sm:h-7 relative">
-          <div key={i} className="absolute inset-0 flex items-center transition-all duration-700 ease-out opacity-100">
-            <p className="w-full truncate text-base sm:text-lg text-zinc-100">“{q}”</p>
-          </div>
-        </div>
-        <div className="mt-3 h-0.5 w-full bg-white/10 rounded">
-          <div className="h-full bg-yellow-400 animate-[slcprogress_5s_linear_infinite]" />
-        </div>
-      </div>
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 bg-[#070806]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,.035)_1px,transparent_1px)] bg-[size:52px_52px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" />
+      <div className="ambient-pointer absolute inset-0 opacity-70" />
+      <div className="absolute left-1/2 top-[-20rem] h-[34rem] w-[70rem] -translate-x-1/2 rounded-full bg-yellow-500/[.08] blur-[120px]" />
     </div>
   );
 }
 
 export default function App() {
-  const copy = DEFAULT_COPY;
-  const [showThanks, setShowThanks] = useState(false);
-
-  // Full-quote modal state
-  const [quoteOpen, setQuoteOpen] = useState(false);
-  const [quoteIndex, setQuoteIndex] = useState(0);
-  const openQuoteAt = (idx) => { setQuoteIndex(idx); setQuoteOpen(true); };
-  const nextQuote = () => setQuoteIndex((i) => (i + 1) % QUOTES.length);
-  const prevQuote = () => setQuoteIndex((i) => (i - 1 + QUOTES.length) % QUOTES.length);
-
   return (
-    <div className="min-h-screen bg-[#0a0b0a] text-zinc-100 relative overflow-hidden">
-      {/* BG */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-cover bg-center opacity-25" style={{ backgroundImage: `url(${HERO_IMG})` }} />
-        <div
-          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
-          style={{
-            backgroundImage: `
-              radial-gradient(circle at 25% 25%, #000 2px, transparent 2px),
-              radial-gradient(circle at 75% 75%, #000 2px, transparent 2px)
-            `,
-            backgroundSize: "10px 10px",
-          }}
-        />
-        <AnimatedBg />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black" />
-      </div>
+    <div className="min-h-screen bg-[#070806] text-zinc-100 selection:bg-yellow-400 selection:text-black">
+      <AmbientGrid />
 
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-black/40 backdrop-blur supports-[backdrop-filter]:bg-black/30">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[.06] bg-black/65 backdrop-blur-xl">
         <Container>
-          <div className="flex items-center justify-between py-4">
-            <div className="flex items-center gap-3">
-              <img src={HERO_IMG} alt="SLC crest" className="h-9 w-9 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
-              <span className="font-semibold tracking-wide">SLC – Steez Liquidity Cartel</span>
-            </div>
-            <nav className="hidden md:flex items-center gap-6 text-sm">
-              <a href="#membership" className="hover:text-yellow-300">Membership</a>
-              <a href="#quotes" className="hover:text-yellow-300">Quotes</a>
-              <a href="#pricing" className="hover:text-yellow-300">Pricing</a>
-              <Button href="#apply" variant="ghost">Apply</Button>
+          <div className="flex h-16 items-center justify-between">
+            <a href="#top" className="flex items-center gap-3">
+              <img src={HERO_IMG} alt="SLC" className="h-9 w-9 rounded-full border border-yellow-400/20 object-cover" />
+              <div className="leading-none">
+                <div className="text-sm font-bold tracking-wide text-white">SLC</div>
+                <div className="mt-1 text-[9px] uppercase tracking-[.22em] text-zinc-500">Steez Liquidity Cartel</div>
+              </div>
+            </a>
+
+            <nav className="hidden items-center gap-7 text-xs font-semibold text-zinc-400 md:flex">
+              <a href="#scanner" className="transition hover:text-white">Scanner</a>
+              <a href="#performance" className="transition hover:text-white">Performance</a>
+              <a href="#ecosystem" className="transition hover:text-white">Ecosystem</a>
             </nav>
+
+            <Button href={FLOOR_URL} variant="dark" className="px-4 py-2.5">Join SLC</Button>
           </div>
         </Container>
       </header>
 
-      <main className="relative z-10">
-        {/* Hero */}
-        <Section id="hero" className="pt-20 sm:pt-28">
+      <main id="top" className="relative z-10">
+        <Section className="flex min-h-[92vh] items-center pt-32 sm:pt-36">
           <Container>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              {/* Mobile crest */}
-              <div className="sm:hidden -mt-2 mb-2 flex items-center gap-3">
-                <img src={HERO_IMG} alt="SLC crest" className="h-10 w-10 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
-                <span className="text-sm text-zinc-300">Steez Liquidity Cartel</span>
+            <div className="mx-auto max-w-4xl text-center">
+              <Eyebrow>Built for the trenches</Eyebrow>
+
+              <h1 className="text-balance text-5xl font-black leading-[.96] tracking-[-.045em] text-white sm:text-7xl lg:text-[5.8rem]">
+                Spot the movement.
+                <span className="gold-text block">Before the masses.</span>
+              </h1>
+
+              <p className="mx-auto mt-7 max-w-2xl text-pretty text-base leading-7 text-zinc-400 sm:text-lg">
+                SLC surfaces real-time market movement from inside a private trading network — giving you more information when it is time to make your own decision.
+              </p>
+
+              <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button href={SCANNER_PRO_URL}>
+                  Get Scanner Pro <ArrowRight className="h-4 w-4" />
+                </Button>
+                <Button href={FLOOR_URL} variant="dark">
+                  Join the SLC Floor
+                </Button>
               </div>
 
-              {/* Text first on mobile */}
-              <div className="order-1">
-                <h1 className="mt-2 text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
-                  <span>{copy.hero.line1}</span><br/>
-                  <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
-                    {copy.hero.line2}
-                    <span className="absolute inset-0 pointer-events-none [mask-image:linear-gradient(75deg,transparent,black,transparent)] animate-[sheen_3.5s_ease-in-out_infinite]" />
-                  </span>
-                </h1>
-                <EditableText value={copy.hero.sub} Tag="p" className="mt-4 text-zinc-300 max-w-xl" />
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Button href="#apply"><Shield className="h-4 w-4"/> {copy.hero.ctaApply}</Button>
-                  <Button href="#pricing" variant="ghost"><ArrowRight className="h-4 w-4"/> {copy.hero.ctaPricing}</Button>
-                </div>
-                {copy.hero.approvalNote ? (
-                  <EditableText value={copy.hero.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400" />
-                ) : null}
-              </div>
-
-              {/* Big logo second on mobile */}
-              <div className="order-2">
-                <FancyCard>
-                  <img src={HERO_IMG} alt="SLC crest" className="w-full rounded-2xl"/>
-                </FancyCard>
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[11px] uppercase tracking-[.12em] text-zinc-600">
+                <span>Real-time alerts</span>
+                <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
+                <span>Validated performance</span>
+                <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
+                <span>No copy-trading</span>
               </div>
             </div>
           </Container>
         </Section>
 
-        <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
-
-        {/* Why SLC */}
-        <Section id="why">
+        <Section id="scanner" className="border-y border-white/[.06] bg-black/25">
           <Container>
-            <EditableText value={copy.about.title} Tag="h2" className="text-3xl font-bold" />
-            <EditableText value={copy.about.body} Tag="p" className="mt-3 text-zinc-300 max-w-3xl whitespace-pre-wrap" />
-          </Container>
-        </Section>
-
-        <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
-
-        {/* Membership */}
-        <Section id="membership" className="bg-black/40">
-          <Container>
-            <EditableText value={copy.membership.title} Tag="h2" className="text-3xl font-bold" />
-            <div className="mt-4 space-y-3 text-sm text-zinc-300">
-              <EditableText value={copy.membership.p1} Tag="p" />
-              <EditableText value={copy.membership.p2b} Tag="p" />
-            </div>
-          </Container>
-        </Section>
-
-        <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
-
-        {/* Quotes above Pricing */}
-        <Section id="quotes">
-          <Container>
-            <h2 className="text-3xl font-bold">SLC Quotes and Testimonies</h2>
-            <p className="mt-2 text-xs text-zinc-400">* every quote can be backed up by screenshot, they are all real.</p>
-            <div className="mt-5">
-              <RotatingQuotes items={QUOTES} interval={5000} onOpen={openQuoteAt} />
-            </div>
-          </Container>
-        </Section>
-
-        <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
-
-        {/* Pricing */}
-        <Section id="pricing">
-          <Container>
-            <EditableText value={copy.pricing.title} Tag="h2" className="text-3xl font-bold" />
-            <EditableText value={copy.pricing.tagline} Tag="p" className="mt-2 text-zinc-300 max-w-2xl" />
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Trial */}
-              {copy.pricing.showTrial && (
-                <FancyCard>
-                  <div className="flex items-baseline justify-between">
-                    <EditableText value={copy.pricing.trialTitle} Tag="h3" className="text-lg font-semibold" />
-                    <EditableText value={copy.pricing.trialPrice} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
-                  </div>
-                  <EditableText value={copy.pricing.trialNote} Tag="div" className="mt-2 text-sm text-zinc-400" />
-                  <ul className="mt-3 space-y-2 text-sm text-zinc-300">
-                    {copy.pricing.trialBullets.map((f, i) => (
-                      <li key={`trial-${i}`} className="flex items-start gap-2">
-                        <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-5"><Button href="#apply"><ArrowRight className="h-4 w-4"/>Apply for Trial</Button></div>
-                </FancyCard>
-              )}
-
-              {/* Monthly */}
-              <FancyCard>
-                <div className="flex items-baseline justify-between">
-                  <EditableText value={copy.pricing.blTitle} Tag="h3" className="text-lg font-semibold" />
-                  <EditableText value={copy.pricing.blPrice} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
-                </div>
-                <EditableText value={copy.pricing.blAdmissionLine} Tag="div" className="mt-2 text-sm text-zinc-400" />
-                <ul className="mt-3 space-y-2 text-sm text-zinc-300">
-                  {copy.pricing.blBullets.map((f, i) => (
-                    <li key={`bl-${i}`} className="flex items-start gap-2">
-                      <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-5"><Button href="#apply"><ArrowRight className="h-4 w-4"/>Apply Now</Button></div>
-              </FancyCard>
-
-              {/* Yearly */}
-              <FancyCard>
-                <div className="flex items-baseline justify-between">
-                  <EditableText value={copy.pricing.yearlyTitle} Tag="h3" className="text-lg font-semibold" />
-                  <EditableText value={copy.pricing.yearlyPrice} Tag="div" className="text-2xl font-extrabold text-yellow-300" />
-                </div>
-                <EditableText value={copy.pricing.yearlyNote} Tag="div" className="mt-2 text-sm text-zinc-400" />
-                <ul className="mt-3 space-y-2 text-sm text-zinc-300">
-                  {copy.pricing.yearlyBullets.map((f, i) => (
-                    <li key={`yr-${i}`} className="flex items-start gap-2">
-                      <CheckCircle className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-5"><Button href="#apply"><ArrowRight className="h-4 w-4"/>Request Yearly</Button></div>
-              </FancyCard>
-            </div>
-          </Container>
-        </Section>
-
-        <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
-
-        {/* Apply */}
-        <Section id="apply" className="bg-black/40">
-          <Container>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="grid items-center gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-20">
               <div>
-                <EditableText value={copy.apply.title} Tag="h2" className="text-3xl font-bold" />
-                <EditableText value={copy.apply.intro} Tag="p" className="mt-2 text-zinc-300" />
-                <ul className="mt-4 space-y-2 text-sm text-zinc-300">
-                  {copy.apply.bullets.map((x, i) => (
-                    <li key={`apb-${i}`} className="flex items-start gap-2">
-                      <Shield className="mt-0.5 h-4 w-4 text-yellow-300"/>
-                      <span>{x}</span>
-                    </li>
-                  ))}
-                </ul>
+                <Eyebrow>SLC Trench Scanner</Eyebrow>
+                <h2 className="max-w-xl text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">
+                  Information first. Decisions stay yours.
+                </h2>
+                <p className="mt-6 max-w-xl leading-7 text-zinc-400">
+                  The trenches are filled with noise, scams and manufactured conviction. The Scanner is built to cut through it — surfacing movement as it appears inside the SLC.
+                </p>
+                <p className="mt-4 max-w-xl leading-7 text-zinc-400">
+                  Ape it. Research it. Fade it. The Scanner does not tell you what to buy. It puts the opportunity in front of you.
+                </p>
               </div>
-              <FancyCard>
-                <form
-                  className="space-y-3"
-                  onSubmit={(e)=>{
-                    e.preventDefault();
-                    const form = e.currentTarget;
-                    const fd = new FormData(form);
-                    const obj = {};
-                    fd.forEach((v,k)=>{ obj[k] = v; });
-                    fetch("https://formsubmit.co/ajax/431steez@gmail.com", {
-                      method:"POST",
-                      headers:{"Content-Type":"application/json"},
-                      body: JSON.stringify(obj)
-                    })
-                      .then(r=>r.json())
-                      .then(()=>{ setShowThanks(true); form.reset(); })
-                      .catch(()=> alert("Error submitting. Please try again."));
-                  }}
-                >
-                  {DEFAULT_COPY.formFields.map((f, i) =>
-                    f.type === "textarea" ? (
-                      <textarea
-                        key={i}
-                        name={f.name}
-                        placeholder={f.placeholder}
-                        required={!!f.required}
-                        rows={f.rows || 3}
-                        className="w-full rounded-2xl bg-black/40 border border-white/10 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-yellow-400"
-                      />
-                    ) : (
-                      <input
-                        key={i}
-                        name={f.name}
-                        placeholder={f.placeholder}
-                        required={!!f.required}
-                        className="w-full rounded-2xl bg-black/40 border border-white/10 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-yellow-400"
-                      />
-                    )
-                  )}
 
-                  {/* Interest — radio group (select exactly one) */}
-                  <fieldset className="mt-2">
-                    <legend className="mb-2 text-sm text-zinc-300">Which option are you pursuing?</legend>
-                    <div className="space-y-2">
-                      <label className="flex items-center gap-2 text-sm">
-                        <input type="radio" name="interest" value="trial" className="h-4 w-4" required />
-                        1-week SLC Trial
-                      </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <input type="radio" name="interest" value="monthly" className="h-4 w-4" />
-                        SLC Black Ledger (Monthly)
-                      </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <input type="radio" name="interest" value="yearly" className="h-4 w-4" />
-                        Yearly Access
-                      </label>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  [Zap, "Real-Time Alerts", "Movement surfaced as it happens — not after the timeline finds it."],
+                  [Radar, "Momentum Tracking", "Automated monitoring follows calls as market cap expands."],
+                  [BarChart3, "Performance Proof", "Scanner calls are tracked and measured instead of forgotten."],
+                  [ShieldCheck, "Signal Over Noise", "Built around information from inside the SLC ecosystem."],
+                ].map(([Icon, title, text]) => (
+                  <div key={title} className="premium-card rounded-2xl p-6">
+                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl border border-yellow-400/20 bg-yellow-400/[.07] text-yellow-300">
+                      <Icon className="h-5 w-5" />
                     </div>
-                  </fieldset>
-
-                  <div className="flex items-start gap-3 text-[11px] text-zinc-400">
-                    <input type="checkbox" id="agree" required className="mt-1 h-4 w-4"/>
-                    <label htmlFor="agree">By submitting this form, you agree to SLC rules and bylaws. You understand that Steez or any moderator can remove you from SLC at any time for any reason.</label>
+                    <h3 className="font-bold text-white">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-500">{text}</p>
                   </div>
-
-                  <Button type="submit"><ArrowRight className="h-4 w-4"/> Submit Application</Button>
-                </form>
-                {copy.apply.approvalNote ? (
-                  <EditableText value={copy.apply.approvalNote} Tag="div" className="mt-2 text-xs text-zinc-400" />
-                ) : null}
-              </FancyCard>
+                ))}
+              </div>
             </div>
           </Container>
         </Section>
 
-        <div className="mx-auto my-8 h-px w-11/12 max-w-5xl bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent shadow-[0_0_20px_rgba(212,175,55,0.25)]" />
-
-        {/* Disclaimer */}
-        <Section id="disclaimer" className="bg-black/60">
+        <Section id="performance">
           <Container>
-            <div className="rounded-2xl border border-white/10 p-6 text-sm text-zinc-300">
-              <EditableText value={copy.disclaimer.title} Tag="div" className="font-semibold text-yellow-300 mb-2" />
-              <EditableText value={copy.disclaimer.text} Tag="p" />
-              <EditableText value={copy.disclaimer.footnote} Tag="p" className="mt-3 text-center font-semibold lowercase text-yellow-300" />
+            <div className="mx-auto max-w-3xl text-center">
+              <Eyebrow>Tracked. Not cherry-picked.</Eyebrow>
+              <h2 className="text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">The numbers speak.</h2>
+              <p className="mx-auto mt-5 max-w-2xl leading-7 text-zinc-400">
+                Recent performance across finalized Scanner calls. Every call is measured from scanner entry to its highest validated market cap during the completed tracking window.
+              </p>
+            </div>
+
+            <div className="mx-auto mt-12 max-w-5xl overflow-hidden rounded-3xl border border-yellow-400/15 bg-black/45 shadow-[0_30px_100px_rgba(0,0,0,.45)]">
+              <div className="border-b border-white/[.06] px-6 py-5 sm:px-8">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="text-sm font-bold text-white">SLC Scanner Performance</div>
+                  <div className="text-xs uppercase tracking-[.18em] text-zinc-600">{PERFORMANCE.period}</div>
+                </div>
+              </div>
+
+              <div className="grid gap-8 px-6 py-8 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
+                <Stat value={PERFORMANCE.finalized} label="Finalized Calls" />
+                <Stat value={PERFORMANCE.opportunityRate} label="Reached 1.5x" />
+                <Stat value={PERFORMANCE.twoX} label="Reached 2x" />
+                <Stat value={PERFORMANCE.threeX} label="Reached 3x" />
+              </div>
+
+              <div className="grid border-t border-white/[.06] lg:grid-cols-[.72fr_1.28fr]">
+                <div className="border-b border-white/[.06] px-6 py-7 sm:px-8 lg:border-b-0 lg:border-r">
+                  <div className="text-xs font-bold uppercase tracking-[.16em] text-zinc-500">Outcome Distribution</div>
+                  <div className="mt-5 space-y-4">
+                    {[
+                      ["1.5x+", PERFORMANCE.opportunityRate],
+                      ["2x+", PERFORMANCE.twoX],
+                      ["3x+", PERFORMANCE.threeX],
+                      ["5x+", PERFORMANCE.fiveX],
+                    ].map(([label, value]) => (
+                      <div key={label} className="flex items-center justify-between border-b border-white/[.05] pb-3 last:border-0 last:pb-0">
+                        <span className="text-sm text-zinc-500">{label}</span>
+                        <span className="font-bold text-white">{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="px-6 py-7 sm:px-8">
+                  <div className="text-xs font-bold uppercase tracking-[.16em] text-zinc-500">Top 3 Calls This Period</div>
+                  <div className="mt-5 space-y-5">
+                    {PERFORMANCE.topCalls.map((call, index) => (
+                      <div key={call.symbol} className="flex items-start gap-4">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-yellow-400/15 bg-yellow-400/[.05] text-xs font-black text-yellow-300">
+                          {index + 1}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-baseline justify-between gap-2">
+                            <div className="font-black text-white">{call.symbol}</div>
+                            <div className="text-xl font-black text-yellow-300">{call.multiple}</div>
+                          </div>
+                          <div className="mt-1 text-xs text-zinc-600">{call.entry} → {call.high}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-white/[.06] px-6 py-4 text-center text-[10px] uppercase tracking-[.13em] text-zinc-700 sm:px-8">
+                Current tracker uses validated 30-second observations • Historical performance does not guarantee future results
+              </div>
+            </div>
+          </Container>
+        </Section>
+
+        <Section id="ecosystem" className="border-y border-white/[.06] bg-black/25">
+          <Container>
+            <div className="mx-auto max-w-3xl text-center">
+              <Eyebrow>One ecosystem</Eyebrow>
+              <h2 className="text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">Choose your depth.</h2>
+              <p className="mx-auto mt-5 max-w-xl leading-7 text-zinc-400">
+                Start free. Upgrade for speed. The Black Ledger remains intentionally selective.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5 lg:grid-cols-3">
+              <div className="premium-card flex flex-col rounded-3xl p-7">
+                <div className="mb-7 flex items-center justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.04]">
+                    <Eye className="h-5 w-5 text-zinc-300" />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-[.16em] text-zinc-600">Free</span>
+                </div>
+                <h3 className="text-2xl font-black text-white">SLC Floor</h3>
+                <p className="mt-3 min-h-[72px] text-sm leading-6 text-zinc-500">
+                  The front door to SLC. Market discussion, education, delayed scanner previews and milestone proof.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-zinc-400">
+                  {["Community access", "Scanner Preview", "Scanner milestones"].map((item) => (
+                    <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>
+                  ))}
+                </ul>
+                <Button href={FLOOR_URL} variant="dark" className="mt-8 w-full">Join the Floor</Button>
+              </div>
+
+              <div className="relative flex flex-col rounded-3xl border border-yellow-400/30 bg-[linear-gradient(180deg,rgba(212,175,55,.10),rgba(255,255,255,.025))] p-7 shadow-[0_0_60px_rgba(212,175,55,.08)]">
+                <div className="absolute right-5 top-5 rounded-full border border-yellow-400/25 bg-yellow-400/[.08] px-3 py-1 text-[9px] font-black uppercase tracking-[.18em] text-yellow-300">Flagship</div>
+                <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-xl border border-yellow-400/25 bg-yellow-400/[.08]">
+                  <Zap className="h-5 w-5 text-yellow-300" />
+                </div>
+                <h3 className="text-2xl font-black text-white">Scanner Pro</h3>
+                <div className="mt-2 flex items-end gap-2">
+                  <div className="text-3xl font-black text-white">$44.99</div>
+                  <div className="pb-1 text-xs text-zinc-500">/ month</div>
+                </div>
+                <p className="mt-4 min-h-[72px] text-sm leading-6 text-zinc-400">
+                  Live Scanner access for traders who want the information when it happens — not after.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-zinc-300">
+                  {["Real-time scanner", "Wallet alerts", "Scanner discussion", "Performance results"].map((item) => (
+                    <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>
+                  ))}
+                </ul>
+                <Button href={SCANNER_PRO_URL} className="mt-8 w-full">Get Scanner Pro <ArrowRight className="h-4 w-4" /></Button>
+              </div>
+
+              <div className="premium-card flex flex-col rounded-3xl p-7">
+                <div className="mb-7 flex items-center justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.04]">
+                    <LockKeyhole className="h-5 w-5 text-zinc-300" />
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-[.16em] text-zinc-600">Selective</span>
+                </div>
+                <h3 className="text-2xl font-black text-white">Black Ledger</h3>
+                <p className="mt-3 min-h-[72px] text-sm leading-6 text-zinc-500">
+                  The private intelligence layer inside SLC. Built around trusted contributors, research and conviction.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-zinc-400">
+                  {["Private calls & research", "Operator intelligence", "Member referrals + vetting"].map((item) => (
+                    <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>
+                  ))}
+                </ul>
+                <div className="mt-8 rounded-xl border border-white/[.07] bg-black/25 px-4 py-3 text-center text-xs font-semibold text-zinc-500">
+                  Not publicly sold
+                </div>
+              </div>
+            </div>
+          </Container>
+        </Section>
+
+        <Section id="access">
+          <Container>
+            <div className="relative overflow-hidden rounded-3xl border border-yellow-400/20 bg-black/50 px-6 py-12 text-center shadow-[0_30px_100px_rgba(0,0,0,.4)] sm:px-12 sm:py-16">
+              <div className="absolute left-1/2 top-0 h-36 w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-400/[.10] blur-[70px]" />
+              <Sparkles className="mx-auto h-6 w-6 text-yellow-300" />
+              <h2 className="relative mt-5 text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">SLC is just getting started.</h2>
+              <p className="relative mx-auto mt-5 max-w-xl leading-7 text-zinc-400">
+                Join the Floor now. Be there when Scanner Pro opens to the public.
+              </p>
+              <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button href={FLOOR_URL}>Join the SLC Floor <ArrowRight className="h-4 w-4" /></Button>
+                <Button href={SCANNER_PRO_URL} variant="dark">Scanner Pro</Button>
+              </div>
             </div>
           </Container>
         </Section>
       </main>
 
-      {/* Full-quote Modal (mobile-friendly) */}
-      {quoteOpen && (
-        <div className="fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={()=>setQuoteOpen(false)}>
-          <div className="relative w-full max-w-lg rounded-2xl border border-yellow-500/40 bg-gradient-to-b from-black to-black/80 p-6 shadow-[0_0_40px_rgba(212,175,55,0.25)]" onClick={(e)=>e.stopPropagation()}>
-            <h3 className="text-lg font-bold text-yellow-300 text-center">Member Quote</h3>
-            <p className="mt-3 max-h-[50vh] overflow-auto text-sm leading-relaxed text-zinc-200 whitespace-pre-wrap">
-              “{QUOTES[quoteIndex]}”
-            </p>
-            <div className="mt-5 flex items-center justify-between">
-              <Button type="button" variant="secondary" onClick={prevQuote}>Prev</Button>
-              <Button type="button" onClick={()=>setQuoteOpen(false)}>Close</Button>
-              <Button type="button" variant="secondary" onClick={nextQuote}>Next</Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Thank-you Modal */}
-      {showThanks && (
-        <div className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" onClick={()=>setShowThanks(false)}>
-          <div className="relative w-full max-w-md rounded-2xl border border-yellow-500/40 bg-gradient-to-b from-black to-black/80 p-6 shadow-[0_0_40px_rgba(212,175,55,0.25)]" onClick={(e)=>e.stopPropagation()}>
-            <img src={HERO_IMG} alt="SLC crest" className="mx-auto mb-3 h-12 w-12 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
-            <h3 className="text-xl font-bold text-yellow-300 text-center">Thank you</h3>
-            <p className="mt-2 text-sm text-zinc-300 text-center">Thank you for your submission, if your application is approved, you will be contacted by Steez via X.</p>
-            <div className="mt-5 flex justify-center">
-              <Button type="button" onClick={()=>setShowThanks(false)}>Close</Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-white/10">
+      <footer className="relative z-10 border-t border-white/[.06] bg-black/20">
         <Container>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-8 text-sm text-zinc-400">
-            <div className="flex items-center gap-3">
-              <img src={HERO_IMG} alt="SLC crest" className="h-8 w-8 rounded-xl object-contain ring-1 ring-yellow-500/40 shadow" />
-              <div>
-                <div className="font-semibold text-zinc-200">Steez Liquidity Cartel</div>
-                <div className="text-[12px]">© {new Date().getFullYear()} SLC. All rights reserved.</div>
+          <div className="flex flex-col gap-7 py-10 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="flex items-center gap-3">
+                <img src={HERO_IMG} alt="SLC" className="h-8 w-8 rounded-full border border-yellow-400/20 object-cover" />
+                <span className="text-sm font-bold text-white">Steez Liquidity Cartel</span>
               </div>
+              <p className="mt-4 max-w-xl text-xs leading-5 text-zinc-600">
+                SLC provides informational market tools and community discussion only. Nothing displayed is financial advice. Cryptocurrency and memecoin trading involve substantial risk. Do your own research and make your own decisions.
+              </p>
             </div>
-            <div className="flex items-center gap-4">
-              <a href="https://x.com/431Steez" target="_blank" rel="noreferrer" className="hover:text-yellow-300 inline-flex items-center gap-2">
-                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4"><path fill="currentColor" d="M18.244 2H21l-6.74 7.71L22.5 22h-6.5l-5.09-6.62L4.756 22H2l7.2-8.24L1.5 2h6.6l4.55 5.94L18.244 2Zm-2.27 18.26h2.406L7.927 3.66H5.37l10.603 16.6Z"/></svg>
-                @431Steez
-              </a>
-              <a href="https://t.me/+ELigdpxNJVhkODg5" target="_blank" rel="noreferrer" className="hover:text-yellow-300 inline-flex items-center gap-2"><MessageSquare className="h-4 w-4"/>Telegram</a>
-              <a href="#contact" className="hover:text-yellow-300 inline-flex items-center gap-2"><Megaphone className="h-4 w-4"/>Contact</a>
-            </div>
+            <div className="text-xs text-zinc-700">© {new Date().getFullYear()} SLC</div>
           </div>
         </Container>
       </footer>
-
-      <style>{`
-        @keyframes sheen {
-          0% { transform: translateX(-120%); opacity: 0; }
-          35% { opacity: .18; }
-          60% { opacity: 0; }
-          100% { transform: translateX(120%); opacity: 0; }
-        }
-        @keyframes slcprogress { from { width: 0% } to { width: 100% } }
-        @media (prefers-reduced-motion: reduce) {
-          * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
-        }
-      `}</style>
     </div>
   );
 }
-
