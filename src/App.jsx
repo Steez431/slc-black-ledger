@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 const LOGO_IMG = "/assets/slc-logo.webp";
-const BANNER_IMG = "/assets/slc-banner.webp";
+const BANNER_IMG = "/assets/slc-banner-2026.webp";
 const SCANNER_IMG = "/assets/slc-trench-scanner.webp";
 
 // Replace these two links before launch.
