@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BarChart3,
@@ -64,9 +64,69 @@ const Eyebrow = ({ children }) => (
   </div>
 );
 
-const Stat = ({ value, label }) => (
-  <div>
-    <div className="text-3xl font-black tracking-tight text-white sm:text-4xl">{value}</div>
+function useInViewOnce(threshold = 0.28) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current || visible) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [threshold, visible]);
+
+  return [ref, visible];
+}
+
+const AnimatedValue = ({ value, active }) => {
+  const isPercent = String(value).includes("%");
+  const numeric = Number.parseFloat(String(value).replace(/[^0-9.]/g, "")) || 0;
+  const decimals = String(value).includes(".") ? String(value).split(".")[1].replace(/\D/g, "").length : 0;
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (!active) return;
+
+    const duration = 1050;
+    const startedAt = performance.now();
+    let frame;
+
+    const tick = (now) => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(numeric * eased);
+
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [active, numeric]);
+
+  const formatted = decimals > 0 ? display.toFixed(decimals) : Math.round(display).toLocaleString();
+  return <>{formatted}{isPercent ? "%" : ""}</>;
+};
+
+const Stat = ({ value, label, active }) => (
+  <div className="performance-stat">
+    <div className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+      <AnimatedValue value={value} active={active} />
+    </div>
     <div className="mt-1 text-xs uppercase tracking-[.16em] text-zinc-500">{label}</div>
   </div>
 );
@@ -93,6 +153,8 @@ function AmbientGrid() {
 }
 
 export default function App() {
+  const [performanceRef, performanceActive] = useInViewOnce();
+
   return (
     <div className="min-h-screen bg-[#040503] text-zinc-100 selection:bg-yellow-400 selection:text-black">
       <AmbientGrid />
@@ -217,25 +279,34 @@ export default function App() {
               </p>
             </div>
 
-            <div className="mx-auto mt-12 max-w-6xl overflow-hidden rounded-3xl border border-yellow-400/15 bg-black/55 shadow-[0_30px_100px_rgba(0,0,0,.45)]">
-              <div className="border-b border-yellow-400/[.08] px-6 py-5 sm:px-8">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div ref={performanceRef} className="performance-terminal relative mx-auto mt-12 max-w-6xl overflow-hidden rounded-3xl border border-yellow-400/15 bg-black/55 shadow-[0_30px_100px_rgba(0,0,0,.45)]">
+              <div className="performance-scanline pointer-events-none absolute inset-x-0 z-20 h-px" />
+              <div className="performance-radar pointer-events-none absolute inset-0" />
+
+              <div className="relative z-10 border-b border-yellow-400/[.08] px-6 py-5 sm:px-8">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3 text-sm font-bold text-white">
                     <img src={LOGO_IMG} alt="SLC" className="h-7 w-7 rounded-full border border-yellow-400/20 object-cover" />
                     SLC Scanner Performance
                   </div>
-                  <div className="text-xs uppercase tracking-[.18em] text-zinc-600">{PERFORMANCE.period}</div>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.16em] text-yellow-300/75">
+                      <span className="tracker-pulse h-1.5 w-1.5 rounded-full bg-yellow-300" />
+                      Tracker active
+                    </div>
+                    <div className="text-xs uppercase tracking-[.18em] text-zinc-600">{PERFORMANCE.period}</div>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid gap-8 px-6 py-8 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
-                <Stat value={PERFORMANCE.finalized} label="Finalized Calls" />
-                <Stat value={PERFORMANCE.opportunityRate} label="Reached 1.5x" />
-                <Stat value={PERFORMANCE.twoX} label="Reached 2x" />
-                <Stat value={PERFORMANCE.threeX} label="Reached 3x" />
+              <div className="relative z-10 grid gap-8 px-6 py-8 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
+                <Stat value={PERFORMANCE.finalized} label="Finalized Calls" active={performanceActive} />
+                <Stat value={PERFORMANCE.opportunityRate} label="Reached 1.5x" active={performanceActive} />
+                <Stat value={PERFORMANCE.twoX} label="Reached 2x" active={performanceActive} />
+                <Stat value={PERFORMANCE.threeX} label="Reached 3x" active={performanceActive} />
               </div>
 
-              <div className="grid border-t border-yellow-400/[.08] lg:grid-cols-[.72fr_1.28fr]">
+              <div className="relative z-10 grid border-t border-yellow-400/[.08] lg:grid-cols-[.72fr_1.28fr]">
                 <div className="border-b border-yellow-400/[.08] px-6 py-7 sm:px-8 lg:border-b-0 lg:border-r">
                   <div className="text-xs font-bold uppercase tracking-[.16em] text-zinc-500">Outcome Distribution</div>
                   <div className="mt-5 space-y-4">
@@ -244,10 +315,21 @@ export default function App() {
                       ["2x+", PERFORMANCE.twoX],
                       ["3x+", PERFORMANCE.threeX],
                       ["5x+", PERFORMANCE.fiveX],
-                    ].map(([label, value]) => (
-                      <div key={label} className="flex items-center justify-between border-b border-white/[.05] pb-3 last:border-0 last:pb-0">
-                        <span className="text-sm text-zinc-500">{label}</span>
-                        <span className="font-bold text-white">{value}</span>
+                    ].map(([label, value], index) => (
+                      <div key={label} className="border-b border-white/[.05] pb-3 last:border-0 last:pb-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-zinc-500">{label}</span>
+                          <span className="font-bold text-white">{value}</span>
+                        </div>
+                        <div className="mt-2 h-[2px] overflow-hidden rounded-full bg-white/[.04]">
+                          <div
+                            className="performance-bar h-full rounded-full"
+                            style={{
+                              width: performanceActive ? value : "0%",
+                              transitionDelay: `${180 + index * 110}ms`,
+                            }}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -257,14 +339,18 @@ export default function App() {
                   <div className="text-xs font-bold uppercase tracking-[.16em] text-zinc-500">Top 3 Calls This Period</div>
                   <div className="mt-5 space-y-5">
                     {PERFORMANCE.topCalls.map((call, index) => (
-                      <div key={call.symbol} className="flex items-start gap-4">
+                      <div
+                        key={call.symbol}
+                        className={`top-call-row flex items-start gap-4 ${performanceActive ? "is-visible" : ""}`}
+                        style={{ transitionDelay: `${420 + index * 130}ms` }}
+                      >
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-yellow-400/15 bg-yellow-400/[.05] text-xs font-black text-yellow-300">
                           {index + 1}
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-baseline justify-between gap-2">
                             <div className="font-black text-white">{call.symbol}</div>
-                            <div className="text-xl font-black text-yellow-300">{call.multiple}</div>
+                            <div className="performance-multiple text-xl font-black text-yellow-300">{call.multiple}</div>
                           </div>
                           <div className="mt-1 text-xs text-zinc-600">{call.entry} → {call.high}</div>
                         </div>
@@ -274,7 +360,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="border-t border-yellow-400/[.08] px-6 py-4 text-center text-[10px] uppercase tracking-[.13em] text-zinc-700 sm:px-8">
+              <div className="relative z-10 border-t border-yellow-400/[.08] px-6 py-4 text-center text-[10px] uppercase tracking-[.13em] text-zinc-700 sm:px-8">
                 Current tracker uses validated 30-second observations • Historical performance does not guarantee future results
               </div>
             </div>
