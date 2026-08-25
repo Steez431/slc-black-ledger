@@ -20,17 +20,34 @@ const FLOOR_URL = "#access";
 const SCANNER_PRO_URL = "#access";
 
 const PERFORMANCE = {
-  period: "Last 7 Days",
-  finalized: 296,
-  opportunityRate: "51.69%",
-  twoX: "36.49%",
-  threeX: "19.26%",
-  fiveX: "9.46%",
-  topCalls: [
-    { symbol: "$BULLSHIT", multiple: "55.71x", entry: "$78,755", high: "$4,387,558" },
-    { symbol: "$PATE", multiple: "53.32x", entry: "$10,751", high: "$573,274" },
-    { symbol: "$KIRK", multiple: "40.00x", entry: "$127,928", high: "$5,117,681" },
-  ],
+  "7d": {
+    label: "7 Days",
+    finalized: 296,
+    opportunityRate: "51.69%",
+    twoX: "36.49%",
+    threeX: "19.26%",
+    fiveX: "9.46%",
+    tenX: "4.39%",
+    topCalls: [
+      { symbol: "$BULLSHIT", multiple: "55.71x", entry: "$78,755", high: "$4,387,558" },
+      { symbol: "$PATE", multiple: "53.32x", entry: "$10,751", high: "$573,274" },
+      { symbol: "$KIRK", multiple: "40.00x", entry: "$127,928", high: "$5,117,681" },
+    ],
+  },
+  "30d": {
+    label: "30 Days",
+    finalized: 825,
+    opportunityRate: "49.09%",
+    twoX: "32.97%",
+    threeX: "17.33%",
+    fiveX: "7.52%",
+    tenX: "3.15%",
+    topCalls: [
+      { symbol: "$CHAM", multiple: "153.33x", entry: "$16,916", high: "$2,593,726" },
+      { symbol: "$PITCOIN", multiple: "99.18x", entry: "$8,317", high: "$824,871" },
+      { symbol: "$BULLSHIT", multiple: "55.71x", entry: "$78,755", high: "$4,387,558" },
+    ],
+  },
 };
 
 const Container = ({ children, className = "" }) => (
@@ -154,6 +171,8 @@ function AmbientGrid() {
 
 export default function App() {
   const [performanceRef, performanceActive] = useInViewOnce();
+  const [performanceRange, setPerformanceRange] = useState("7d");
+  const performance = PERFORMANCE[performanceRange];
 
   return (
     <div className="min-h-screen bg-[#040503] text-zinc-100 selection:bg-yellow-400 selection:text-black">
@@ -294,27 +313,47 @@ export default function App() {
                       <span className="tracker-pulse h-1.5 w-1.5 rounded-full bg-yellow-300" />
                       Tracker active
                     </div>
-                    <div className="text-xs uppercase tracking-[.18em] text-zinc-600">{PERFORMANCE.period}</div>
+                    <div className="performance-range-tabs flex items-center rounded-lg border border-yellow-400/10 bg-black/45 p-1">
+                      {[
+                        ["7d", "7D"],
+                        ["30d", "30D"],
+                      ].map(([range, label]) => (
+                        <button
+                          key={range}
+                          type="button"
+                          onClick={() => setPerformanceRange(range)}
+                          className={`rounded-md px-3 py-1.5 text-[10px] font-black uppercase tracking-[.16em] transition ${
+                            performanceRange === range
+                              ? "bg-yellow-400 text-black shadow-[0_0_18px_rgba(212,175,55,.18)]"
+                              : "text-zinc-600 hover:text-zinc-300"
+                          }`}
+                          aria-pressed={performanceRange === range}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="relative z-10 grid gap-8 px-6 py-8 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
-                <Stat value={PERFORMANCE.finalized} label="Finalized Calls" active={performanceActive} />
-                <Stat value={PERFORMANCE.opportunityRate} label="Reached 1.5x" active={performanceActive} />
-                <Stat value={PERFORMANCE.twoX} label="Reached 2x" active={performanceActive} />
-                <Stat value={PERFORMANCE.threeX} label="Reached 3x" active={performanceActive} />
+              <div key={`stats-${performanceRange}`} className="performance-data-swap relative z-10 grid gap-8 px-6 py-8 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
+                <Stat value={performance.finalized} label="Finalized Calls" active={performanceActive} />
+                <Stat value={performance.opportunityRate} label="Reached 1.5x" active={performanceActive} />
+                <Stat value={performance.twoX} label="Reached 2x" active={performanceActive} />
+                <Stat value={performance.threeX} label="Reached 3x" active={performanceActive} />
               </div>
 
               <div className="relative z-10 grid border-t border-yellow-400/[.08] lg:grid-cols-[.72fr_1.28fr]">
                 <div className="border-b border-yellow-400/[.08] px-6 py-7 sm:px-8 lg:border-b-0 lg:border-r">
                   <div className="text-xs font-bold uppercase tracking-[.16em] text-zinc-500">Outcome Distribution</div>
-                  <div className="mt-5 space-y-4">
+                  <div key={`distribution-${performanceRange}`} className="performance-data-swap mt-5 space-y-4">
                     {[
-                      ["1.5x+", PERFORMANCE.opportunityRate],
-                      ["2x+", PERFORMANCE.twoX],
-                      ["3x+", PERFORMANCE.threeX],
-                      ["5x+", PERFORMANCE.fiveX],
+                      ["1.5x+", performance.opportunityRate],
+                      ["2x+", performance.twoX],
+                      ["3x+", performance.threeX],
+                      ["5x+", performance.fiveX],
+                      ["10x+", performance.tenX],
                     ].map(([label, value], index) => (
                       <div key={label} className="border-b border-white/[.05] pb-3 last:border-0 last:pb-0">
                         <div className="flex items-center justify-between">
@@ -337,8 +376,8 @@ export default function App() {
 
                 <div className="px-6 py-7 sm:px-8">
                   <div className="text-xs font-bold uppercase tracking-[.16em] text-zinc-500">Top 3 Calls This Period</div>
-                  <div className="mt-5 space-y-5">
-                    {PERFORMANCE.topCalls.map((call, index) => (
+                  <div key={`top-${performanceRange}`} className="performance-data-swap mt-5 space-y-5">
+                    {performance.topCalls.map((call, index) => (
                       <div
                         key={call.symbol}
                         className={`top-call-row flex items-start gap-4 ${performanceActive ? "is-visible" : ""}`}
