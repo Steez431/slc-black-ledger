@@ -11,7 +11,9 @@ import {
   Zap,
 } from "lucide-react";
 
-const HERO_IMG = "https://images.slcblackledger.org/SLCMAINLOGO.jpeg";
+const LOGO_IMG = "/assets/slc-logo.webp";
+const BANNER_IMG = "/assets/slc-banner.webp";
+const SCANNER_IMG = "/assets/slc-trench-scanner.webp";
 
 // Replace these two links before launch.
 const FLOOR_URL = "#access";
@@ -32,7 +34,7 @@ const PERFORMANCE = {
 };
 
 const Container = ({ children, className = "" }) => (
-  <div className={`mx-auto w-full max-w-6xl px-5 sm:px-7 lg:px-8 ${className}`}>{children}</div>
+  <div className={`mx-auto w-full max-w-7xl px-5 sm:px-7 lg:px-8 ${className}`}>{children}</div>
 );
 
 const Section = ({ id, children, className = "" }) => (
@@ -41,8 +43,8 @@ const Section = ({ id, children, className = "" }) => (
 
 const Button = ({ href, children, variant = "gold", className = "" }) => {
   const variants = {
-    gold: "border-yellow-400/50 bg-yellow-400 text-black hover:bg-yellow-300 hover:shadow-[0_0_35px_rgba(212,175,55,.22)]",
-    dark: "border-white/10 bg-white/[.04] text-white hover:border-yellow-400/35 hover:bg-white/[.07]",
+    gold: "border-yellow-400/40 bg-[linear-gradient(180deg,#f7dc7a,#d4af37_48%,#a97812)] text-black hover:brightness-110 hover:shadow-[0_0_35px_rgba(212,175,55,.25)]",
+    dark: "border-yellow-400/15 bg-black/45 text-white hover:border-yellow-400/35 hover:bg-black/65",
   };
 
   return (
@@ -82,9 +84,9 @@ function AmbientGrid() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[#070806]" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,.035)_1px,transparent_1px)] bg-[size:52px_52px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" />
-      <div className="ambient-pointer absolute inset-0 opacity-70" />
+      <div className="absolute inset-0 bg-[#040503]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(212,175,55,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,.03)_1px,transparent_1px)] bg-[size:52px_52px] [mask-image:linear-gradient(to_bottom,black,transparent_80%)]" />
+      <div className="ambient-pointer absolute inset-0 opacity-75" />
       <div className="absolute left-1/2 top-[-20rem] h-[34rem] w-[70rem] -translate-x-1/2 rounded-full bg-yellow-500/[.08] blur-[120px]" />
     </div>
   );
@@ -92,14 +94,14 @@ function AmbientGrid() {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#070806] text-zinc-100 selection:bg-yellow-400 selection:text-black">
+    <div className="min-h-screen bg-[#040503] text-zinc-100 selection:bg-yellow-400 selection:text-black">
       <AmbientGrid />
 
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[.06] bg-black/65 backdrop-blur-xl">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-yellow-400/[.08] bg-black/60 backdrop-blur-xl">
         <Container>
           <div className="flex h-16 items-center justify-between">
             <a href="#top" className="flex items-center gap-3">
-              <img src={HERO_IMG} alt="SLC" className="h-9 w-9 rounded-full border border-yellow-400/20 object-cover" />
+              <img src={LOGO_IMG} alt="SLC" className="h-10 w-10 rounded-full border border-yellow-400/20 object-cover shadow-[0_0_25px_rgba(212,175,55,.12)]" />
               <div className="leading-none">
                 <div className="text-sm font-bold tracking-wide text-white">SLC</div>
                 <div className="mt-1 text-[9px] uppercase tracking-[.22em] text-zinc-500">Steez Liquidity Cartel</div>
@@ -112,7 +114,7 @@ export default function App() {
               <a href="#ecosystem" className="transition hover:text-white">Ecosystem</a>
             </nav>
 
-            <Button href={FLOOR_URL} variant="dark" className="px-4 py-2.5">Join SLC</Button>
+            <Button href={FLOOR_URL} variant="dark" className="px-4 py-2.5">Enter SLC</Button>
           </div>
         </Container>
       </header>
@@ -120,69 +122,86 @@ export default function App() {
       <main id="top" className="relative z-10">
         <Section className="flex min-h-[92vh] items-center pt-32 sm:pt-36">
           <Container>
-            <div className="mx-auto max-w-4xl text-center">
-              <Eyebrow>Built for the trenches</Eyebrow>
+            <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-14">
+              <div>
+                <Eyebrow>Premium trench intelligence</Eyebrow>
+                <h1 className="text-balance text-5xl font-black leading-[.96] tracking-[-.045em] text-white sm:text-7xl lg:text-[5.8rem]">
+                  Spot the movement.
+                  <span className="gold-text block">Before the masses.</span>
+                </h1>
 
-              <h1 className="text-balance text-5xl font-black leading-[.96] tracking-[-.045em] text-white sm:text-7xl lg:text-[5.8rem]">
-                Spot the movement.
-                <span className="gold-text block">Before the masses.</span>
-              </h1>
+                <p className="mt-7 max-w-2xl text-pretty text-base leading-7 text-zinc-400 sm:text-lg">
+                  Steez Liquidity Cartel is a premium intelligence ecosystem built to surface market movement early — with the SLC Trench Scanner at the center of it.
+                </p>
 
-              <p className="mx-auto mt-7 max-w-2xl text-pretty text-base leading-7 text-zinc-400 sm:text-lg">
-                SLC surfaces real-time market movement from inside a private trading network — giving you more information when it is time to make your own decision.
-              </p>
+                <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                  <Button href={SCANNER_PRO_URL}>
+                    Get Scanner Pro <ArrowRight className="h-4 w-4" />
+                  </Button>
+                  <Button href={FLOOR_URL} variant="dark">
+                    Join the SLC Floor
+                  </Button>
+                </div>
 
-              <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button href={SCANNER_PRO_URL}>
-                  Get Scanner Pro <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button href={FLOOR_URL} variant="dark">
-                  Join the SLC Floor
-                </Button>
+                <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-2 text-[11px] uppercase tracking-[.12em] text-zinc-600">
+                  <span>Honesty & integrity</span>
+                  <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
+                  <span>Validated performance</span>
+                  <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
+                  <span>Information before attention</span>
+                </div>
               </div>
 
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[11px] uppercase tracking-[.12em] text-zinc-600">
-                <span>Real-time alerts</span>
-                <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
-                <span>Validated performance</span>
-                <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
-                <span>No copy-trading</span>
+              <div className="relative">
+                <div className="glow-frame overflow-hidden rounded-[2rem] border border-yellow-400/20 bg-black/55 p-3 shadow-[0_30px_90px_rgba(0,0,0,.5)]">
+                  <img
+                    src={BANNER_IMG}
+                    alt="SLC banner"
+                    className="w-full rounded-[1.45rem] border border-yellow-400/10 object-cover"
+                  />
+                </div>
               </div>
             </div>
           </Container>
         </Section>
 
-        <Section id="scanner" className="border-y border-white/[.06] bg-black/25">
+        <Section id="scanner" className="border-y border-yellow-400/[.08] bg-black/25">
           <Container>
-            <div className="grid items-center gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-20">
-              <div>
-                <Eyebrow>SLC Trench Scanner</Eyebrow>
-                <h2 className="max-w-xl text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">
-                  Information first. Decisions stay yours.
-                </h2>
-                <p className="mt-6 max-w-xl leading-7 text-zinc-400">
-                  The trenches are filled with noise, scams and manufactured conviction. The Scanner is built to cut through it — surfacing movement as it appears inside the SLC.
-                </p>
-                <p className="mt-4 max-w-xl leading-7 text-zinc-400">
-                  Ape it. Research it. Fade it. The Scanner does not tell you what to buy. It puts the opportunity in front of you.
-                </p>
+            <div className="grid items-center gap-12 lg:grid-cols-[.95fr_1.05fr] lg:gap-20">
+              <div className="relative order-2 lg:order-1">
+                <div className="glow-frame overflow-hidden rounded-[2rem] border border-yellow-400/18 bg-[radial-gradient(circle_at_top,rgba(212,175,55,.08),rgba(0,0,0,.7)_48%)] p-3">
+                  <img src={SCANNER_IMG} alt="SLC Trench Scanner" className="w-full rounded-[1.45rem] border border-yellow-400/10 object-cover" />
+                </div>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
-                {[
-                  [Zap, "Real-Time Alerts", "Movement surfaced as it happens — not after the timeline finds it."],
-                  [Radar, "Momentum Tracking", "Automated monitoring follows calls as market cap expands."],
-                  [BarChart3, "Performance Proof", "Scanner calls are tracked and measured instead of forgotten."],
-                  [ShieldCheck, "Signal Over Noise", "Built around information from inside the SLC ecosystem."],
-                ].map(([Icon, title, text]) => (
-                  <div key={title} className="premium-card rounded-2xl p-6">
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl border border-yellow-400/20 bg-yellow-400/[.07] text-yellow-300">
-                      <Icon className="h-5 w-5" />
+              <div className="order-1 lg:order-2">
+                <Eyebrow>SLC Trench Scanner</Eyebrow>
+                <h2 className="max-w-xl text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">
+                  Early movement. Clean presentation. Decisions still yours.
+                </h2>
+                <p className="mt-6 max-w-xl leading-7 text-zinc-400">
+                  The trenches are full of noise, scams, false conviction and recycled calls. The Scanner is built to surface movement as it appears — fast enough to matter, structured enough to use.
+                </p>
+                <p className="mt-4 max-w-xl leading-7 text-zinc-400">
+                  It does not tell you what to buy. It gives you more information when it is time to decide.
+                </p>
+
+                <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                  {[
+                    [Zap, "Real-Time Alerts", "Movement surfaced while it is forming — not after the feed notices it."],
+                    [Radar, "Momentum Tracking", "Scanner calls are monitored as market cap expands."],
+                    [BarChart3, "Performance Proof", "Results are measured and reported instead of forgotten."],
+                    [ShieldCheck, "Signal Over Noise", "Built around intelligence inside the SLC ecosystem."],
+                  ].map(([Icon, title, text]) => (
+                    <div key={title} className="premium-card rounded-2xl p-5">
+                      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-yellow-400/20 bg-yellow-400/[.07] text-yellow-300">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="font-bold text-white">{title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-zinc-500">{text}</p>
                     </div>
-                    <h3 className="font-bold text-white">{title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-zinc-500">{text}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </Container>
@@ -192,16 +211,19 @@ export default function App() {
           <Container>
             <div className="mx-auto max-w-3xl text-center">
               <Eyebrow>Tracked. Not cherry-picked.</Eyebrow>
-              <h2 className="text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">The numbers speak.</h2>
+              <h2 className="text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">Proof over promises.</h2>
               <p className="mx-auto mt-5 max-w-2xl leading-7 text-zinc-400">
-                Recent performance across finalized Scanner calls. Every call is measured from scanner entry to its highest validated market cap during the completed tracking window.
+                Recent performance across finalized Scanner calls. Measured from scanner entry to the highest validated market cap observed during the completed tracking window.
               </p>
             </div>
 
-            <div className="mx-auto mt-12 max-w-5xl overflow-hidden rounded-3xl border border-yellow-400/15 bg-black/45 shadow-[0_30px_100px_rgba(0,0,0,.45)]">
-              <div className="border-b border-white/[.06] px-6 py-5 sm:px-8">
+            <div className="mx-auto mt-12 max-w-6xl overflow-hidden rounded-3xl border border-yellow-400/15 bg-black/55 shadow-[0_30px_100px_rgba(0,0,0,.45)]">
+              <div className="border-b border-yellow-400/[.08] px-6 py-5 sm:px-8">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="text-sm font-bold text-white">SLC Scanner Performance</div>
+                  <div className="flex items-center gap-3 text-sm font-bold text-white">
+                    <img src={LOGO_IMG} alt="SLC" className="h-7 w-7 rounded-full border border-yellow-400/20 object-cover" />
+                    SLC Scanner Performance
+                  </div>
                   <div className="text-xs uppercase tracking-[.18em] text-zinc-600">{PERFORMANCE.period}</div>
                 </div>
               </div>
@@ -213,8 +235,8 @@ export default function App() {
                 <Stat value={PERFORMANCE.threeX} label="Reached 3x" />
               </div>
 
-              <div className="grid border-t border-white/[.06] lg:grid-cols-[.72fr_1.28fr]">
-                <div className="border-b border-white/[.06] px-6 py-7 sm:px-8 lg:border-b-0 lg:border-r">
+              <div className="grid border-t border-yellow-400/[.08] lg:grid-cols-[.72fr_1.28fr]">
+                <div className="border-b border-yellow-400/[.08] px-6 py-7 sm:px-8 lg:border-b-0 lg:border-r">
                   <div className="text-xs font-bold uppercase tracking-[.16em] text-zinc-500">Outcome Distribution</div>
                   <div className="mt-5 space-y-4">
                     {[
@@ -252,14 +274,14 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="border-t border-white/[.06] px-6 py-4 text-center text-[10px] uppercase tracking-[.13em] text-zinc-700 sm:px-8">
+              <div className="border-t border-yellow-400/[.08] px-6 py-4 text-center text-[10px] uppercase tracking-[.13em] text-zinc-700 sm:px-8">
                 Current tracker uses validated 30-second observations • Historical performance does not guarantee future results
               </div>
             </div>
           </Container>
         </Section>
 
-        <Section id="ecosystem" className="border-y border-white/[.06] bg-black/25">
+        <Section id="ecosystem" className="border-y border-yellow-400/[.08] bg-black/25">
           <Container>
             <div className="mx-auto max-w-3xl text-center">
               <Eyebrow>One ecosystem</Eyebrow>
@@ -289,7 +311,7 @@ export default function App() {
                 <Button href={FLOOR_URL} variant="dark" className="mt-8 w-full">Join the Floor</Button>
               </div>
 
-              <div className="relative flex flex-col rounded-3xl border border-yellow-400/30 bg-[linear-gradient(180deg,rgba(212,175,55,.10),rgba(255,255,255,.025))] p-7 shadow-[0_0_60px_rgba(212,175,55,.08)]">
+              <div className="relative flex flex-col rounded-3xl border border-yellow-400/30 bg-[linear-gradient(180deg,rgba(212,175,55,.12),rgba(255,255,255,.025))] p-7 shadow-[0_0_60px_rgba(212,175,55,.08)]">
                 <div className="absolute right-5 top-5 rounded-full border border-yellow-400/25 bg-yellow-400/[.08] px-3 py-1 text-[9px] font-black uppercase tracking-[.18em] text-yellow-300">Flagship</div>
                 <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-xl border border-yellow-400/25 bg-yellow-400/[.08]">
                   <Zap className="h-5 w-5 text-yellow-300" />
@@ -299,10 +321,10 @@ export default function App() {
                   <div className="text-3xl font-black text-white">$44.99</div>
                   <div className="pb-1 text-xs text-zinc-500">/ month</div>
                 </div>
-                <p className="mt-4 min-h-[72px] text-sm leading-6 text-zinc-400">
-                  Live Scanner access for traders who want the information when it happens — not after.
+                <p className="mt-4 min-h-[72px] text-sm leading-6 text-zinc-300">
+                  Live Scanner access for traders who want the information when it matters — without the public lag.
                 </p>
-                <ul className="mt-6 space-y-3 text-sm text-zinc-300">
+                <ul className="mt-6 space-y-3 text-sm text-zinc-200">
                   {["Real-time scanner", "Wallet alerts", "Scanner discussion", "Performance results"].map((item) => (
                     <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>
                   ))}
@@ -336,28 +358,32 @@ export default function App() {
 
         <Section id="access">
           <Container>
-            <div className="relative overflow-hidden rounded-3xl border border-yellow-400/20 bg-black/50 px-6 py-12 text-center shadow-[0_30px_100px_rgba(0,0,0,.4)] sm:px-12 sm:py-16">
+            <div className="relative overflow-hidden rounded-3xl border border-yellow-400/20 bg-black/55 px-6 py-12 text-center shadow-[0_30px_100px_rgba(0,0,0,.4)] sm:px-12 sm:py-16">
+              <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url(${BANNER_IMG})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+              <div className="absolute inset-0 bg-black/65" />
               <div className="absolute left-1/2 top-0 h-36 w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-400/[.10] blur-[70px]" />
-              <Sparkles className="mx-auto h-6 w-6 text-yellow-300" />
-              <h2 className="relative mt-5 text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">SLC is just getting started.</h2>
-              <p className="relative mx-auto mt-5 max-w-xl leading-7 text-zinc-400">
-                Join the Floor now. Be there when Scanner Pro opens to the public.
-              </p>
-              <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button href={FLOOR_URL}>Join the SLC Floor <ArrowRight className="h-4 w-4" /></Button>
-                <Button href={SCANNER_PRO_URL} variant="dark">Scanner Pro</Button>
+              <div className="relative">
+                <Sparkles className="mx-auto h-6 w-6 text-yellow-300" />
+                <h2 className="mt-5 text-4xl font-black tracking-[-.035em] text-white sm:text-5xl">SLC is just getting started.</h2>
+                <p className="mx-auto mt-5 max-w-xl leading-7 text-zinc-300">
+                  Join the Floor now. Be there when Scanner Pro opens to the public.
+                </p>
+                <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                  <Button href={FLOOR_URL}>Join the SLC Floor <ArrowRight className="h-4 w-4" /></Button>
+                  <Button href={SCANNER_PRO_URL} variant="dark">Scanner Pro</Button>
+                </div>
               </div>
             </div>
           </Container>
         </Section>
       </main>
 
-      <footer className="relative z-10 border-t border-white/[.06] bg-black/20">
+      <footer className="relative z-10 border-t border-yellow-400/[.08] bg-black/20">
         <Container>
           <div className="flex flex-col gap-7 py-10 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="flex items-center gap-3">
-                <img src={HERO_IMG} alt="SLC" className="h-8 w-8 rounded-full border border-yellow-400/20 object-cover" />
+                <img src={LOGO_IMG} alt="SLC" className="h-9 w-9 rounded-full border border-yellow-400/20 object-cover" />
                 <span className="text-sm font-bold text-white">Steez Liquidity Cartel</span>
               </div>
               <p className="mt-4 max-w-xl text-xs leading-5 text-zinc-600">
