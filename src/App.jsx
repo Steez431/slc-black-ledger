@@ -5,13 +5,10 @@ import {
   BarChart3,
   Check,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Clock3,
   Database,
   Eye,
   Fingerprint,
-  Images,
   Layers3,
   LockKeyhole,
   Radar,
@@ -72,26 +69,6 @@ const PERFORMANCE = {
   },
 };
 
-const WINS = [
-  { symbol: "$SMPL", gain: "+8,786%", image: "/assets/wins/smpl-8786.webp" },
-  { symbol: "$PITCOIN", gain: "+3,360%", image: "/assets/wins/pitcoin-3360.webp" },
-  { symbol: "$MAODIE", gain: "+2,015%", image: "/assets/wins/maodie-2015.webp" },
-  { symbol: "$STRAIGHT", gain: "+1,870%", image: "/assets/wins/straight-1870.webp" },
-  { symbol: "$JIMOTHY", gain: "+1,483%", image: "/assets/wins/jimothy-1483.webp" },
-  { symbol: "$LINGANG", gain: "+945%", image: "/assets/wins/lingang-945.webp" },
-  { symbol: "$QUBIT", gain: "+925%", image: "/assets/wins/qubit-925.webp" },
-  { symbol: "$BOND", gain: "+909%", image: "/assets/wins/bond-909.webp" },
-  { symbol: "$USD", gain: "+696%", image: "/assets/wins/usd-696.webp" },
-  { symbol: "$ACTBLUE", gain: "+659%", image: "/assets/wins/actblue-659.webp" },
-  { symbol: "$8B", gain: "+652%", image: "/assets/wins/8b-652.webp" },
-  { symbol: "$MEM", gain: "+603%", image: "/assets/wins/mem-603.webp" },
-  { symbol: "$JIWA", gain: "+578%", image: "/assets/wins/jiwa-578.webp" },
-  { symbol: "$PIMP", gain: "+543%", image: "/assets/wins/pimp-543.webp" },
-  { symbol: "$APEX", gain: "+509%", image: "/assets/wins/apex-509.webp" },
-  { symbol: "$POGE", gain: "+449%", image: "/assets/wins/poge-449.webp" },
-  { symbol: "$BLINDAPE", gain: "+397%", image: "/assets/wins/blindape-397.webp" },
-  { symbol: "$SCG", gain: "+384%", image: "/assets/wins/scg-384.webp" },
-];
 
 const formatUsd = (value) => `$${Number(value).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 
@@ -502,155 +479,6 @@ function PerformanceLedger() {
   );
 }
 
-function WinsArchive() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [ref, visible] = useInViewOnce(0.08);
-  const total = WINS.length;
-
-  const goTo = (index) => setActiveIndex((index + total) % total);
-  const previousIndex = (activeIndex - 1 + total) % total;
-  const nextIndex = (activeIndex + 1) % total;
-
-  useEffect(() => {
-    if (!visible || paused) return;
-    const timer = window.setInterval(() => {
-      setActiveIndex((index) => (index + 1) % total);
-    }, 4800);
-    return () => window.clearInterval(timer);
-  }, [visible, paused, total]);
-
-  useEffect(() => {
-    const onKeyDown = (event) => {
-      if (event.key === "ArrowLeft") goTo(activeIndex - 1);
-      if (event.key === "ArrowRight") goTo(activeIndex + 1);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeIndex]);
-
-  const activeWin = WINS[activeIndex];
-  const previousWin = WINS[previousIndex];
-  const nextWin = WINS[nextIndex];
-
-  return (
-    <div
-      ref={ref}
-      className="wins-archive relative mt-12 overflow-hidden rounded-[2rem] border border-yellow-400/16 bg-[#060704]/95 px-4 py-5 shadow-[0_40px_110px_rgba(0,0,0,.5)] sm:px-6 sm:py-6"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div className="wins-grid pointer-events-none absolute inset-0 opacity-45" />
-      <div className="wins-scan pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-300/65 to-transparent" />
-
-      <div className="relative flex flex-col gap-4 border-b border-yellow-400/[.08] pb-5 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-yellow-400/20 bg-yellow-400/[.055] text-yellow-300">
-            <Images className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="text-sm font-black text-white">SLC W Archive</div>
-            <div className="mt-1 font-mono text-[8px] uppercase tracking-[.16em] text-zinc-700">Community-shared screenshots // rotating proof layer</div>
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-lg border border-white/[.055] bg-black/35 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[.14em] text-zinc-600">{total} captures</span>
-          <span className="inline-flex items-center gap-2 rounded-lg border border-emerald-400/10 bg-emerald-400/[.025] px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[.14em] text-emerald-300/70">
-            <span className="status-dot h-1.5 w-1.5 rounded-full bg-emerald-300" />
-            {paused ? "Paused" : "Auto rotation"}
-          </span>
-        </div>
-      </div>
-
-      <div className="wins-stage relative mt-6 grid items-center gap-4 lg:grid-cols-[.56fr_1fr_.56fr] lg:gap-5">
-        <button
-          type="button"
-          onClick={() => goTo(activeIndex - 1)}
-          className="wins-side-card wins-side-left group hidden overflow-hidden rounded-[1.5rem] border border-white/[.055] bg-black/55 p-2 text-left lg:block"
-          aria-label={`View previous SLC W: ${previousWin.symbol}`}
-        >
-          <div className="relative h-[340px] overflow-hidden rounded-[1.15rem] bg-black/80">
-            <img src={previousWin.image} alt={`${previousWin.symbol} SLC W`} className="h-full w-full object-contain opacity-55 transition duration-300 group-hover:opacity-80" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-black/20" />
-            <div className="absolute bottom-4 left-4">
-              <div className="text-xs font-black text-zinc-400">{previousWin.symbol}</div>
-              <div className="mt-1 text-lg font-black text-yellow-300/60">{previousWin.gain}</div>
-            </div>
-          </div>
-        </button>
-
-        <div key={activeWin.image} className="wins-active-card relative overflow-hidden rounded-[1.7rem] border border-yellow-400/18 bg-black/70 p-2.5 shadow-[0_28px_80px_rgba(0,0,0,.48),0_0_60px_rgba(212,175,55,.035)]">
-          <div className="relative flex h-[430px] items-center justify-center overflow-hidden rounded-[1.25rem] border border-white/[.045] bg-[#030403] sm:h-[500px]">
-            <img src={activeWin.image} alt={`${activeWin.symbol} SLC community W`} className="wins-active-image max-h-full w-full object-contain" />
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
-            <div className="wins-image-scan pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-300/55 to-transparent" />
-
-            <div className="absolute left-4 top-4 flex items-center gap-2 rounded-lg border border-yellow-400/12 bg-black/65 px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[.14em] text-zinc-500 backdrop-blur-md">
-              Capture {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </div>
-
-            <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4 sm:bottom-5 sm:left-5 sm:right-5">
-              <div>
-                <div className="text-lg font-black text-white sm:text-xl">{activeWin.symbol}</div>
-                <div className="mt-1 font-mono text-[8px] uppercase tracking-[.16em] text-zinc-600">Shared inside SLC</div>
-              </div>
-              <div className="wins-gain text-3xl font-black tracking-[-.04em] text-yellow-300 sm:text-4xl">{activeWin.gain}</div>
-            </div>
-          </div>
-
-          <div className="mt-2 h-0.5 overflow-hidden rounded-full bg-white/[.04]">
-            <div key={`${activeIndex}-${paused}`} className="wins-progress h-full bg-gradient-to-r from-[#8f6510] via-[#d4af37] to-[#f7dc7a]" style={{ animationPlayState: paused ? "paused" : "running" }} />
-          </div>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => goTo(activeIndex + 1)}
-          className="wins-side-card wins-side-right group hidden overflow-hidden rounded-[1.5rem] border border-white/[.055] bg-black/55 p-2 text-left lg:block"
-          aria-label={`View next SLC W: ${nextWin.symbol}`}
-        >
-          <div className="relative h-[340px] overflow-hidden rounded-[1.15rem] bg-black/80">
-            <img src={nextWin.image} alt={`${nextWin.symbol} SLC W`} className="h-full w-full object-contain opacity-55 transition duration-300 group-hover:opacity-80" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-l from-black/55 via-transparent to-black/20" />
-            <div className="absolute bottom-4 right-4 text-right">
-              <div className="text-xs font-black text-zinc-400">{nextWin.symbol}</div>
-              <div className="mt-1 text-lg font-black text-yellow-300/60">{nextWin.gain}</div>
-            </div>
-          </div>
-        </button>
-      </div>
-
-      <div className="relative mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={() => goTo(activeIndex - 1)} className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[.06] bg-white/[.018] text-zinc-500 transition hover:border-yellow-400/20 hover:text-yellow-300" aria-label="Previous SLC W">
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button type="button" onClick={() => goTo(activeIndex + 1)} className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[.06] bg-white/[.018] text-zinc-500 transition hover:border-yellow-400/20 hover:text-yellow-300" aria-label="Next SLC W">
-            <ChevronRight className="h-4 w-4" />
-          </button>
-          <div className="ml-2 flex items-center gap-1.5">
-            {WINS.map((win, index) => (
-              <button
-                key={win.image}
-                type="button"
-                onClick={() => goTo(index)}
-                aria-label={`View ${win.symbol}`}
-                className={`h-1.5 rounded-full transition-all ${index === activeIndex ? "w-6 bg-yellow-300" : "w-1.5 bg-zinc-800 hover:bg-zinc-600"}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        <p className="max-w-xl text-[10px] leading-5 text-zinc-700 sm:text-right">
-          Community-shared screenshots are shown as received. Individual outcomes vary. SLC does not execute trades or guarantee results.
-        </p>
-      </div>
-    </div>
-  );
-}
-
 function MethodStep({ number, icon: Icon, title, children, final = false }) {
   return (
     <div className="relative flex gap-5 pb-8 last:pb-0">
@@ -713,7 +541,6 @@ export default function App() {
             <nav className="hidden items-center gap-6 text-[10px] font-bold uppercase tracking-[.12em] text-zinc-500 lg:flex">
               <a href="#scanner" className="transition hover:text-white">Scanner</a>
               <a href="#performance" className="transition hover:text-white">Performance</a>
-              <a href="#wins" className="transition hover:text-white">W's</a>
               <a href="#methodology" className="transition hover:text-white">Methodology</a>
               <a href="#ecosystem" className="transition hover:text-white">Ecosystem</a>
               <a href="#trust" className="transition hover:text-white">Trust</a>
@@ -847,21 +674,6 @@ export default function App() {
           </Container>
         </Section>
 
-        <Section id="wins" className="border-y border-yellow-400/[.07] bg-black/20">
-          <Container>
-            <div className="mx-auto max-w-3xl text-center">
-              <Eyebrow icon={Images}>SLC W's</Eyebrow>
-              <h2 className="text-balance text-4xl font-black tracking-[-.04em] text-white sm:text-6xl">
-                The stats tell one side. <span className="gold-text">These are the W's.</span>
-              </h2>
-              <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-zinc-400">
-                Screenshots get shared back inside SLC every week. I wanted a piece of that history on the site too.
-              </p>
-            </div>
-
-            <WinsArchive />
-          </Container>
-        </Section>
 
         <Section id="methodology" className="border-y border-yellow-400/[.07] bg-black/20">
           <Container>
