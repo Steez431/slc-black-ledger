@@ -807,7 +807,7 @@ export default function App() {
                 <div className="absolute right-5 top-5 rounded-full border border-yellow-400/20 bg-yellow-400/[.07] px-3 py-1 font-mono text-[8px] font-black uppercase tracking-[.18em] text-yellow-300">Flagship</div>
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-yellow-400/25 bg-yellow-400/[.075]"><Zap className="h-5 w-5 text-yellow-300" /></div>
                 <h3 className="mt-7 text-2xl font-black text-white">Scanner Pro</h3>
-                <div className="mt-2 flex items-end gap-2"><span className="text-3xl font-black text-white">$44.99</span><span className="pb-1 text-xs text-zinc-600">/ month</span></div>
+                <div className="mt-2 flex items-end gap-2"><span className="text-3xl font-black text-white">0.5 SOL</span><span className="pb-1 text-xs text-zinc-600">/ month</span></div>
                 <p className="mt-4 min-h-[72px] text-sm leading-6 text-zinc-300">Live Scanner access for traders who want the intelligence when it has the most time value.</p>
                 <ul className="mt-6 space-y-3 text-sm text-zinc-200">
                   {["Real-time scanner", "Scanner discussion", "Performance results"].map((item) => <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>)}
