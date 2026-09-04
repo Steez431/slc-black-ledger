@@ -26,9 +26,9 @@ const LOGO_IMG = "/assets/slc-logo.webp";
 const BANNER_IMG = "/assets/slc-banner-2026.webp";
 const SCANNER_IMG = "/assets/slc-trench-scanner.webp";
 
-// Public-access links stay intentionally closed until launch.
-const FLOOR_URL = "#access";
-const SCANNER_PRO_URL = "#access";
+// Public access
+const FLOOR_URL = "https://discord.gg/uFEYEfS9w";
+const SCANNER_PRO_URL = "https://moonpay.hel.io/pay/6a9358d423f54aeb74d19151";
 
 const PERFORMANCE = {
   "7d": {
@@ -86,9 +86,13 @@ const Button = ({ href, children, variant = "gold", className = "" }) => {
     dark: "border-yellow-400/15 bg-black/45 text-white hover:border-yellow-400/35 hover:bg-black/70",
   };
 
+  const isExternal = /^https?:\/\//i.test(href || "");
+
   return (
     <a
       href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
       className={`inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-3 text-sm font-semibold transition duration-200 ${variants[variant]} ${className}`}
     >
       {children}
@@ -572,7 +576,7 @@ export default function App() {
 
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row">
                   <Button href={SCANNER_PRO_URL}>
-                    Explore Scanner Pro <ArrowRight className="h-4 w-4" />
+                    Get Scanner Pro <ArrowRight className="h-4 w-4" />
                   </Button>
                   <Button href="#performance" variant="dark">
                     View performance
@@ -882,13 +886,13 @@ export default function App() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,.11),rgba(0,0,0,.84)_58%)]" />
               <div className="relative mx-auto max-w-3xl">
                 <img src={LOGO_IMG} alt="SLC" className="mx-auto h-16 w-16 rounded-full border border-yellow-400/20 object-cover shadow-[0_0_45px_rgba(212,175,55,.16)]" />
-                <div className="mt-6 text-[9px] font-black uppercase tracking-[.22em] text-yellow-300/75">Public access // preparing launch</div>
+                <div className="mt-6 text-[9px] font-black uppercase tracking-[.22em] text-yellow-300/75">Public access // live</div>
                 <h2 className="mt-4 text-balance text-4xl font-black tracking-[-.045em] text-white sm:text-6xl">The trenches will stay chaotic.</h2>
                 <p className="gold-text mt-1 text-balance text-4xl font-black tracking-[-.045em] sm:text-6xl">Your information does not have to.</p>
-                <p className="mx-auto mt-6 max-w-xl leading-7 text-zinc-400">The Floor is the front door. Scanner Pro is the intelligence layer built for speed. Access links will open when the public release is ready.</p>
+                <p className="mx-auto mt-6 max-w-xl leading-7 text-zinc-400">The Floor is the front door. Scanner Pro is the intelligence layer built for speed. Choose where you want to enter.</p>
                 <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
                   <Button href={FLOOR_URL}>SLC Floor <ArrowRight className="h-4 w-4" /></Button>
-                  <Button href={SCANNER_PRO_URL} variant="dark">Scanner Pro — Soon</Button>
+                  <Button href={SCANNER_PRO_URL} variant="dark">Get Scanner Pro <ArrowRight className="h-4 w-4" /></Button>
                 </div>
               </div>
             </div>
