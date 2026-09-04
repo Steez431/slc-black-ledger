@@ -29,42 +29,49 @@ const SCANNER_IMG = "/assets/slc-trench-scanner.webp";
 // Public access
 const FLOOR_URL = "https://discord.gg/uFEYEfS9w";
 const SCANNER_PRO_URL = "https://moonpay.hel.io/pay/6a9358d423f54aeb74d19151";
+const STEEZ_X_URL = "https://x.com/431Steez";
 
 const PERFORMANCE = {
   "7d": {
     label: "7D",
     sublabel: "Last 7 Days",
-    refresh: "Updated weekly",
-    finalized: 296,
+    refresh: "Current finalized window",
+    finalized: 601,
+    unique: 520,
     outcomes: [
-      { label: "1.5x+", count: 153, rate: 51.69 },
-      { label: "2x+", count: 108, rate: 36.49 },
-      { label: "3x+", count: 57, rate: 19.26 },
-      { label: "5x+", count: 28, rate: 9.46 },
-      { label: "10x+", count: 13, rate: 4.39 },
+      { label: "1.5x+", count: 316, rate: 52.58 },
+      { label: "2x+", count: 227, rate: 37.77 },
+      { label: "3x+", count: 128, rate: 21.30 },
+      { label: "5x+", count: 68, rate: 11.31 },
+      { label: "10x+", count: 27, rate: 4.49 },
+      { label: "25x+", count: 7, rate: 1.16 },
+      { label: "50x+", count: 5, rate: 0.83 },
     ],
     topCalls: [
-      { symbol: "$BULLSHIT", multiple: 55.71, entry: 78755, high: 4387558 },
-      { symbol: "$PATE", multiple: 53.32, entry: 10751, high: 573274 },
-      { symbol: "$KIRK", multiple: 40.0, entry: 127928, high: 5117681 },
+      { symbol: "$BalledEagle", multiple: 234.80, entry: 3897, high: 915010 },
+      { symbol: "$CHAM", multiple: 153.33, entry: 16916, high: 2593726 },
+      { symbol: "$chair", multiple: 120.30, entry: 7206, high: 866855 },
     ],
   },
   "30d": {
     label: "30D",
     sublabel: "Last 30 Days",
-    refresh: "Updated monthly",
-    finalized: 825,
+    refresh: "Current finalized window",
+    finalized: 1499,
+    unique: 1282,
     outcomes: [
-      { label: "1.5x+", count: 405, rate: 49.09 },
-      { label: "2x+", count: 272, rate: 32.97 },
-      { label: "3x+", count: 143, rate: 17.33 },
-      { label: "5x+", count: 62, rate: 7.52 },
-      { label: "10x+", count: 26, rate: 3.15 },
+      { label: "1.5x+", count: 746, rate: 49.77 },
+      { label: "2x+", count: 514, rate: 34.29 },
+      { label: "3x+", count: 282, rate: 18.81 },
+      { label: "5x+", count: 136, rate: 9.07 },
+      { label: "10x+", count: 53, rate: 3.54 },
+      { label: "25x+", count: 15, rate: 1.00 },
+      { label: "50x+", count: 9, rate: 0.60 },
     ],
     topCalls: [
+      { symbol: "$BalledEagle", multiple: 234.80, entry: 3897, high: 915010 },
       { symbol: "$CHAM", multiple: 153.33, entry: 16916, high: 2593726 },
-      { symbol: "$PITCOIN", multiple: 99.18, entry: 8317, high: 824871 },
-      { symbol: "$BULLSHIT", multiple: 55.71, entry: 78755, high: 4387558 },
+      { symbol: "$chair", multiple: 120.30, entry: 7206, high: 866855 },
     ],
   },
 };
@@ -366,6 +373,7 @@ function PerformanceLedger() {
                   <CountUp value={data.finalized} active={visible} />
                 </div>
                 <div className="mt-2 text-xs text-zinc-600">{data.sublabel} · {data.refresh}</div>
+                <div className="mt-1 font-mono text-[9px] uppercase tracking-[.12em] text-zinc-700">{data.unique.toLocaleString()} unique CAs</div>
               </div>
 
               <div className="sm:col-span-2 sm:border-l sm:border-white/[.055] sm:pl-8">
@@ -583,19 +591,6 @@ export default function App() {
                   </Button>
                 </div>
 
-                <div className="mt-8 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/[.055] bg-white/[.055] sm:grid-cols-4">
-                  {[
-                    ["30s", "Validated observation"],
-                    ["72h", "Tracking window"],
-                    ["7D / 30D", "Public ledger"],
-                    ["0", "Trade execution"],
-                  ].map(([value, label]) => (
-                    <div key={label} className="bg-[#060704]/92 px-4 py-4">
-                      <div className="text-lg font-black text-white">{value}</div>
-                      <div className="mt-1 text-[8px] uppercase tracking-[.12em] text-zinc-700">{label}</div>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               <HeroVisual />
@@ -686,7 +681,7 @@ export default function App() {
                 <Eyebrow icon={Fingerprint}>Measurement methodology</Eyebrow>
                 <h2 className="text-4xl font-black tracking-[-.04em] text-white sm:text-5xl">Transparent where it matters.</h2>
                 <p className="mt-6 max-w-xl leading-7 text-zinc-400">
-                  The source layer is proprietary. The measurement layer is not. Once an eligible contract surfaces through SLC, the performance process follows the same rules.
+                  The source layer is proprietary. The measurement layer is not. Once an eligible contract surfaces through the SLC, the performance process follows the same rules.
                 </p>
 
                 <div className="mt-8 rounded-2xl border border-yellow-400/12 bg-yellow-400/[.025] p-5">
@@ -815,7 +810,7 @@ export default function App() {
                 <div className="mt-2 flex items-end gap-2"><span className="text-3xl font-black text-white">$44.99</span><span className="pb-1 text-xs text-zinc-600">/ month</span></div>
                 <p className="mt-4 min-h-[72px] text-sm leading-6 text-zinc-300">Live Scanner access for traders who want the intelligence when it has the most time value.</p>
                 <ul className="mt-6 space-y-3 text-sm text-zinc-200">
-                  {["Real-time scanner", "Wallet alerts", "Scanner discussion", "Performance results"].map((item) => <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>)}
+                  {["Real-time scanner", "Scanner discussion", "Performance results"].map((item) => <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>)}
                 </ul>
                 <Button href={SCANNER_PRO_URL} className="mt-8 w-full">Scanner Pro <ArrowRight className="h-4 w-4" /></Button>
               </div>
@@ -826,11 +821,14 @@ export default function App() {
                   <span className="font-mono text-[8px] uppercase tracking-[.18em] text-zinc-700">Layer 03 // Selective</span>
                 </div>
                 <h3 className="mt-7 text-2xl font-black text-white">Black Ledger</h3>
-                <p className="mt-3 min-h-[72px] text-sm leading-6 text-zinc-500">The private intelligence layer inside SLC. Built around trusted contributors, research and conviction.</p>
+                <p className="mt-3 min-h-[72px] text-sm leading-6 text-zinc-500">The private intelligence layer inside SLC. Access is strictly vetted and reserved for people who fit the room.</p>
                 <ul className="mt-6 space-y-3 text-sm text-zinc-400">
-                  {["Private intelligence", "Research layer", "Referral + vetting"].map((item) => <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>)}
+                  {["Private intelligence", "Research layer", "Referral + application", "Strictly vetted"].map((item) => <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-yellow-300" />{item}</li>)}
                 </ul>
-                <div className="mt-8 rounded-xl border border-white/[.06] bg-black/30 px-4 py-3 text-center text-[10px] font-black uppercase tracking-[.12em] text-zinc-600">Not publicly sold</div>
+                <div className="mt-8 space-y-3">
+                  <div className="rounded-xl border border-white/[.06] bg-black/30 px-4 py-3 text-center text-[10px] font-black uppercase tracking-[.12em] text-zinc-600">Not publicly sold</div>
+                  <Button href={STEEZ_X_URL} variant="dark" className="w-full">DM Steez on X to inquire <ArrowRight className="h-4 w-4" /></Button>
+                </div>
               </div>
             </div>
           </Container>
