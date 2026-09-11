@@ -27,7 +27,7 @@ const BANNER_IMG = "/assets/slc-banner-2026.webp";
 const SCANNER_IMG = "/assets/slc-trench-scanner.webp";
 
 // Public access
-const FLOOR_URL = "https://discord.gg/uFEYEfS9w";
+const FLOOR_URL = "https://discord.gg/eYJvzWDqUw";
 const SCANNER_PRO_URL = "https://moonpay.hel.io/pay/6a9358d423f54aeb74d19151";
 const STEEZ_X_URL = "https://x.com/431Steez";
 
@@ -49,7 +49,7 @@ const PERFORMANCE = {
     ],
     topCalls: [
       { symbol: "$PURR", multiple: 216.37, entry: 86912, high: 18804809 },
-      { symbol: "$SAGI", multiple: 66.30, entry: 174483, high: 11568054 },
+      { symbol: "$AGI", multiple: 66.30, entry: 174483, high: 11568054 },
       { symbol: "$MEME", multiple: 48.78, entry: 3027893, high: 147695557 },
     ],
   },
@@ -583,8 +583,8 @@ export default function App() {
                 </p>
 
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                  <Button href={SCANNER_PRO_URL}>
-                    Get Scanner Pro <ArrowRight className="h-4 w-4" />
+                  <Button href="#scanner">
+                    Explore the Scanner <ArrowRight className="h-4 w-4" />
                   </Button>
                   <Button href="#performance" variant="dark">
                     View performance
