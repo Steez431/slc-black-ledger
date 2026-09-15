@@ -11,6 +11,7 @@ import {
   Fingerprint,
   Layers3,
   LockKeyhole,
+  Newspaper,
   Radar,
   ScanLine,
   ShieldCheck,
@@ -21,6 +22,9 @@ import {
   Wallet,
   Zap,
 } from "lucide-react";
+
+import { LATEST_MARKET_BRIEF, getMarketBrief } from "./marketBriefs";
+import { MarketBriefArchive, MarketBriefArticle } from "./MarketBriefs";
 
 const LOGO_IMG = "/assets/slc-logo.webp";
 const BANNER_IMG = "/assets/slc-banner-2026.webp";
@@ -522,6 +526,55 @@ function TrustCard({ icon: Icon, label, title, children }) {
   );
 }
 
+function LatestMarketBrief() {
+  const brief = LATEST_MARKET_BRIEF;
+
+  return (
+    <Section id="market-brief" className="border-y border-yellow-400/[.07] bg-black/20">
+      <Container>
+        <div className="grid items-center gap-10 lg:grid-cols-[.78fr_1.22fr] lg:gap-16">
+          <div>
+            <Eyebrow icon={Newspaper}>SLC Weekly Market Brief</Eyebrow>
+            <h2 className="text-balance text-4xl font-black tracking-[-.04em] text-white sm:text-5xl">
+              Context for the week ahead.
+            </h2>
+            <p className="mt-5 max-w-xl text-base leading-7 text-zinc-400">
+              Every Monday, SLC publishes a concise look at the Solana memecoin ecosystem — what changed, what matters, and what we are watching next.
+            </p>
+            <div className="mt-7">
+              <Button href="/market-briefs" variant="dark">
+                View market brief archive <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          <div className="rounded-[1.8rem] border border-yellow-400/14 bg-[#070805]/90 p-6 sm:p-8">
+            {brief ? (
+              <>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="text-[9px] font-black uppercase tracking-[.18em] text-yellow-300/75">Latest brief {brief.issue ? `// #${brief.issue}` : ''}</div>
+                  <div className="font-mono text-[9px] uppercase tracking-[.14em] text-zinc-700">{brief.displayDate}</div>
+                </div>
+                <h3 className="mt-5 text-2xl font-black tracking-[-.025em] text-white sm:text-3xl">{brief.title}</h3>
+                {brief.excerpt && <p className="mt-4 text-sm leading-6 text-zinc-500">{brief.excerpt}</p>}
+                <a href={`/market-briefs/${brief.slug}`} className="mt-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[.14em] text-yellow-300 transition hover:text-yellow-200">
+                  Read this week&apos;s brief <ArrowRight className="h-3.5 w-3.5" />
+                </a>
+              </>
+            ) : (
+              <>
+                <div className="text-[9px] font-black uppercase tracking-[.18em] text-yellow-300/75">Every Monday</div>
+                <h3 className="mt-5 text-2xl font-black tracking-[-.025em] text-white sm:text-3xl">First brief incoming.</h3>
+                <p className="mt-4 text-sm leading-6 text-zinc-500">The weekly SLC Market Brief will appear here as soon as the first issue is published.</p>
+              </>
+            )}
+          </div>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
 function FAQItem({ question, children }) {
   return (
     <details className="faq-item group border-b border-white/[.055] py-5 last:border-0">
@@ -535,6 +588,17 @@ function FAQItem({ question, children }) {
 }
 
 export default function App() {
+  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+
+  if (pathname === "/market-briefs") {
+    return <MarketBriefArchive />;
+  }
+
+  if (pathname.startsWith("/market-briefs/")) {
+    const slug = decodeURIComponent(pathname.split("/").filter(Boolean).pop() || "");
+    return <MarketBriefArticle brief={getMarketBrief(slug)} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#030402] text-zinc-100 selection:bg-yellow-400 selection:text-black">
       <AmbientSystem />
@@ -554,6 +618,7 @@ export default function App() {
               <a href="#scanner" className="transition hover:text-white">Scanner</a>
               <a href="#performance" className="transition hover:text-white">Performance</a>
               <a href="#methodology" className="transition hover:text-white">Methodology</a>
+              <a href="/market-briefs" className="transition hover:text-white">Market Brief</a>
               <a href="#ecosystem" className="transition hover:text-white">Ecosystem</a>
               <a href="#trust" className="transition hover:text-white">Trust</a>
             </nav>
@@ -673,6 +738,7 @@ export default function App() {
           </Container>
         </Section>
 
+        <LatestMarketBrief />
 
         <Section id="methodology" className="border-y border-yellow-400/[.07] bg-black/20">
           <Container>
