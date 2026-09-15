@@ -1,45 +1,35 @@
 SLC WEEKLY MARKET BRIEF — PUBLISHING GUIDE
 
-The Market Brief system is already built into the website.
+Each Monday:
 
-EVERY MONDAY:
-
-1. Open:
-   src/content/market-briefs/
-
-2. Copy this file:
-   _TEMPLATE.md
-
-3. Rename the COPY to that Monday's date, for example:
+1. Open: src/content/market-briefs/
+2. Copy _TEMPLATE.md.
+3. Rename the copy to the Monday date, for example:
    2026-09-21.md
+4. Update the frontmatter at the top:
+   - title
+   - date
+   - slug
+   - number
+   - excerpt
+5. Paste the finished brief below the frontmatter.
+6. Save the file.
+7. Open GitHub Desktop.
+8. Commit the new file and Push origin.
+9. Cloudflare rebuilds the website automatically.
 
-   IMPORTANT: Do not leave the underscore at the beginning. Files beginning
-   with _ are templates and are intentionally hidden from the live website.
+The newest dated brief becomes the latest brief on the site automatically.
 
-4. Open your new .md file with Notepad or your code editor.
+SOCIAL / DISCORD PREVIEWS
+The build now creates a real HTML page for every market brief. Discord, X, and other social sites will see route-specific metadata such as:
 
-5. Update the five lines at the top:
-   title
-   date
-   slug
-   issue
-   excerpt
+SLC Weekly Market Brief — September 21, 2026
 
-6. Paste the week's brief underneath the second --- line.
+The main homepage keeps its normal:
+SLC — Private Intelligence. Public Proof.
 
-7. Save.
+No extra social-preview work is required when adding a new weekly Markdown file.
 
-8. Open GitHub Desktop.
-   - Summary example: Add September 21 market brief
-   - Commit to main
-   - Push origin
-
-Cloudflare will rebuild the site automatically.
-
-The website automatically:
-- sorts the newest brief first
-- updates the homepage with the latest brief
-- adds the brief to the archive
-- gives it a URL at /market-briefs/YYYY-MM-DD
-
-DO NOT edit App.jsx each Monday. Only add a new .md file.
+NOTE:
+Discord may cache an older preview. After deploying a metadata change, test the URL once with ?v=2 appended if needed, for example:
+https://www.slcblackledger.org/market-briefs/2026-09-14?v=2
