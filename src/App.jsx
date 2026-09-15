@@ -529,49 +529,35 @@ function TrustCard({ icon: Icon, label, title, children }) {
 function LatestMarketBrief() {
   const brief = LATEST_MARKET_BRIEF;
 
+  if (!brief) return null;
+
   return (
-    <Section id="market-brief" className="border-y border-yellow-400/[.07] bg-black/20">
+    <section id="market-brief" className="relative border-y border-yellow-400/[.06] bg-black/15 py-7 sm:py-8">
       <Container>
-        <div className="grid items-center gap-10 lg:grid-cols-[.78fr_1.22fr] lg:gap-16">
-          <div>
-            <Eyebrow icon={Newspaper}>SLC Weekly Market Brief</Eyebrow>
-            <h2 className="text-balance text-4xl font-black tracking-[-.04em] text-white sm:text-5xl">
-              Context for the week ahead.
-            </h2>
-            <p className="mt-5 max-w-xl text-base leading-7 text-zinc-400">
-              Every Monday, SLC publishes a concise look at the Solana memecoin ecosystem — what changed, what matters, and what we are watching next.
-            </p>
-            <div className="mt-7">
-              <Button href="/market-briefs" variant="dark">
-                View market brief archive <ArrowRight className="h-4 w-4" />
-              </Button>
+        <a
+          href={`/market-briefs/${brief.slug}`}
+          className="group flex flex-col gap-5 rounded-2xl border border-yellow-400/10 bg-yellow-400/[.025] px-5 py-5 transition hover:border-yellow-400/22 hover:bg-yellow-400/[.04] sm:flex-row sm:items-center sm:justify-between sm:px-6"
+        >
+          <div className="flex min-w-0 items-start gap-4 sm:items-center">
+            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-yellow-400/15 bg-black/45 sm:mt-0">
+              <Newspaper className="h-4.5 w-4.5 text-yellow-300" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span className="text-[9px] font-black uppercase tracking-[.18em] text-yellow-300/80">Latest SLC Market Brief</span>
+                <span className="font-mono text-[9px] uppercase tracking-[.12em] text-zinc-700">{brief.displayDate}</span>
+              </div>
+              <div className="mt-1.5 text-base font-black tracking-[-.02em] text-white sm:text-lg">{brief.title}</div>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-zinc-500 sm:text-sm">A weekly look at what changed across the Solana memecoin market and what matters heading into the week ahead.</p>
             </div>
           </div>
 
-          <div className="rounded-[1.8rem] border border-yellow-400/14 bg-[#070805]/90 p-6 sm:p-8">
-            {brief ? (
-              <>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="text-[9px] font-black uppercase tracking-[.18em] text-yellow-300/75">Latest brief {brief.issue ? `// #${brief.issue}` : ''}</div>
-                  <div className="font-mono text-[9px] uppercase tracking-[.14em] text-zinc-700">{brief.displayDate}</div>
-                </div>
-                <h3 className="mt-5 text-2xl font-black tracking-[-.025em] text-white sm:text-3xl">{brief.title}</h3>
-                {brief.excerpt && <p className="mt-4 text-sm leading-6 text-zinc-500">{brief.excerpt}</p>}
-                <a href={`/market-briefs/${brief.slug}`} className="mt-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[.14em] text-yellow-300 transition hover:text-yellow-200">
-                  Read this week&apos;s brief <ArrowRight className="h-3.5 w-3.5" />
-                </a>
-              </>
-            ) : (
-              <>
-                <div className="text-[9px] font-black uppercase tracking-[.18em] text-yellow-300/75">Every Monday</div>
-                <h3 className="mt-5 text-2xl font-black tracking-[-.025em] text-white sm:text-3xl">First brief incoming.</h3>
-                <p className="mt-4 text-sm leading-6 text-zinc-500">The weekly SLC Market Brief will appear here as soon as the first issue is published.</p>
-              </>
-            )}
+          <div className="inline-flex shrink-0 items-center gap-2 self-start text-[10px] font-black uppercase tracking-[.14em] text-yellow-300 transition group-hover:text-yellow-200 sm:self-auto">
+            Read this week&apos;s brief <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
           </div>
-        </div>
+        </a>
       </Container>
-    </Section>
+    </section>
   );
 }
 
