@@ -642,6 +642,17 @@ export default function App() {
                   </Button>
                 </div>
 
+                {LATEST_MARKET_BRIEF && (
+                  <a
+                    href={`/market-briefs/${LATEST_MARKET_BRIEF.slug}`}
+                    className="group mt-5 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[.14em] text-zinc-500 transition hover:text-yellow-300"
+                  >
+                    <Newspaper className="h-3.5 w-3.5 text-yellow-300/70" />
+                    View this week&apos;s Market Brief
+                    <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                  </a>
+                )}
+
               </div>
 
               <HeroVisual />
