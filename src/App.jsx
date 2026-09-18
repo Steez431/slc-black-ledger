@@ -40,42 +40,42 @@ const PERFORMANCE = {
     label: "7D",
     sublabel: "Last 7 Days",
     refresh: "Current finalized window",
-    finalized: 357,
-    unique: 320,
+    finalized: 388,
+    unique: 340,
     outcomes: [
-      { label: "1.5x+", count: 197, rate: 55.18 },
-      { label: "2x+", count: 135, rate: 37.82 },
-      { label: "3x+", count: 86, rate: 24.09 },
-      { label: "5x+", count: 44, rate: 12.32 },
-      { label: "10x+", count: 26, rate: 7.28 },
-      { label: "25x+", count: 9, rate: 2.52 },
-      { label: "50x+", count: 3, rate: 0.84 },
+      { label: "1.5x+", count: 189, rate: 48.71 },
+      { label: "2x+", count: 140, rate: 36.08 },
+      { label: "3x+", count: 80, rate: 20.62 },
+      { label: "5x+", count: 41, rate: 10.57 },
+      { label: "10x+", count: 19, rate: 4.90 },
+      { label: "25x+", count: 5, rate: 1.29 },
+      { label: "50x+", count: 3, rate: 0.77 },
     ],
     topCalls: [
-      { symbol: "$PURR", multiple: 216.37, entry: 86912, high: 18804809 },
-      { symbol: "$AGI", multiple: 66.30, entry: 174483, high: 11568054 },
-      { symbol: "$MEME", multiple: 48.78, entry: 3027893, high: 147695557 },
+      { symbol: "$minecat", multiple: 386.86, entry: 801706, high: 310148884 },
+      { symbol: "$ROCK", multiple: 67.54, entry: 73712, high: 4978330 },
+      { symbol: "$AdamSandr", multiple: 54.55, entry: 10618, high: 579196 },
     ],
   },
   "30d": {
     label: "30D",
     sublabel: "Last 30 Days",
     refresh: "Current finalized window",
-    finalized: 1562,
-    unique: 1345,
+    finalized: 1740,
+    unique: 1496,
     outcomes: [
-      { label: "1.5x+", count: 796, rate: 50.96 },
-      { label: "2x+", count: 549, rate: 35.15 },
-      { label: "3x+", count: 311, rate: 19.91 },
-      { label: "5x+", count: 157, rate: 10.05 },
-      { label: "10x+", count: 72, rate: 4.61 },
-      { label: "25x+", count: 23, rate: 1.47 },
-      { label: "50x+", count: 11, rate: 0.70 },
+      { label: "1.5x+", count: 891, rate: 51.21 },
+      { label: "2x+", count: 629, rate: 36.15 },
+      { label: "3x+", count: 363, rate: 20.86 },
+      { label: "5x+", count: 185, rate: 10.63 },
+      { label: "10x+", count: 86, rate: 4.94 },
+      { label: "25x+", count: 26, rate: 1.49 },
+      { label: "50x+", count: 12, rate: 0.69 },
     ],
     topCalls: [
+      { symbol: "$minecat", multiple: 386.86, entry: 801706, high: 310148884 },
       { symbol: "$BalledEagle", multiple: 234.80, entry: 3897, high: 915010 },
       { symbol: "$PURR", multiple: 216.37, entry: 86912, high: 18804809 },
-      { symbol: "$CHAM", multiple: 153.33, entry: 16916, high: 2593726 },
     ],
   },
 };
@@ -485,7 +485,9 @@ function PerformanceLedger() {
         </div>
 
         <div className="flex flex-col gap-2 border-t border-yellow-400/[.08] px-5 py-4 text-[9px] uppercase tracking-[.12em] text-zinc-700 sm:flex-row sm:items-center sm:justify-between sm:px-7">
-          <span>Historical performance does not guarantee future results</span>
+          <span>
+            Historical performance does not guarantee future results • Market data via DexScreener API; temporary data anomalies may cause occasional discrepancies
+          </span>
           <a href="#methodology" className="inline-flex items-center gap-1.5 font-bold text-zinc-500 transition hover:text-yellow-300">
             View measurement methodology <ArrowRight className="h-3 w-3" />
           </a>
