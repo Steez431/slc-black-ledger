@@ -45,12 +45,20 @@ export const MARKET_BRIEFS = Object.entries(briefModules)
       date,
       displayDate: data.displayDate || formatBriefDate(date),
       title: data.title || 'SLC Weekly Market Brief',
-      issue: data.issue || '',
+      issue: data.issue || data.number || '',
       excerpt: data.excerpt || '',
       body,
     };
   })
-  .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  .sort((a, b) => {
+    // Sort by the actual calendar date, not the raw frontmatter string.
+    // This keeps older briefs using "September 14, 2026" compatible with
+    // newer ISO dates like "2026-09-21" and guarantees newest-first order.
+    const aTime = Date.parse(a.date) || 0;
+    const bTime = Date.parse(b.date) || 0;
+    if (aTime !== bTime) return bTime - aTime;
+    return String(b.slug).localeCompare(String(a.slug));
+  });
 
 export const LATEST_MARKET_BRIEF = MARKET_BRIEFS[0] || null;
 
