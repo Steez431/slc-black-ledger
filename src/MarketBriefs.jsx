@@ -32,6 +32,7 @@ function MarkdownBody({ source }) {
   let paragraph = [];
   let list = [];
   let listType = null;
+  let listStart = 1;
 
   const flushParagraph = () => {
     if (!paragraph.length) return;
@@ -44,12 +45,16 @@ function MarkdownBody({ source }) {
     if (!list.length) return;
     const Tag = listType === 'ol' ? 'ol' : 'ul';
     nodes.push(
-      <Tag key={`l-${nodes.length}`}>
+      <Tag
+        key={`l-${nodes.length}`}
+        {...(listType === 'ol' ? { start: listStart } : {})}
+      >
         {list.map((item, index) => <li key={index}>{renderInline(item, `l-${nodes.length}-${index}`)}</li>)}
       </Tag>
     );
     list = [];
     listType = null;
+    listStart = 1;
   };
 
   lines.forEach((rawLine) => {
@@ -93,12 +98,13 @@ function MarkdownBody({ source }) {
       return;
     }
 
-    const ordered = line.match(/^\d+\.\s+(.+)$/);
+    const ordered = line.match(/^(\d+)\.\s+(.+)$/);
     if (ordered) {
       flushParagraph();
       if (listType && listType !== 'ol') flushList();
+      if (!list.length) listStart = Number(ordered[1]);
       listType = 'ol';
-      list.push(ordered[1]);
+      list.push(ordered[2]);
       return;
     }
 
